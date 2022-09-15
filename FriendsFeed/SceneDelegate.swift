@@ -22,8 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: currentScene)
         
-        let vc = UIViewController()
-        vc.view.backgroundColor = .red
+        let vc = AuthenticationViewController()
         
         window?.rootViewController = vc
         window?.makeKeyAndVisible()
