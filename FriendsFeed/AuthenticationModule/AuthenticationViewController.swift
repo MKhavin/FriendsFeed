@@ -10,6 +10,7 @@ import UIKit
 class AuthenticationViewController: UIViewController {
     //MARK: - Sub properties
     private weak var authenticationView: AuthenticationView?
+    var viewModel: AuthenticationViewModelProtocol!
     
     //MARK: - Life cycle
     override func loadView() {
@@ -25,6 +26,12 @@ class AuthenticationViewController: UIViewController {
         setButtonsActions()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        navigationController?.isNavigationBarHidden = true
+    }
+    
     //MARK: - Sub methods
     private func setButtonsActions() {
         authenticationView?.logInButton.addTarget(self,
@@ -38,10 +45,10 @@ class AuthenticationViewController: UIViewController {
     
     //MARK: - Actions
     @objc private func registerButtonPressed(_ sender: UIButton) {
-        
+        viewModel.pushRegisterView()
     }
     
     @objc private func logInButtonPressed(_ sender: UIButton) {
-        
+        viewModel.pushLogInView()
     }
 }
