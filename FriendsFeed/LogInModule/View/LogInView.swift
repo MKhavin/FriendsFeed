@@ -41,7 +41,7 @@ class LogInView: UIView {
         view.textColor = .label
         view.numberOfLines = 0
         view.text = "Введите номер телефона для входа в приложение"
-        view.font = .preferredFont(forTextStyle: .title3)
+        view.font = .preferredFont(forTextStyle: .title3).withSize(12)
         view.textAlignment = .center
         view.textColor = .placeholderText
         return view
@@ -110,30 +110,31 @@ class LogInView: UIView {
     
     private func setTopViewSubviewsLayout() {
         numberTextField.snp.makeConstraints { make in
-            make.bottom.equalTo(topView.layoutMarginsGuide)
-            make.leading.trailing.equalTo(topView.layoutMarginsGuide).inset(60)
+            make.bottom.equalTo(topView.layoutMarginsGuide).inset(-20)
+            make.leading.trailing.equalTo(topView.layoutMarginsGuide).inset(30)
+            make.height.equalTo(50)
         }
         
         subtitleLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(numberTextField.snp.top).inset(5)
+            make.bottom.equalTo(numberTextField.snp.top).inset(-15)
             make.leading.trailing.equalTo(topView.layoutMarginsGuide).inset(80)
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(subtitleLabel.snp.top).inset(2)
+            make.bottom.equalTo(subtitleLabel.snp.top).inset(-2)
             make.leading.trailing.equalTo(topView.layoutMarginsGuide).inset(80)
         }
     }
     
     private func setBottomViewSubviewsLayout() {
         logInButton.snp.makeConstraints { make in
-            make.top.equalTo(bottomView.layoutMarginsGuide)
-            make.leading.trailing.equalTo(bottomView.layoutMarginsGuide).inset(100)
+            make.top.equalTo(bottomView.layoutMarginsGuide).offset(60)
+            make.leading.trailing.equalTo(bottomView.layoutMarginsGuide).inset(80)
         }
         
         privacyLabel.snp.makeConstraints { make in
             make.top.equalTo(logInButton.snp.bottom).offset(10)
-            make.leading.trailing.equalTo(bottomView.layoutMarginsGuide)
+            make.leading.trailing.equalTo(bottomView.layoutMarginsGuide).inset(30)
         }
     }
     
@@ -146,30 +147,6 @@ class LogInView: UIView {
         
         stackView.snp.makeConstraints { make in
             make.edges.equalTo(layoutMarginsGuide)
-        }
-        
-        titleLabel.snp.makeConstraints { make in
-            make.leading.trailing.top.equalTo(layoutMarginsGuide)
-        }
-        
-        subtitleLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(layoutMarginsGuide)
-            make.top.equalTo(titleLabel.snp.bottom).offset(5)
-        }
-        
-        numberTextField.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(layoutMarginsGuide)
-            make.top.equalTo(subtitleLabel.snp.bottom).offset(10)
-        }
-        
-        logInButton.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(layoutMarginsGuide)
-            make.top.equalTo(numberTextField.snp.bottom).offset(20)
-        }
-        
-        privacyLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(layoutMargins)
-            make.top.equalTo(logInButton.snp.bottom).offset(5)
         }
     }
 }
