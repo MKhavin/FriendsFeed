@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		510612FA28EC39100060112E /* SMSConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510612F928EC39100060112E /* SMSConfirmationViewController.swift */; };
+		510612FC28EC39220060112E /* SMSConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510612FB28EC39220060112E /* SMSConfirmationView.swift */; };
+		510612FE28EC3A170060112E /* LogInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510612FD28EC3A170060112E /* LogInViewModel.swift */; };
+		51AFAF1E28D8EDA70075DB21 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51AFAF1D28D8EDA70075DB21 /* LogInViewController.swift */; };
+		51AFAF2028D8EDB50075DB21 /* LogInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51AFAF1F28D8EDB50075DB21 /* LogInView.swift */; };
+		51AFAF2328D8EE880075DB21 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51AFAF2228D8EE880075DB21 /* UIColorExtension.swift */; };
+		51AFAF2528D8F18F0075DB21 /* CustomColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51AFAF2428D8F18F0075DB21 /* CustomColors.swift */; };
 		51FF111C28D399AB00B0D334 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FF111B28D399AB00B0D334 /* AppDelegate.swift */; };
 		51FF111E28D399AB00B0D334 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FF111D28D399AB00B0D334 /* SceneDelegate.swift */; };
 		51FF112528D399AE00B0D334 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 51FF112428D399AE00B0D334 /* Assets.xcassets */; };
@@ -24,6 +31,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		510612F928EC39100060112E /* SMSConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSConfirmationViewController.swift; sourceTree = "<group>"; };
+		510612FB28EC39220060112E /* SMSConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSConfirmationView.swift; sourceTree = "<group>"; };
+		510612FD28EC3A170060112E /* LogInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewModel.swift; sourceTree = "<group>"; };
+		51AFAF1D28D8EDA70075DB21 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
+		51AFAF1F28D8EDB50075DB21 /* LogInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInView.swift; sourceTree = "<group>"; };
+		51AFAF2228D8EE880075DB21 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		51AFAF2428D8F18F0075DB21 /* CustomColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColors.swift; sourceTree = "<group>"; };
 		51FF111828D399AB00B0D334 /* FriendsFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FriendsFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		51FF111B28D399AB00B0D334 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		51FF111D28D399AB00B0D334 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -53,6 +67,81 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		510612F528EC38D00060112E /* SMSConfirmationModule */ = {
+			isa = PBXGroup;
+			children = (
+				510612F828EC38E80060112E /* Model */,
+				510612F728EC38E60060112E /* View */,
+				510612F628EC38E40060112E /* ViewModel */,
+			);
+			path = SMSConfirmationModule;
+			sourceTree = "<group>";
+		};
+		510612F628EC38E40060112E /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		510612F728EC38E60060112E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				510612F928EC39100060112E /* SMSConfirmationViewController.swift */,
+				510612FB28EC39220060112E /* SMSConfirmationView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		510612F828EC38E80060112E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		51AFAF1928D8ED780075DB21 /* LogInModule */ = {
+			isa = PBXGroup;
+			children = (
+				51AFAF1C28D8ED920075DB21 /* Model */,
+				51AFAF1B28D8ED8C0075DB21 /* View */,
+				51AFAF1A28D8ED840075DB21 /* ViewModel */,
+			);
+			path = LogInModule;
+			sourceTree = "<group>";
+		};
+		51AFAF1A28D8ED840075DB21 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				510612FD28EC3A170060112E /* LogInViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		51AFAF1B28D8ED8C0075DB21 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				51AFAF1D28D8EDA70075DB21 /* LogInViewController.swift */,
+				51AFAF1F28D8EDB50075DB21 /* LogInView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		51AFAF1C28D8ED920075DB21 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		51AFAF2128D8EE3C0075DB21 /* SupportObjects */ = {
+			isa = PBXGroup;
+			children = (
+				51AFAF2428D8F18F0075DB21 /* CustomColors.swift */,
+			);
+			name = SupportObjects;
+			sourceTree = "<group>";
+		};
 		51FF110F28D399AB00B0D334 = {
 			isa = PBXGroup;
 			children = (
@@ -72,9 +161,12 @@
 		51FF111A28D399AB00B0D334 /* FriendsFeed */ = {
 			isa = PBXGroup;
 			children = (
+				51AFAF2128D8EE3C0075DB21 /* SupportObjects */,
 				51FF36B528D3CA1300BFF814 /* Services */,
 				51FF36B028D3BBE800BFF814 /* Extensions */,
 				51FF36A828D3B8A800BFF814 /* AuthenticationModule */,
+				51AFAF1928D8ED780075DB21 /* LogInModule */,
+				510612F528EC38D00060112E /* SMSConfirmationModule */,
 				51FF111B28D399AB00B0D334 /* AppDelegate.swift */,
 				51FF111D28D399AB00B0D334 /* SceneDelegate.swift */,
 				51FF112428D399AE00B0D334 /* Assets.xcassets */,
@@ -123,6 +215,7 @@
 			isa = PBXGroup;
 			children = (
 				51FF36B128D3BBFB00BFF814 /* UIViewExtension.swift */,
+				51AFAF2228D8EE880075DB21 /* UIColorExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -216,13 +309,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51AFAF2028D8EDB50075DB21 /* LogInView.swift in Sources */,
+				510612FE28EC3A170060112E /* LogInViewModel.swift in Sources */,
 				51FF36B228D3BBFB00BFF814 /* UIViewExtension.swift in Sources */,
 				51FF36B928D3CB5500BFF814 /* ModuleFactory.swift in Sources */,
+				51AFAF1E28D8EDA70075DB21 /* LogInViewController.swift in Sources */,
+				510612FA28EC39100060112E /* SMSConfirmationViewController.swift in Sources */,
 				51FF36AD28D3B8EA00BFF814 /* AuthenticationViewController.swift in Sources */,
 				51FF36B428D3C9B400BFF814 /* AuthenticationViewModel.swift in Sources */,
 				51FF36B728D3CA4300BFF814 /* AppCoordinator.swift in Sources */,
 				51FF111C28D399AB00B0D334 /* AppDelegate.swift in Sources */,
+				51AFAF2328D8EE880075DB21 /* UIColorExtension.swift in Sources */,
 				51FF111E28D399AB00B0D334 /* SceneDelegate.swift in Sources */,
+				51AFAF2528D8F18F0075DB21 /* CustomColors.swift in Sources */,
+				510612FC28EC39220060112E /* SMSConfirmationView.swift in Sources */,
 				51FF36AF28D3B90A00BFF814 /* AuthenticationView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -360,6 +460,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F26DHS538R;
@@ -368,7 +469,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -377,6 +478,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.MichaelK.FriendsFeed;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -388,6 +490,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F26DHS538R;
@@ -396,7 +499,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -405,6 +508,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.MichaelK.FriendsFeed;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

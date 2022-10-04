@@ -10,10 +10,15 @@ import UIKit
 protocol ModuleFactoryProtocol {
     func buildAuthenticationModule(coordinator: AppCoordinatorProtocol?) -> UIViewController
     func buildLogInModule(coordinator: AppCoordinatorProtocol?) -> UIViewController
-    func buildRegisterModule(coordinator: AppCoordinatorProtocol?) -> UIViewController
+    func buildSMSConfirmationModule(coordinator: AppCoordinatorProtocol?) -> UIViewController
 }
 
 class ModuleFactory: ModuleFactoryProtocol {
+    func buildSMSConfirmationModule(coordinator: AppCoordinatorProtocol?) -> UIViewController {
+        let view = SMSConfirmationViewController()
+        return view
+    }
+    
     func buildAuthenticationModule(coordinator: AppCoordinatorProtocol?) -> UIViewController {
         let view = AuthenticationViewController()
         let viewModel = AuthenticationViewModel(coordinator: coordinator)
@@ -23,14 +28,10 @@ class ModuleFactory: ModuleFactoryProtocol {
     }
     
     func buildLogInModule(coordinator: AppCoordinatorProtocol?) -> UIViewController {
-        let view = UIViewController()
-        view.view.backgroundColor = .green
-        return view
-    }
-    
-    func buildRegisterModule(coordinator: AppCoordinatorProtocol?) -> UIViewController {
-        let view = UIViewController()
-        view.view.backgroundColor = .red
+        let view = LogInViewController()
+        let viewModel = LogInViewModel(coordinator: coordinator)
+        view.viewModel = viewModel
+        
         return view
     }
 }
