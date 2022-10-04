@@ -10,6 +10,10 @@
 		510612FA28EC39100060112E /* SMSConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510612F928EC39100060112E /* SMSConfirmationViewController.swift */; };
 		510612FC28EC39220060112E /* SMSConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510612FB28EC39220060112E /* SMSConfirmationView.swift */; };
 		510612FE28EC3A170060112E /* LogInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510612FD28EC3A170060112E /* LogInViewModel.swift */; };
+		5106130028EC68AB0060112E /* SMSConfirmationTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510612FF28EC68AA0060112E /* SMSConfirmationTitleView.swift */; };
+		5106130228EC70790060112E /* SMSConfirmationTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5106130128EC70790060112E /* SMSConfirmationTextFieldView.swift */; };
+		5106130428EC76B20060112E /* SMSConfirmationBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5106130328EC76B20060112E /* SMSConfirmationBottomView.swift */; };
+		5106130628EC816D0060112E /* UIStackViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5106130528EC816D0060112E /* UIStackViewExtension.swift */; };
 		51AFAF1E28D8EDA70075DB21 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51AFAF1D28D8EDA70075DB21 /* LogInViewController.swift */; };
 		51AFAF2028D8EDB50075DB21 /* LogInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51AFAF1F28D8EDB50075DB21 /* LogInView.swift */; };
 		51AFAF2328D8EE880075DB21 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51AFAF2228D8EE880075DB21 /* UIColorExtension.swift */; };
@@ -34,6 +38,10 @@
 		510612F928EC39100060112E /* SMSConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSConfirmationViewController.swift; sourceTree = "<group>"; };
 		510612FB28EC39220060112E /* SMSConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSConfirmationView.swift; sourceTree = "<group>"; };
 		510612FD28EC3A170060112E /* LogInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewModel.swift; sourceTree = "<group>"; };
+		510612FF28EC68AA0060112E /* SMSConfirmationTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSConfirmationTitleView.swift; sourceTree = "<group>"; };
+		5106130128EC70790060112E /* SMSConfirmationTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSConfirmationTextFieldView.swift; sourceTree = "<group>"; };
+		5106130328EC76B20060112E /* SMSConfirmationBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSConfirmationBottomView.swift; sourceTree = "<group>"; };
+		5106130528EC816D0060112E /* UIStackViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackViewExtension.swift; sourceTree = "<group>"; };
 		51AFAF1D28D8EDA70075DB21 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		51AFAF1F28D8EDB50075DB21 /* LogInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInView.swift; sourceTree = "<group>"; };
 		51AFAF2228D8EE880075DB21 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
@@ -89,6 +97,9 @@
 			children = (
 				510612F928EC39100060112E /* SMSConfirmationViewController.swift */,
 				510612FB28EC39220060112E /* SMSConfirmationView.swift */,
+				510612FF28EC68AA0060112E /* SMSConfirmationTitleView.swift */,
+				5106130128EC70790060112E /* SMSConfirmationTextFieldView.swift */,
+				5106130328EC76B20060112E /* SMSConfirmationBottomView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -216,6 +227,7 @@
 			children = (
 				51FF36B128D3BBFB00BFF814 /* UIViewExtension.swift */,
 				51AFAF2228D8EE880075DB21 /* UIColorExtension.swift */,
+				5106130528EC816D0060112E /* UIStackViewExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -311,12 +323,16 @@
 			files = (
 				51AFAF2028D8EDB50075DB21 /* LogInView.swift in Sources */,
 				510612FE28EC3A170060112E /* LogInViewModel.swift in Sources */,
+				5106130028EC68AB0060112E /* SMSConfirmationTitleView.swift in Sources */,
 				51FF36B228D3BBFB00BFF814 /* UIViewExtension.swift in Sources */,
 				51FF36B928D3CB5500BFF814 /* ModuleFactory.swift in Sources */,
 				51AFAF1E28D8EDA70075DB21 /* LogInViewController.swift in Sources */,
+				5106130228EC70790060112E /* SMSConfirmationTextFieldView.swift in Sources */,
 				510612FA28EC39100060112E /* SMSConfirmationViewController.swift in Sources */,
+				5106130428EC76B20060112E /* SMSConfirmationBottomView.swift in Sources */,
 				51FF36AD28D3B8EA00BFF814 /* AuthenticationViewController.swift in Sources */,
 				51FF36B428D3C9B400BFF814 /* AuthenticationViewModel.swift in Sources */,
+				5106130628EC816D0060112E /* UIStackViewExtension.swift in Sources */,
 				51FF36B728D3CA4300BFF814 /* AppCoordinator.swift in Sources */,
 				51FF111C28D399AB00B0D334 /* AppDelegate.swift in Sources */,
 				51AFAF2328D8EE880075DB21 /* UIColorExtension.swift in Sources */,

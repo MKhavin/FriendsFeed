@@ -8,13 +8,50 @@
 import UIKit
 
 class SMSConfirmationView: UIView {
-
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    //MARK: - UI elements
+    private lazy var numberView: SMSConfirmationTitleView = {
+        let view = SMSConfirmationTitleView()
+        return view
+    }()
+    private lazy var phoneNumberView: SMSConfirmationTextFieldView = {
+        let view = SMSConfirmationTextFieldView()
+        return view
+    }()
+    private lazy var bottomView: SMSConfirmationBottomView = {
+        let view = SMSConfirmationBottomView()
+        return view
+    }()
+    
+    //MARK: - Life cycle
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        backgroundColor = .systemBackground
+        setSubviewsLayout()
     }
-    */
-
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK: - Sub methods
+    private func setSubviewsLayout() {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 1
+        stackView.distribution = .fillEqually
+        stackView.alignment = .fill
+        
+        stackView.addArrangedSubviews([
+            numberView,
+            phoneNumberView,
+            bottomView
+        ])
+        
+        addSubview(stackView)
+        
+        stackView.snp.makeConstraints { make in
+            make.edges.equalTo(safeAreaLayoutGuide)
+        }
+    }
 }

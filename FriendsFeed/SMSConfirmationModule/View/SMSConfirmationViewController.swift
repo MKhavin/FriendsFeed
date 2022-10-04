@@ -8,22 +8,22 @@
 import UIKit
 
 class SMSConfirmationViewController: UIViewController {
-
+    //MARK: - Sub properties
+    var viewModel: String!
+    private weak var mainView: SMSConfirmationView?
+    
+    //MARK: - Life cycle
+    override func loadView() {
+        let subView = SMSConfirmationView()
+        view = subView
+        mainView = subView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
