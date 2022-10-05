@@ -22,10 +22,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: currentScene)
         
-        let vc = UIViewController()
-        vc.view.backgroundColor = .red
+        let navigationController = UINavigationController()
+        let coordinator = AppCoordinator(moduleFactory: ModuleFactory(),
+                                         navigationController: navigationController)
+        coordinator.pushInitialView()
         
-        window?.rootViewController = vc
+        window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
 
