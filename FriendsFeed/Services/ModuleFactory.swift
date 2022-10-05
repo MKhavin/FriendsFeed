@@ -16,6 +16,9 @@ protocol ModuleFactoryProtocol {
 class ModuleFactory: ModuleFactoryProtocol {
     func buildSMSConfirmationModule(coordinator: AppCoordinatorProtocol?) -> UIViewController {
         let view = SMSConfirmationViewController()
+        let viewModel = SMSConfirmationViewModel(coordinator: coordinator)
+        view.viewModel = viewModel
+        
         return view
     }
     

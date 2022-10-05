@@ -9,15 +9,15 @@ import UIKit
 
 class SMSConfirmationView: UIView {
     //MARK: - UI elements
-    private lazy var numberView: SMSConfirmationTitleView = {
+    private(set) lazy var numberView: SMSConfirmationTitleView = {
         let view = SMSConfirmationTitleView()
         return view
     }()
-    private lazy var phoneNumberView: SMSConfirmationTextFieldView = {
+    private(set) lazy var phoneNumberView: SMSConfirmationTextFieldView = {
         let view = SMSConfirmationTextFieldView()
         return view
     }()
-    private lazy var bottomView: SMSConfirmationBottomView = {
+    private(set) lazy var bottomView: SMSConfirmationBottomView = {
         let view = SMSConfirmationBottomView()
         return view
     }()

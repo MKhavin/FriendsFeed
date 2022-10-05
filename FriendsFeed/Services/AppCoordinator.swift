@@ -14,6 +14,7 @@ protocol AppCoordinatorProtocol {
     func pushLogInView()
     func popToRoot()
     func pushConfirmationView()
+    func pushMainView()
 }
 
 class AppCoordinator: AppCoordinatorProtocol {
@@ -45,6 +46,12 @@ class AppCoordinator: AppCoordinatorProtocol {
     
     func pushConfirmationView() {
         let view = moduleFactory.buildSMSConfirmationModule(coordinator: self)
+        navigationController.pushViewController(view, animated: true)
+    }
+    
+    func pushMainView() {
+        let view = UIViewController()
+        view.view.backgroundColor = .red
         navigationController.pushViewController(view, animated: true)
     }
 }
