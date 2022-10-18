@@ -7,13 +7,11 @@
 
 import UIKit
 
-protocol AppCoordinatorProtocol {
-    init(moduleFactory: ModuleFactoryProtocol, navigationController: UINavigationController)
-    func pushInitialView()
+protocol AppCoordinatorProtocol: NavigationCoordinatorProtocol {
     func pushAuthenticationView()
     func pushRegisterView()
     func pushLogInView()
-    func popToRoot()
+    func pushMainView()
 }
 
 class AppCoordinator: AppCoordinatorProtocol {
@@ -26,7 +24,8 @@ class AppCoordinator: AppCoordinatorProtocol {
     }
     
     func pushInitialView() {
-        pushAuthenticationView()
+        //        pushAuthenticationView()
+        pushMainView()
     }
     
     func pushAuthenticationView() {
@@ -46,6 +45,12 @@ class AppCoordinator: AppCoordinatorProtocol {
     
     func popToRoot() {
         navigationController.popToRootViewController(animated: true)
+    }
+    
+    func pushMainView() {
+        let view = moduleFactory.buildMainView()
+        
+        navigationController.pushViewController(view, animated: true)
     }
 }
 
