@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FeedTableViewCellBottomView: UIView {
+class LikeFavouritesBottomView: UIView {
     //MARK: - UI elements
     private(set) lazy var likeButton: UIButton = {
         let view = UIButton()

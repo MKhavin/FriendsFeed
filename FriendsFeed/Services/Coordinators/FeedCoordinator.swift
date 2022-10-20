@@ -8,7 +8,7 @@
 import UIKit
 
 protocol FeedCoordinatorProtocol: NavigationCoordinatorProtocol {
-    func pushPostInfoView()
+    func pushPostInfoView(with data: Post)
 }
                                         
 class FeedCoordinator: FeedCoordinatorProtocol {
@@ -31,7 +31,9 @@ class FeedCoordinator: FeedCoordinatorProtocol {
         navigationController.popToRootViewController(animated: true)
     }
     
-    func pushPostInfoView() {
+    func pushPostInfoView(with data: Post) {
+        let view = moduleFactory.buildPostInfoModule(coordinator: self, data: data)
         
+        navigationController.pushViewController(view, animated: true)
     }
 }

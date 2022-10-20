@@ -78,12 +78,18 @@ class CachedImageView: UIImageView {
     }
     
     func getImageFor(imagePath: String) {
-        if let imageData = CachedImageView.cache.object(forKey: NSString(string: imagePath)) {
-            image = UIImage(data: imageData as Data)
-            activityIndicatorView.isHidden = true
-        } else {
-            activityIndicatorView.isHidden = false
-            downloadFor(imagePath: imagePath)
+        DispatchQueue.global(qos: .userInitiated).async {
+            if let imageData = CachedImageView.cache.object(forKey: NSString(string: imagePath)) {
+                DispatchQueue.main.async {
+                    self.image = UIImage(data: imageData as Data)
+                    self.activityIndicatorView.isHidden = true
+                }
+            } else {
+                self.downloadFor(imagePath: imagePath)
+                DispatchQueue.main.async {
+                    self.activityIndicatorView.isHidden = false
+                }
+            }
         }
     }
 }

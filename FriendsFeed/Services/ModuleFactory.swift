@@ -13,12 +13,21 @@ protocol ModuleFactoryProtocol {
     func buildRegisterModule(coordinator: AppCoordinatorProtocol?) -> UIViewController
     func buildFeedModule(coordinator: FeedCoordinatorProtocol?) -> UIViewController
     func buildMainView() -> UIViewController
+    func buildPostInfoModule(coordinator: FeedCoordinatorProtocol?, data: Post) -> UIViewController
 }
 
 class ModuleFactory: ModuleFactoryProtocol {
+    func buildPostInfoModule(coordinator: FeedCoordinatorProtocol?, data: Post) -> UIViewController {
+        let view = PostInfoViewController()
+        let viewModel = PostInfoViewModel(coordinator: coordinator, data: data)
+        view.viewModel = viewModel
+        
+        return view
+    }
+    
     func buildFeedModule(coordinator: FeedCoordinatorProtocol?) -> UIViewController {
         let view = FeedViewController()
-        let viewModel = FeedViewModel()
+        let viewModel = FeedViewModel(coordinator: coordinator)
         view.viewModel = viewModel
         
         return view

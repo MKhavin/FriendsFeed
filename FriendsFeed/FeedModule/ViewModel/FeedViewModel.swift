@@ -15,6 +15,7 @@ protocol FeedViewModelProtocol {
     var coordinator: FeedCoordinatorProtocol? { get set }
     var postsCollections: [PostCollection] { get set }
     func getFeed()
+    func showPostInfo(in collection: Int, of post: Int)
 }
 
 class FeedViewModel: FeedViewModelProtocol {
@@ -22,6 +23,10 @@ class FeedViewModel: FeedViewModelProtocol {
     var postLoaded: (() -> Void)?
     var errorMessageChanged: ((String) -> Void)?
     var postsCollections: [PostCollection] = []
+    
+    init(coordinator: FeedCoordinatorProtocol?) {
+        self.coordinator = coordinator
+    }
     
     func getFeed() {
         let db = Firestore.firestore()
@@ -91,4 +96,8 @@ class FeedViewModel: FeedViewModelProtocol {
         }
     }
     
+    func showPostInfo(in collection: Int, of post: Int) {
+        let data = postsCollections[collection].posts[post]
+        coordinator?.pushPostInfoView(with: data)
+    }
 }

@@ -13,7 +13,7 @@ class FeedTableViewCell: UITableViewCell {
     //MARK: - UI elements
     private lazy var titleView = FeedTableViewCellTitleView()
     private lazy var postView: FeedTableViewCellPostView = FeedTableViewCellPostView()
-    private(set) lazy var bottomView: FeedTableViewCellBottomView = FeedTableViewCellBottomView()
+    private(set) lazy var bottomView: LikeFavouritesBottomView = LikeFavouritesBottomView()
     
     //MARK: - Life cycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
