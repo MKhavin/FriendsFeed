@@ -34,20 +34,12 @@ class AuthenticationViewController: UIViewController {
     
     //MARK: - Sub methods
     private func setButtonsActions() {
-        authenticationView?.logInButton.addTarget(self,
-                                                  action: #selector(logInButtonPressed(_:)),
-                                                  for: .touchUpInside)
-        
         authenticationView?.registerButton.addTarget(self,
-                                                  action: #selector(registerButtonPressed(_:)),
+                                                  action: #selector(logInButtonPressed(_:)),
                                                   for: .touchUpInside)
     }
     
     //MARK: - Actions
-    @objc private func registerButtonPressed(_ sender: UIButton) {
-        viewModel.pushRegisterView()
-    }
-    
     @objc private func logInButtonPressed(_ sender: UIButton) {
         viewModel.pushLogInView()
     }

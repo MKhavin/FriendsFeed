@@ -7,7 +7,6 @@
 
 protocol AuthenticationViewModelProtocol {
     var coordinator: AppCoordinatorProtocol? { get set }
-    func pushRegisterView()
     func pushLogInView()
 }
 
@@ -16,10 +15,6 @@ class AuthenticationViewModel: AuthenticationViewModelProtocol {
     
     init(coordinator: AppCoordinatorProtocol?) {
         self.coordinator = coordinator
-    }
-    
-    func pushRegisterView() {
-        coordinator?.pushRegisterView()
     }
     
     func pushLogInView() {

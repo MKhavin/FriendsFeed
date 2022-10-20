@@ -11,9 +11,10 @@ protocol AppCoordinatorProtocol {
     init(moduleFactory: ModuleFactoryProtocol, navigationController: UINavigationController)
     func pushInitialView()
     func pushAuthenticationView()
-    func pushRegisterView()
     func pushLogInView()
     func popToRoot()
+    func pushConfirmationView()
+    func pushMainView()
 }
 
 class AppCoordinator: AppCoordinatorProtocol {
@@ -34,11 +35,6 @@ class AppCoordinator: AppCoordinatorProtocol {
         navigationController.pushViewController(view, animated: true)
     }
     
-    func pushRegisterView() {
-        let view = moduleFactory.buildRegisterModule(coordinator: self)
-        navigationController.pushViewController(view, animated: true)
-    }
-    
     func pushLogInView() {
         let view = moduleFactory.buildLogInModule(coordinator: self)
         navigationController.pushViewController(view, animated: true)
@@ -46,6 +42,17 @@ class AppCoordinator: AppCoordinatorProtocol {
     
     func popToRoot() {
         navigationController.popToRootViewController(animated: true)
+    }
+    
+    func pushConfirmationView() {
+        let view = moduleFactory.buildSMSConfirmationModule(coordinator: self)
+        navigationController.pushViewController(view, animated: true)
+    }
+    
+    func pushMainView() {
+        let view = UIViewController()
+        view.view.backgroundColor = .red
+        navigationController.pushViewController(view, animated: true)
     }
 }
 
