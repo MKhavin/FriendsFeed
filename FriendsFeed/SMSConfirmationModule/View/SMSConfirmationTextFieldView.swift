@@ -24,6 +24,7 @@ class SMSConfirmationTextFieldView: UIView {
         view.layer.borderWidth = 1
         view.textAlignment = .center
         view.layer.cornerRadius = 20
+        view.keyboardType = .numberPad
         
         return view
     }()
