@@ -16,6 +16,7 @@ protocol ProfileViewModelProtocol {
     func getPostsCount() -> Int
     func getPostData(for postNumber: Int) -> Post
     func pushPostInfo(for postNumber: Int)
+    func pushPhotosView()
 }
 
 class ProfileViewModel: ProfileViewModelProtocol {
@@ -155,5 +156,9 @@ class ProfileViewModel: ProfileViewModelProtocol {
     func pushPostInfo(for postNumber: Int) {
         let postData = getPostData(for: postNumber)
         coordinator?.pushPostInfoView(with: postData)
+    }
+    
+    func pushPhotosView() {
+        coordinator?.pushPhotosView(for: profile?.id ?? "")
     }
 }

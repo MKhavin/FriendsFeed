@@ -12,4 +12,5 @@ enum ItemsIdentifier: String {
     case feedSectionHeader
     case profilePostsCell
     case profilePhotosCell
+    case photosCell
 }

@@ -9,6 +9,7 @@ import UIKit
 
 protocol ProfileCoordinatorProtocol: NavigationCoordinatorProtocol {
     func pushPostInfoView(with data: Post)
+    func pushPhotosView(for user: String)
 }
                                         
 class ProfileCoordinator: ProfileCoordinatorProtocol {
@@ -34,6 +35,12 @@ class ProfileCoordinator: ProfileCoordinatorProtocol {
     
     func pushPostInfoView(with data: Post) {
         let view = moduleFactory.buildPostInfoModule(coordinator: self, data: data)
+        
+        navigationController.pushViewController(view, animated: true)
+    }
+    
+    func pushPhotosView(for user: String) {
+        let view = moduleFactory.buildPhotoModule(coordinator: self, user: user)
         
         navigationController.pushViewController(view, animated: true)
     }

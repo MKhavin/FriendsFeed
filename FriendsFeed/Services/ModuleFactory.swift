@@ -16,6 +16,7 @@ protocol ModuleFactoryProtocol {
     func buildPostInfoModule(coordinator: NavigationCoordinatorProtocol?, data: Post) -> UIViewController
     func buildSMSConfirmationModule(coordinator: AppCoordinatorProtocol?) -> UIViewController
     func buildProfileModule(coordinator: ProfileCoordinatorProtocol?) -> UIViewController
+    func buildPhotoModule(coordinator: NavigationCoordinatorProtocol?, user: String) -> UIViewController
 }
 
 class ModuleFactory: ModuleFactoryProtocol {
@@ -89,6 +90,14 @@ class ModuleFactory: ModuleFactoryProtocol {
     func buildProfileModule(coordinator: ProfileCoordinatorProtocol?) -> UIViewController {
         let view = ProfileViewController()
         let viewModel = ProfileViewModel(coordinator: coordinator)
+        view.viewModel = viewModel
+        
+        return view
+    }
+    
+    func buildPhotoModule(coordinator: NavigationCoordinatorProtocol?, user: String) -> UIViewController {
+        let view = PhotosViewController()
+        let viewModel = PhotosViewModel(coordinator: coordinator, user: user)
         view.viewModel = viewModel
         
         return view
