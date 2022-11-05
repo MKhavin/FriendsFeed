@@ -8,17 +8,17 @@
 import Foundation
 
 protocol PostInfoViewModelProtocol {
-    var coordinator: FeedCoordinatorProtocol? { get set }
+    var coordinator: NavigationCoordinatorProtocol? { get set }
     var postDataLoaded: ((Post) -> ())? { get set }
     func loadPostData()
 }
 
 class PostInfoViewModel: PostInfoViewModelProtocol {
     var postDataLoaded: ((Post) -> ())?
-    var coordinator: FeedCoordinatorProtocol?
+    var coordinator: NavigationCoordinatorProtocol?
     private let post: Post
     
-    init(coordinator: FeedCoordinatorProtocol?, data: Post) {
+    init(coordinator: NavigationCoordinatorProtocol?, data: Post) {
         self.coordinator = coordinator
         self.post = data
     }
