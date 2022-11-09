@@ -9,15 +9,25 @@ import UIKit
 import SwiftUI
 import SnapKit
 
+protocol FeedTableViewCellDelegateProtocol: AnyObject {
+    func titleDidTap(user: User?)
+}
+
 class FeedTableViewCell: UITableViewCell {
     //MARK: - UI elements
-    private lazy var titleView = FeedTableViewCellTitleView()
+    private(set) lazy var titleView = FeedTableViewCellTitleView()
     private lazy var postView: FeedTableViewCellPostView = FeedTableViewCellPostView()
     private(set) lazy var bottomView: LikeFavouritesBottomView = LikeFavouritesBottomView()
+    private(set) var postAuthor: User?
+    private var tapGesture: UITapGestureRecognizer!
+    weak var delegate: FeedTableViewCellDelegateProtocol?
     
     //MARK: - Life cycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        tapGesture = UITapGestureRecognizer(target: self, action: #selector(userAvatarTapped(_:)))
+        titleView.addGestureRecognizer(tapGesture)
         
         setSubviewsLayout()
     }
@@ -40,6 +50,8 @@ class FeedTableViewCell: UITableViewCell {
         
         //Set bottomView data
         bottomView.likeButton.setTitle("", for: .normal)
+        
+        postAuthor = nil
     }
     
     //MARK: - Sub methods
@@ -55,6 +67,8 @@ class FeedTableViewCell: UITableViewCell {
         
         //Set bottomView data
         bottomView.likeButton.setTitle("\(data.likes ?? 0)", for: .normal)
+        
+        postAuthor = data.author
     }
     
     private func setSubviewsLayout() {
@@ -72,7 +86,7 @@ class FeedTableViewCell: UITableViewCell {
         stackView.addArrangedSubview(postView)
         stackView.addArrangedSubview(bottomView)
         
-        addSubview(stackView)
+        contentView.addSubview(stackView)
         
         titleView.snp.makeConstraints { make in
             make.height.equalTo(60)
@@ -86,5 +100,9 @@ class FeedTableViewCell: UITableViewCell {
         bottomView.snp.makeConstraints { make in
             make.height.equalTo(50)
         }
+    }
+    
+    @objc private func userAvatarTapped(_ sender: UIView) {
+        delegate?.titleDidTap(user: postAuthor)
     }
 }

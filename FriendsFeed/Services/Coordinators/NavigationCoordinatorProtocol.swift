@@ -11,4 +11,6 @@ protocol NavigationCoordinatorProtocol {
     init(moduleFactory: ModuleFactoryProtocol, navigationController: UINavigationController)
     func pushInitialView()
     func popToRoot()
+    var moduleFactory: ModuleFactoryProtocol { get }
+    var navigationController: UINavigationController { get }
 }

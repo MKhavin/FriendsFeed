@@ -10,6 +10,7 @@ import UIKit
 protocol ProfileCoordinatorProtocol: NavigationCoordinatorProtocol {
     func pushPostInfoView(with data: Post)
     func pushPhotosView(for user: String)
+    func pushProfileView(for user: User?, isCurrentUserProfile: Bool)
 }
                                         
 class ProfileCoordinator: ProfileCoordinatorProtocol {
@@ -22,9 +23,7 @@ class ProfileCoordinator: ProfileCoordinatorProtocol {
     }
     
     func pushInitialView() {
-        let view = moduleFactory.buildProfileModule(coordinator: self)
-        
-        navigationController.pushViewController(view, animated: true)
+        pushProfileView(for: nil, isCurrentUserProfile: true)
         navigationController.tabBarItem.image = UIImage(systemName: "person.crop.circle")
         navigationController.tabBarItem.title = "Профиль"
     }
@@ -41,6 +40,14 @@ class ProfileCoordinator: ProfileCoordinatorProtocol {
     
     func pushPhotosView(for user: String) {
         let view = moduleFactory.buildPhotoModule(coordinator: self, user: user)
+        
+        navigationController.pushViewController(view, animated: true)
+    }
+    
+    func pushProfileView(for user: User?, isCurrentUserProfile: Bool) {
+        let view = moduleFactory.buildProfileModule(coordinator: self,
+                                                    user: user,
+                                                    isCurrentUserProfile: isCurrentUserProfile)
         
         navigationController.pushViewController(view, animated: true)
     }

@@ -15,8 +15,8 @@ protocol AppCoordinatorProtocol: NavigationCoordinatorProtocol {
 }
 
 class AppCoordinator: AppCoordinatorProtocol {
-    private var navigationController: UINavigationController
-    private var moduleFactory: ModuleFactoryProtocol
+    private(set) var navigationController: UINavigationController
+    private(set) var moduleFactory: ModuleFactoryProtocol
     
     required init(moduleFactory: ModuleFactoryProtocol, navigationController: UINavigationController) {
         self.navigationController = navigationController

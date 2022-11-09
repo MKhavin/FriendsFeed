@@ -16,6 +16,7 @@ protocol FeedViewModelProtocol {
     var postsCollections: [PostCollection] { get set }
     func getFeed()
     func showPostInfo(in collection: Int, of post: Int)
+    func showUserProfile(for user: User)
 }
 
 class FeedViewModel: FeedViewModelProtocol {
@@ -67,13 +68,14 @@ class FeedViewModel: FeedViewModelProtocol {
                 }
                 
                 let snapshotData = querySnapshot!.data()
-                
-                let currentAuthor = User(id: snapshotData!["id"] as! String,
+    
+                let currentAuthor = User(id: querySnapshot!.documentID,
                                      firstName: snapshotData!["firstName"] as? String,
                                      lastName: snapshotData!["lastName"] as? String,
                                      birthDate: nil,
                                      sex: .init(rawValue: snapshotData!["sex"] as! String)!,
-                                     avatar: snapshotData!["avatar"] as? String)
+                                     avatar: snapshotData!["avatar"] as? String,
+                                     phoneNumber: snapshotData!["phoneNumber"] as? String)
                 
                 let currentPost = Post(date: (data["Date"] as? Timestamp)?.dateValue(),
                                        likes: data["Likes"] as? UInt,
@@ -99,5 +101,15 @@ class FeedViewModel: FeedViewModelProtocol {
     func showPostInfo(in collection: Int, of post: Int) {
         let data = postsCollections[collection].posts[post]
         coordinator?.pushPostInfoView(with: data)
+    }
+    
+    func showUserProfile(for user: User) {
+        guard let moduleFactory = coordinator?.moduleFactory, let navigationController = coordinator?.navigationController else {
+            return
+        }
+        
+        let profileCoordinator = ProfileCoordinator(moduleFactory: moduleFactory,
+                                                    navigationController: navigationController)
+        profileCoordinator.pushProfileView(for: user, isCurrentUserProfile: false)
     }
 }

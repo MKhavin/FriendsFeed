@@ -13,7 +13,7 @@ class ProfileViewController: UIViewController {
     private weak var mainView: ProfileView?
     
     override func loadView() {
-        let currentView = ProfileView()
+        let currentView = ProfileView(isCurrentUserProfile: viewModel.isCurrentUserProfile)
         mainView = currentView
         view = mainView
         mainView?.tableView.delegate = self
@@ -58,9 +58,12 @@ class ProfileViewController: UIViewController {
             
             self.mainView?.tableView.reloadData()
         }
-        viewModel.loadUserData(by: nil)
+        viewModel.loadUserData()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        navigationItem.largeTitleDisplayMode = .never
+    }
 }
 
 extension ProfileViewController: UITableViewDataSource {
@@ -83,6 +86,9 @@ extension ProfileViewController: UITableViewDataSource {
                                                                               for: indexPath) as? ProfilePhotosTableViewCell else {
                 fatalError()
             }
+            
+            let currentUser = viewModel.getUserInfo()
+            cell.loadImages(for: currentUser)
             
             return cell
         case 1:

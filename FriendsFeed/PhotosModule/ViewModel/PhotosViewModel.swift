@@ -29,9 +29,7 @@ class PhotosViewModel: PhotosViewModelProtocol {
     
     func loadUserPhotos() {
         let db = Firestore.firestore()
-        #warning("Необходимо поменять алгоритм хранения УИД пользователя")
-//        let userReference = db.document("User/\(user)")
-        let userReference = db.document("User/fEJAjw5UHNOAmFvMkSRY2lAH0v02")
+        let userReference = db.document("User/\(user)")
         
         db.collection("UsersPhoto").whereField("user", isEqualTo: userReference).getDocuments { snapshot, error in
             guard error == nil else {

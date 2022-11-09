@@ -10,20 +10,25 @@ import SwiftUI
 
 class ProfileView: UIView {
     //MARK: - UI elemens
-    private(set) lazy var titleView = ProfileTitleView()
+    private(set) var titleView: ProfileTitleView
     private(set) lazy var tableView: UITableView = {
         let view = UITableView()
         view.register(FeedTableViewCell.self, forCellReuseIdentifier: ItemsIdentifier.profilePostsCell.rawValue)
         view.register(ProfilePhotosTableViewCell.self, forCellReuseIdentifier: ItemsIdentifier.profilePhotosCell.rawValue)
-//        view.dataSource = self
-//        view.delegate = self
-//
+
         return view
     }()
+    private let isCurrentUserProfile: Bool
     
     //MARK: - Life cycle
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    init(isCurrentUserProfile: Bool) {
+        self.isCurrentUserProfile = isCurrentUserProfile
+        titleView = ProfileTitleView(isCurrentUserProfile: isCurrentUserProfile)
+        super.init(frame: .zero)
         
         backgroundColor = .systemBackground
         addSubviews([
@@ -33,13 +38,10 @@ class ProfileView: UIView {
         setSubviewsLayout()
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func updateConstraints() {
         titleView.snp.updateConstraints { make in
-            make.height.equalTo(frame.height / 3)
+            let multiplier: CGFloat = isCurrentUserProfile ? 3 : 5
+            make.height.equalTo(frame.height / multiplier)
         }
         
         super.updateConstraints()
@@ -49,7 +51,8 @@ class ProfileView: UIView {
     private func setSubviewsLayout() {
         titleView.snp.makeConstraints { make in
             make.leading.trailing.top.equalTo(safeAreaLayoutGuide)
-            make.height.equalTo(frame.height / 3)
+            let multiplier: CGFloat = isCurrentUserProfile ? 3 : 5
+            make.height.equalTo(frame.height / multiplier)
         }
         tableView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalTo(safeAreaLayoutGuide)

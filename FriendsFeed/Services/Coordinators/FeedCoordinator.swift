@@ -9,11 +9,13 @@ import UIKit
 
 protocol FeedCoordinatorProtocol: NavigationCoordinatorProtocol {
     func pushPostInfoView(with data: Post)
+    var navigationController: UINavigationController { get }
+    var moduleFactory: ModuleFactoryProtocol { get }
 }
                                         
 class FeedCoordinator: FeedCoordinatorProtocol {
-    var navigationController: UINavigationController
-    var moduleFactory: ModuleFactoryProtocol
+    private(set) var navigationController: UINavigationController
+    private(set) var moduleFactory: ModuleFactoryProtocol
     
     required init(moduleFactory: ModuleFactoryProtocol, navigationController: UINavigationController) {
         self.navigationController = navigationController

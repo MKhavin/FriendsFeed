@@ -15,7 +15,7 @@ protocol ModuleFactoryProtocol {
     func buildMainView() -> UIViewController
     func buildPostInfoModule(coordinator: NavigationCoordinatorProtocol?, data: Post) -> UIViewController
     func buildSMSConfirmationModule(coordinator: AppCoordinatorProtocol?) -> UIViewController
-    func buildProfileModule(coordinator: ProfileCoordinatorProtocol?) -> UIViewController
+    func buildProfileModule(coordinator: ProfileCoordinatorProtocol?, user: User?, isCurrentUserProfile: Bool) -> UIViewController
     func buildPhotoModule(coordinator: NavigationCoordinatorProtocol?, user: String) -> UIViewController
 }
 
@@ -87,10 +87,14 @@ class ModuleFactory: ModuleFactoryProtocol {
         return tabBarController
     }
     
-    func buildProfileModule(coordinator: ProfileCoordinatorProtocol?) -> UIViewController {
+    func buildProfileModule(coordinator: ProfileCoordinatorProtocol?, user: User?, isCurrentUserProfile: Bool) -> UIViewController {
+        let model = ProfileModelManager(profile: user)
         let view = ProfileViewController()
-        let viewModel = ProfileViewModel(coordinator: coordinator)
+        let viewModel = ProfileViewModel(model: model, coordinator: coordinator, isCurrentProfile: isCurrentUserProfile)
         view.viewModel = viewModel
+        if isCurrentUserProfile {
+            view.title = "Профиль"
+        }
         
         return view
     }

@@ -37,11 +37,18 @@ class PostInfoViewController: UIViewController {
         title = "Публикации"
         
         viewModel.loadPostData()
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(postTitleDidTap(_:)))
+        mainView?.postTitleView.addGestureRecognizer(tapGesture)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         navigationController?.navigationBar.prefersLargeTitles = false
+    }
+    
+    @objc private func postTitleDidTap(_ sender: UIView) {
+        viewModel.showProfileInfo()
     }
 }

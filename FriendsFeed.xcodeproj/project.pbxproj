@@ -41,6 +41,7 @@
 		51CD697D290F251C007F0FF8 /* ProfilePhotosViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51CD697C290F251C007F0FF8 /* ProfilePhotosViewModel.swift */; };
 		51DD900E290739E70036B521 /* ProfileTitleSubInfoLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DD900D290739E70036B521 /* ProfileTitleSubInfoLabel.swift */; };
 		51DD901129073E6F0036B521 /* ProfileTitleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DD901029073E6F0036B521 /* ProfileTitleButton.swift */; };
+		51E4E1E42919ABE7004DBCB4 /* ProfileModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E4E1E32919ABE7004DBCB4 /* ProfileModelManager.swift */; };
 		51E5919128EE0984001D4EC0 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E5919028EE0984001D4EC0 /* FeedViewController.swift */; };
 		51E5919328EE0A58001D4EC0 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E5919228EE0A58001D4EC0 /* FeedView.swift */; };
 		51E5919528EE0B5B001D4EC0 /* FeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E5919428EE0B5B001D4EC0 /* FeedTableViewCell.swift */; };
@@ -109,6 +110,7 @@
 		51CD697C290F251C007F0FF8 /* ProfilePhotosViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePhotosViewModel.swift; sourceTree = "<group>"; };
 		51DD900D290739E70036B521 /* ProfileTitleSubInfoLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTitleSubInfoLabel.swift; sourceTree = "<group>"; };
 		51DD901029073E6F0036B521 /* ProfileTitleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTitleButton.swift; sourceTree = "<group>"; };
+		51E4E1E32919ABE7004DBCB4 /* ProfileModelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModelManager.swift; sourceTree = "<group>"; };
 		51E5919028EE0984001D4EC0 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		51E5919228EE0A58001D4EC0 /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
 		51E5919428EE0B5B001D4EC0 /* FeedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTableViewCell.swift; sourceTree = "<group>"; };
@@ -225,6 +227,7 @@
 		511175C02901E4870037FF7D /* Module */ = {
 			isa = PBXGroup;
 			children = (
+				51E4E1E32919ABE7004DBCB4 /* ProfileModelManager.swift */,
 			);
 			path = Module;
 			sourceTree = "<group>";
@@ -628,6 +631,7 @@
 				5149DB7828FF3ACD00D08EE2 /* NavigationCoordinatorProtocol.swift in Sources */,
 				51EA4EC428F9F1B500E6948B /* FeedCoordinator.swift in Sources */,
 				51FF36B428D3C9B400BFF814 /* AuthenticationViewModel.swift in Sources */,
+				51E4E1E42919ABE7004DBCB4 /* ProfileModelManager.swift in Sources */,
 				5106130628EC816D0060112E /* UIStackViewExtension.swift in Sources */,
 				51FF36B728D3CA4300BFF814 /* AppCoordinator.swift in Sources */,
 				51CD697D290F251C007F0FF8 /* ProfilePhotosViewModel.swift in Sources */,

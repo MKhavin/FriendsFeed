@@ -71,8 +71,8 @@ class ProfileTitleView: UIView {
         
         return view
     }()
-    private lazy var newRecordButton: ProfileTitleButton = {
-        let view = ProfileTitleButton()
+    private lazy var newRecordButton: UIButton = {
+        let view = UIButton()
         view.setImage(UIImage(systemName: "square.and.arrow.up"), for: .normal)
         view.setTitle("Запись", for: .normal)
         view.setTitleColor(.label, for: .normal)
@@ -81,24 +81,30 @@ class ProfileTitleView: UIView {
     }()
     
     //MARK: - Life cycle
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    init(isCurrentUserProfile: Bool) {
+        super.init(frame: .zero)
         
+        setSubviewsVisibility(by: isCurrentUserProfile)
         addSubviews([
             avatarImageView,
             editProfileButton,
             lineView,
             newRecordButton
         ])
-        setSubviewsLayout()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        setSubviewsLayout(by: isCurrentUserProfile)
     }
     
     //MARK: - Sub properties
-    private func setSubviewsLayout() {
+    private func setSubviewsVisibility(by isCurrentUserProfile: Bool) {
+        editProfileButton.isHidden = !isCurrentUserProfile
+        newRecordButton.isHidden = !isCurrentUserProfile
+    }
+    
+    private func setSubviewsLayout(by isCurrentUserProfile: Bool) {
         avatarImageView.snp.makeConstraints { make in
             make.width.height.equalTo(60)
             make.leading.top.equalTo(layoutMarginsGuide)
@@ -120,10 +126,12 @@ class ProfileTitleView: UIView {
             make.bottom.equalTo(avatarImageView.snp.bottom)
         }
         
-        editProfileButton.snp.makeConstraints { make in
-            make.top.equalTo(titleStack.snp.bottom).offset(50)
-            make.leading.trailing.equalTo(layoutMarginsGuide)
-            make.height.equalTo(50)
+        if isCurrentUserProfile {
+            editProfileButton.snp.makeConstraints { make in
+                make.top.equalTo(titleStack.snp.bottom).offset(50)
+                make.leading.trailing.equalTo(layoutMarginsGuide)
+                make.height.equalTo(50)
+            }
         }
         
         let subTitleInfoStack = UIStackView(arrangedSubviews: [
@@ -139,7 +147,11 @@ class ProfileTitleView: UIView {
         subTitleInfoStack.alignment = .center
         subTitleInfoStack.snp.makeConstraints { make in
             make.leading.trailing.equalTo(layoutMarginsGuide)
-            make.top.equalTo(editProfileButton.snp.bottom).offset(15)
+            if isCurrentUserProfile {
+                make.top.equalTo(editProfileButton.snp.bottom).offset(15)
+            } else {
+                make.top.equalTo(titleStack.snp.bottom).offset(15)
+            }
             make.height.equalTo(60)
         }
         
@@ -149,9 +161,11 @@ class ProfileTitleView: UIView {
             make.height.equalTo(1)
         }
         
-        newRecordButton.snp.makeConstraints { make in
-            make.leading.trailing.bottom.equalTo(layoutMargins)
-            make.top.equalTo(lineView.snp.bottom).offset(10)
+        if isCurrentUserProfile {
+            newRecordButton.snp.makeConstraints { make in
+                make.leading.trailing.bottom.equalTo(layoutMargins)
+                make.top.equalTo(lineView.snp.bottom).offset(10)
+            }
         }
     }
 }

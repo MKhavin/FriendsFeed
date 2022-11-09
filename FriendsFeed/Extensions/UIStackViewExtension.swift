@@ -13,4 +13,16 @@ extension UIStackView {
             addArrangedSubview(view)
         }
     }
+    
+    func resetStack() {
+        var count = arrangedSubviews.count
+        
+        while count != 0 {
+            let view = arrangedSubviews[count - 1]
+            NSLayoutConstraint.deactivate(view.constraints)
+            removeArrangedSubview(view)
+            view.removeFromSuperview()
+            count -= 1
+        }
+    }
 }

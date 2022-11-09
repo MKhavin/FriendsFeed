@@ -20,7 +20,13 @@ extension Post {
         self.date = date ?? Date()
         self.likes = likes ?? 0
         self.text = text ?? ""
-        self.author = author ?? User(id: "", firstName: "", lastName: "", birthDate: nil, sex: .male, avatar: nil)
+        self.author = author ?? User(id: "",
+                                     firstName: "",
+                                     lastName: "",
+                                     birthDate: nil,
+                                     sex: .male,
+                                     avatar: nil,
+                                     phoneNumber: nil)
         self.image = image
     }
 }

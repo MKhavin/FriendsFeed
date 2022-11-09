@@ -40,16 +40,6 @@ class ProfilePhotosTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        viewModel = ProfilePhotosViewModel()
-        viewModel.imagesDidLoad = {
-            switch $0 {
-            case .success(let result):
-                self.setPhotos(by: result)
-            case .failure(let error):
-                print(error)
-            }
-        }
-        
         setSubViews()
         setSubViewsLayout()
     }
@@ -65,8 +55,6 @@ class ProfilePhotosTableViewCell: UITableViewCell {
         ])
         headerStack.addArrangedSubview(headerLabel)
         headerStack.addArrangedSubview(headerImage)
-        
-        viewModel.loadUserImages()
     }
     
     private func setSubViewsLayout() {
@@ -78,7 +66,8 @@ class ProfilePhotosTableViewCell: UITableViewCell {
             headerStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
                                                  constant: photosTableViewItemInset),
             headerStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
-                                                  constant: -photosTableViewItemInset)
+                                                  constant: -photosTableViewItemInset),
+            headerStack.heightAnchor.constraint(equalToConstant: 20)
         ])
         
         NSLayoutConstraint.activate([
@@ -96,7 +85,7 @@ class ProfilePhotosTableViewCell: UITableViewCell {
         ])
         
         NSLayoutConstraint.activate([
-            photosStack.topAnchor.constraint(equalTo: contentView.subviews[0].bottomAnchor,
+            photosStack.topAnchor.constraint(equalTo: headerStack.bottomAnchor,
                                              constant: photosTableViewItemInset),
             photosStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
                                                 constant: -photosTableViewItemInset),
@@ -108,6 +97,8 @@ class ProfilePhotosTableViewCell: UITableViewCell {
     }
     
     private func setPhotos(by images: [String]) {
+        photosStack.resetStack()
+        
         let minCount = min(images.count, 3)
         for number in 0..<minCount {
             let image = CachedImageView()
@@ -124,6 +115,7 @@ class ProfilePhotosTableViewCell: UITableViewCell {
         }
     }
     
+    
     //remove cell line borders
     override func addSubview(_ view: UIView) {
         if (view.frame.height * UIScreen.main.scale) == 1 {
@@ -133,4 +125,21 @@ class ProfilePhotosTableViewCell: UITableViewCell {
         super.addSubview(view)
     }
     
+    func loadImages(for user: User?) {
+        guard let currentUser = user else {
+            return
+        }
+        
+        viewModel = ProfilePhotosViewModel(user: currentUser)
+        viewModel.imagesDidLoad = {
+            switch $0 {
+            case .success(let result):
+                self.setPhotos(by: result)
+            case .failure(let error):
+                print(error)
+            }
+        }
+        
+        viewModel.loadUserImages()
+    }
 }
