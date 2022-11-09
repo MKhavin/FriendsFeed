@@ -13,8 +13,10 @@ protocol ModuleFactoryProtocol {
 //    func buildRegisterModule(coordinator: AppCoordinatorProtocol?) -> UIViewController
     func buildFeedModule(coordinator: FeedCoordinatorProtocol?) -> UIViewController
     func buildMainView() -> UIViewController
-    func buildPostInfoModule(coordinator: FeedCoordinatorProtocol?, data: Post) -> UIViewController
+    func buildPostInfoModule(coordinator: NavigationCoordinatorProtocol?, data: Post) -> UIViewController
     func buildSMSConfirmationModule(coordinator: AppCoordinatorProtocol?) -> UIViewController
+    func buildProfileModule(coordinator: ProfileCoordinatorProtocol?, user: User?, isCurrentUserProfile: Bool) -> UIViewController
+    func buildPhotoModule(coordinator: NavigationCoordinatorProtocol?, user: String) -> UIViewController
 }
 
 class ModuleFactory: ModuleFactoryProtocol {
@@ -26,7 +28,7 @@ class ModuleFactory: ModuleFactoryProtocol {
         return view
     }
         
-    func buildPostInfoModule(coordinator: FeedCoordinatorProtocol?, data: Post) -> UIViewController {
+    func buildPostInfoModule(coordinator: NavigationCoordinatorProtocol?, data: Post) -> UIViewController {
         let view = PostInfoViewController()
         let viewModel = PostInfoViewModel(coordinator: coordinator, data: data)
         view.viewModel = viewModel
@@ -66,9 +68,9 @@ class ModuleFactory: ModuleFactoryProtocol {
         feedCoordinator.pushInitialView()
         
         // Temporary
-        let profileView = UIViewController()
-        profileView.title = "Профиль"
-        profileView.tabBarItem.image = UIImage(systemName: "person.crop.circle")
+        let profileNavigationController = UINavigationController()
+        let profileCoordinator = ProfileCoordinator(moduleFactory: self, navigationController: profileNavigationController)
+        profileCoordinator.pushInitialView()
         
         let favouritesView = UIViewController()
         favouritesView.title = "Сохраненные"
@@ -77,11 +79,31 @@ class ModuleFactory: ModuleFactoryProtocol {
         
         tabBarController.setViewControllers([
             feedNavigationController,
-            profileView,
+            profileNavigationController,
             favouritesView
         ],
                                             animated: false)
         
         return tabBarController
+    }
+    
+    func buildProfileModule(coordinator: ProfileCoordinatorProtocol?, user: User?, isCurrentUserProfile: Bool) -> UIViewController {
+        let model = ProfileModelManager(profile: user)
+        let view = ProfileViewController()
+        let viewModel = ProfileViewModel(model: model, coordinator: coordinator, isCurrentProfile: isCurrentUserProfile)
+        view.viewModel = viewModel
+        if isCurrentUserProfile {
+            view.title = "Профиль"
+        }
+        
+        return view
+    }
+    
+    func buildPhotoModule(coordinator: NavigationCoordinatorProtocol?, user: String) -> UIViewController {
+        let view = PhotosViewController()
+        let viewModel = PhotosViewModel(coordinator: coordinator, user: user)
+        view.viewModel = viewModel
+        
+        return view
     }
 }

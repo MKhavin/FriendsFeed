@@ -55,6 +55,15 @@ class FeedViewController: UIViewController {
         navigationController?.isNavigationBarHidden = false
         navigationController?.navigationBar.prefersLargeTitles = true
     }
+    
+    //MARK: - Actions
+    @objc private func userAvatarTapped(_ sender: UIView) {
+        guard let cell = sender as? FeedTableViewCell, let author = cell.postAuthor else {
+            return
+        }
+        
+        viewModel.showUserProfile(for: author)
+    }
 }
 
 //MARK: - UITableViewDelegate implementation
@@ -99,7 +108,19 @@ extension FeedViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
+        cell.delegate = self
         cell.setCell(data: viewModel.postsCollections[indexPath.section].posts[indexPath.row])
+        
         return cell
+    }
+}
+
+extension FeedViewController: FeedTableViewCellDelegateProtocol {
+    func titleDidTap(user: User?) {
+        guard let author = user else {
+            return
+        }
+        
+        viewModel.showUserProfile(for: author)
     }
 }
