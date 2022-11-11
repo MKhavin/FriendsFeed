@@ -5,18 +5,23 @@
 //  Created by Michael Khavin on 20.10.2022.
 //
 
-import Foundation
+import FirebaseAuth
+import FirebaseFirestore
 
 protocol PostInfoViewModelProtocol {
     var coordinator: NavigationCoordinatorProtocol? { get set }
     var postDataLoaded: ((Post) -> ())? { get set }
+    var postDidLiked: ((Post?) -> ())? { get set }
+    func likePost()
     func loadPostData()
     func showProfileInfo()
+    func getPost() -> Post
 }
 
 class PostInfoViewModel: PostInfoViewModelProtocol {
     var postDataLoaded: ((Post) -> ())?
     var coordinator: NavigationCoordinatorProtocol?
+    var postDidLiked: ((Post?) -> ())?
     private let post: Post
     
     init(coordinator: NavigationCoordinatorProtocol?, data: Post) {
@@ -36,5 +41,55 @@ class PostInfoViewModel: PostInfoViewModelProtocol {
         let profileCoordinator = ProfileCoordinator(moduleFactory: unwrappedCoordinator.moduleFactory,
                                                     navigationController: unwrappedCoordinator.navigationController)
         profileCoordinator.pushProfileView(for: post.author, isCurrentUserProfile: false)
+    }
+    
+    func likePost() {
+        post.isLiked = !post.isLiked
+        
+        let db = Firestore.firestore()
+        let reference = db.document("Post/\(post.id)")
+        let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
+        
+        if post.isLiked {
+            post.likes += 1
+            
+            db.collection("PostsLikes").whereField("post",
+                                                   isEqualTo: reference).whereField("user",
+                                                                                    isEqualTo: currentUserReference).getDocuments {[ weak self ] snapshot, error in
+                                                       guard error == nil else {
+                                                           print(error!.localizedDescription)
+                                                           return
+                                                       }
+                                                       
+                                                       let document = snapshot?.documents[0].reference
+                                                       document?.delete() { error in
+                                                           guard error == nil else {
+                                                               print(error!.localizedDescription)
+                                                               return
+                                                           }
+                                                           
+                                                           self?.postDidLiked?(self?.post)
+                                                       }
+            }
+        } else {
+            post.likes -= 1
+            
+            let documentData = [
+                "post": reference,
+                "user": currentUserReference
+            ]
+            db.collection("PostsLikes").addDocument(data: documentData) {[ weak self ] error in
+                guard error == nil else {
+                    print(error!.localizedDescription)
+                    return
+                }
+                
+                self?.postDidLiked?(self?.post)
+            }
+        }
+    }
+    
+    func getPost() -> Post {
+        post
     }
 }

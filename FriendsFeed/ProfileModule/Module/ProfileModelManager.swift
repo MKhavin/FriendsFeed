@@ -132,8 +132,9 @@ class ProfileModelManager: ProfileModelManagerProtocol {
             self?.posts = snapshot?.documents.map { document -> Post in
                 let postData = document.data()
                 
-                return Post(date: Date(timeIntervalSince1970: postData["Date"] as? Double ?? 0),
-                            likes: postData["Likes"] as? UInt,
+                return Post(id: document.documentID,
+                            date: Date(timeIntervalSince1970: postData["Date"] as? Double ?? 0),
+                            likes: postData["Likes"] as? UInt ?? 0,
                             text: postData["Text"] as? String,
                             author: self?.profile, //????
                             image: postData["image"] as? String)

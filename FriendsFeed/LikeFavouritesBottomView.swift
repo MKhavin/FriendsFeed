@@ -7,6 +7,7 @@
 
 import UIKit
 
+
 class LikeFavouritesBottomView: UIView {
     //MARK: - UI elements
     private(set) lazy var likeButton: UIButton = {
@@ -72,6 +73,21 @@ class LikeFavouritesBottomView: UIView {
         stackView.snp.makeConstraints { make in
             make.leading.bottom.trailing.equalTo(safeAreaLayoutGuide)
             make.top.equalTo(topBorder.snp.bottom).offset(10)
+        }
+    }
+    
+    func setLikeButton(post: Post?) {
+        guard let currentPost = post else {
+            return
+        }
+        
+        likeButton.setTitle("\(currentPost.likes)", for: .normal)
+        if currentPost.isLiked {
+            likeButton.tintColor = .red
+            likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        } else {
+            likeButton.tintColor = .label
+            likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
         }
     }
 }

@@ -37,6 +37,7 @@ class FeedViewController: UIViewController {
         super.viewWillAppear(true)
         
         setNavigationBarApppearance()
+        mainView?.feedTableView.reloadData()
     }
     
     //MARK: - Sub methods
@@ -49,6 +50,9 @@ class FeedViewController: UIViewController {
         viewModel.postLoaded = {
             self.mainView?.feedTableView.reloadData()
         }
+        viewModel.postDidLiked = { cell in
+            cell.bottomView.setLikeButton(post: cell.post)
+        }
     }
     
     private func setNavigationBarApppearance() {
@@ -58,7 +62,7 @@ class FeedViewController: UIViewController {
     
     //MARK: - Actions
     @objc private func userAvatarTapped(_ sender: UIView) {
-        guard let cell = sender as? FeedTableViewCell, let author = cell.postAuthor else {
+        guard let cell = sender as? FeedTableViewCell, let author = cell.post?.author else {
             return
         }
         
@@ -122,5 +126,13 @@ extension FeedViewController: FeedTableViewCellDelegateProtocol {
         }
         
         viewModel.showUserProfile(for: author)
+    }
+    
+    func likeButtonDidTap(_ sender: FeedTableViewCell, post: Post?) {
+        guard let currentPost = post else {
+            return
+        }
+        
+        viewModel.likePost(in: sender, post: currentPost)
     }
 }

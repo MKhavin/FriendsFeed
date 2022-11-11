@@ -17,7 +17,7 @@ class PostInfoViewController: UIViewController {
                 self?.mainView?.postTitleView.avatarImageView.getImageFor(imagePath: postData.author.avatar ?? "")
                 self?.mainView?.postTitleView.nameLabel.text = postData.author.firstName
                 self?.mainView?.postTitleView.subNameLabel.text = postData.author.lastName
-                self?.mainView?.postBottomView.likeButton.setTitle("\(postData.likes ?? 0)", for: .normal)
+                self?.mainView?.postBottomView.likeButton.setTitle("\(postData.likes)", for: .normal)
             }
         }
     }
@@ -37,9 +37,14 @@ class PostInfoViewController: UIViewController {
         title = "Публикации"
         
         viewModel.loadPostData()
+        viewModel.postDidLiked = { post in
+            self.mainView?.postBottomView.setLikeButton(post: post)
+        }
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(postTitleDidTap(_:)))
         mainView?.postTitleView.addGestureRecognizer(tapGesture)
+        mainView?.postBottomView.likeButton.addTarget(self, action: #selector(likeButtonDidTap), for: .touchUpInside)
+        mainView?.postBottomView.setLikeButton(post: viewModel.getPost())
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,5 +55,9 @@ class PostInfoViewController: UIViewController {
     
     @objc private func postTitleDidTap(_ sender: UIView) {
         viewModel.showProfileInfo()
+    }
+    
+    @objc private func likeButtonDidTap() {
+        viewModel.likePost()
     }
 }
