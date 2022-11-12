@@ -33,6 +33,8 @@ class FeedViewModel: FeedViewModelProtocol {
     }
     
     func getFeed() {
+        postsCollections = []
+        
         let db = Firestore.firestore()
         let operationGroup = DispatchGroup()
         

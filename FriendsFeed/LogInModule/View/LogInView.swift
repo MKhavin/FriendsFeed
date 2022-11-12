@@ -50,7 +50,8 @@ class LogInView: UIView {
         let view = UITextField()
         view.placeholder = "+7__________"
         view.keyboardType = .phonePad
-        view.textColor = .black
+        view.textColor = .systemBackground
+        view.backgroundColor = .label
         view.textAlignment = .center
         view.layer.borderColor = UIColor.label.cgColor
         view.layer.borderWidth = 1

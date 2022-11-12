@@ -81,7 +81,8 @@ class CachedImageView: UIImageView {
         DispatchQueue.global(qos: .userInitiated).async {
             if let imageData = CachedImageView.cache.object(forKey: NSString(string: imagePath)) {
                 DispatchQueue.main.async {
-                    self.image = UIImage(data: imageData as Data)
+                    let rawImage = UIImage(data: imageData as Data)
+                    self.image = UIImage(data: rawImage?.jpegData(compressionQuality: 0.5) ?? Data())
                     self.activityIndicatorView.isHidden = true
                 }
             } else {

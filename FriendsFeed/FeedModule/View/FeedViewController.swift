@@ -44,11 +44,16 @@ class FeedViewController: UIViewController {
     private func setUpRootView() {
         mainView?.feedTableView.delegate = self
         mainView?.feedTableView.dataSource = self
+        mainView?.delegate = self
     }
     
     private func setViewModelCallbacks() {
         viewModel.postLoaded = {
-            self.mainView?.feedTableView.reloadData()
+            self.mainView?.feedTableView.refreshControl?.endRefreshing()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1){
+                self.mainView?.feedTableView.reloadData()
+            }
         }
         viewModel.postDidLiked = { cell in
             cell.bottomView.setLikeButton(post: cell.post)
@@ -57,7 +62,7 @@ class FeedViewController: UIViewController {
     
     private func setNavigationBarApppearance() {
         navigationController?.isNavigationBarHidden = false
-        navigationController?.navigationBar.prefersLargeTitles = true
+//        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     //MARK: - Actions
@@ -76,7 +81,11 @@ extension FeedViewController: UITableViewDelegate {
         guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: ItemsIdentifier.feedSectionHeader.rawValue) as? FeedSectionView else {
             return nil
         }
-    
+        
+        if viewModel.postsCollections.count < section {
+            return nil
+        }
+        
         let collectionDate = viewModel.postsCollections[section].date
         header.setCell(data: collectionDate)
         
@@ -134,5 +143,11 @@ extension FeedViewController: FeedTableViewCellDelegateProtocol {
         }
         
         viewModel.likePost(in: sender, post: currentPost)
+    }
+}
+
+extension FeedViewController: FeedViewDelegateProtocol {
+    func refreshDataDidLaunch() {
+        viewModel.getFeed()
     }
 }

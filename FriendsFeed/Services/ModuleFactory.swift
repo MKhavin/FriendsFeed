@@ -14,15 +14,15 @@ protocol ModuleFactoryProtocol {
     func buildFeedModule(coordinator: FeedCoordinatorProtocol?) -> UIViewController
     func buildMainView() -> UIViewController
     func buildPostInfoModule(coordinator: NavigationCoordinatorProtocol?, data: Post) -> UIViewController
-    func buildSMSConfirmationModule(coordinator: AppCoordinatorProtocol?) -> UIViewController
+    func buildSMSConfirmationModule(coordinator: AppCoordinatorProtocol?, phoneNumber: String) -> UIViewController
     func buildProfileModule(coordinator: ProfileCoordinatorProtocol?, user: User?, isCurrentUserProfile: Bool) -> UIViewController
     func buildPhotoModule(coordinator: NavigationCoordinatorProtocol?, user: String) -> UIViewController
 }
 
 class ModuleFactory: ModuleFactoryProtocol {
-    func buildSMSConfirmationModule(coordinator: AppCoordinatorProtocol?) -> UIViewController {
+    func buildSMSConfirmationModule(coordinator: AppCoordinatorProtocol?, phoneNumber: String) -> UIViewController {
         let view = SMSConfirmationViewController()
-        let viewModel = SMSConfirmationViewModel(coordinator: coordinator)
+        let viewModel = SMSConfirmationViewModel(coordinator: coordinator, phoneNumber: phoneNumber)
         view.viewModel = viewModel
         
         return view

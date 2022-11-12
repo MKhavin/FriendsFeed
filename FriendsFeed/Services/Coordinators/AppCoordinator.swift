@@ -10,7 +10,7 @@ import UIKit
 protocol AppCoordinatorProtocol: NavigationCoordinatorProtocol {
     func pushAuthenticationView()
     func pushLogInView()
-    func pushConfirmationView()
+    func pushConfirmationView(for phone: String)
     func pushMainView()
 }
 
@@ -41,8 +41,8 @@ class AppCoordinator: AppCoordinatorProtocol {
         navigationController.popToRootViewController(animated: true)
     }
     
-    func pushConfirmationView() {
-        let view = moduleFactory.buildSMSConfirmationModule(coordinator: self)
+    func pushConfirmationView(for phone: String) {
+        let view = moduleFactory.buildSMSConfirmationModule(coordinator: self, phoneNumber: phone)
         navigationController.pushViewController(view, animated: true)
     }
     
