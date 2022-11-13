@@ -22,7 +22,7 @@ class LikeFavouritesBottomView: UIView {
     private(set) lazy var favouritesButton: UIButton = {
         let view = UIButton()
         view.setImage(UIImage(systemName: "bookmark.square"), for: .normal)
-        view.tintColor = .label
+        view.tintColor = .gray
         view.setTitle("Favourite", for: .normal)
         view.setTitleColor(UIColor.label, for: .normal)
         
@@ -88,6 +88,20 @@ class LikeFavouritesBottomView: UIView {
         } else {
             likeButton.tintColor = .label
             likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+        }
+    }
+    
+    func setFavouritesButton(post: Post?) {
+        guard let currentPost = post else {
+            return
+        }
+        
+        if currentPost.isFavourite {
+            favouritesButton.tintColor = .label
+            favouritesButton.setImage(UIImage(systemName: "bookmark.square.fill"), for: .normal)
+        } else {
+            favouritesButton.tintColor = .lightGray
+            favouritesButton.setImage(UIImage(systemName: "bookmark.square"), for: .normal)
         }
     }
 }

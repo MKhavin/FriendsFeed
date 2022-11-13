@@ -12,14 +12,19 @@ import SnapKit
 protocol FeedTableViewCellDelegateProtocol: AnyObject {
     func titleDidTap(user: User?)
     func likeButtonDidTap(_ sender: FeedTableViewCell, post: Post?)
+    func favouritesButtonDidTap(_ sender: FeedTableViewCell, post: Post?)
 }
 
 extension FeedTableViewCellDelegateProtocol {
-    func likeButtonDidTap(post: Post?) {
+    func likeButtonDidTap(_ sender: FeedTableViewCell, post: Post?) {
         
     }
     
     func titleDidTap(user: User?) {
+        
+    }
+    
+    func favouritesButtonDidTap(_ sender: FeedTableViewCell, post: Post?) {
         
     }
 }
@@ -31,6 +36,7 @@ class FeedTableViewCell: UITableViewCell {
     private(set) lazy var bottomView: LikeFavouritesBottomView = {
         let view = LikeFavouritesBottomView()
         view.likeButton.addTarget(self, action: #selector(likeButtonTapped(_:)), for: .touchUpInside)
+        view.favouritesButton.addTarget(self, action: #selector(favouritesButtonTapped(_:)), for: .touchUpInside)
         
         return view
     }()
@@ -85,6 +91,7 @@ class FeedTableViewCell: UITableViewCell {
         
         //Set bottomView data
         bottomView.setLikeButton(post: post)
+        bottomView.setFavouritesButton(post: post)
     }
     
     private func setSubviewsLayout() {
@@ -124,5 +131,9 @@ class FeedTableViewCell: UITableViewCell {
     
     @objc private func likeButtonTapped(_ sender: UIButton) {
         delegate?.likeButtonDidTap(self, post: post)
+    }
+    
+    @objc private func favouritesButtonTapped(_ sender: UIButton) {
+        delegate?.favouritesButtonDidTap(self, post: post)
     }
 }

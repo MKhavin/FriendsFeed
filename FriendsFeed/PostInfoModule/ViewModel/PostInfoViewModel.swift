@@ -12,16 +12,19 @@ protocol PostInfoViewModelProtocol {
     var coordinator: NavigationCoordinatorProtocol? { get set }
     var postDataLoaded: ((Post) -> ())? { get set }
     var postDidLiked: ((Post?) -> ())? { get set }
+    var postDidSetFavourite: ((Post?) -> ())? { get set }
     func likePost()
     func loadPostData()
     func showProfileInfo()
     func getPost() -> Post
+    func setPostInFavourites()
 }
 
 class PostInfoViewModel: PostInfoViewModelProtocol {
     var postDataLoaded: ((Post) -> ())?
     var coordinator: NavigationCoordinatorProtocol?
     var postDidLiked: ((Post?) -> ())?
+    var postDidSetFavourite: ((Post?) -> ())?
     private let post: Post
     
     init(coordinator: NavigationCoordinatorProtocol?, data: Post) {
@@ -91,5 +94,47 @@ class PostInfoViewModel: PostInfoViewModelProtocol {
     
     func getPost() -> Post {
         post
+    }
+    
+    func setPostInFavourites() {
+        let db = Firestore.firestore()
+        let reference = db.document("Post/\(post.id)")
+        let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
+        
+        if post.isFavourite {
+           db.collection("FavouritesPosts").whereField("post",
+                                                   isEqualTo: reference).whereField("user",
+                                                                                    isEqualTo: currentUserReference).getDocuments {[ weak self ] snapshot, error in
+                                                       guard error == nil else {
+                                                           print(error!.localizedDescription)
+                                                           return
+                                                       }
+                                                       
+                                                       let document = snapshot?.documents[0].reference
+                                                       document?.delete() { error in
+                                                           guard error == nil else {
+                                                               print(error!.localizedDescription)
+                                                               return
+                                                           }
+                                                           
+                                                           self?.post.isFavourite = !(self?.post.isFavourite ?? false)
+                                                           self?.postDidSetFavourite?(self?.post)
+                                                       }
+            }
+        } else {
+            let documentData = [
+                "post": reference,
+                "user": currentUserReference
+            ]
+            db.collection("FavouritesPosts").addDocument(data: documentData) {[ weak self ] error in
+                guard error == nil else {
+                    print(error!.localizedDescription)
+                    return
+                }
+                
+                self?.post.isFavourite = !(self?.post.isFavourite ?? false)
+                self?.postDidSetFavourite?(self?.post)
+            }
+        }
     }
 }

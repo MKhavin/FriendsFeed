@@ -58,6 +58,9 @@ class FeedViewController: UIViewController {
         viewModel.postDidLiked = { cell in
             cell.bottomView.setLikeButton(post: cell.post)
         }
+        viewModel.postDidSetFavourite = { cell in
+            cell.bottomView.setFavouritesButton(post: cell.post)
+        }
     }
     
     private func setNavigationBarApppearance() {
@@ -143,6 +146,14 @@ extension FeedViewController: FeedTableViewCellDelegateProtocol {
         }
         
         viewModel.likePost(in: sender, post: currentPost)
+    }
+    
+    func favouritesButtonDidTap(_ sender: FeedTableViewCell, post: Post?) {
+        guard let currentPost = post else {
+            return
+        }
+        
+        viewModel.setPostInFavourites(in: sender, post: currentPost)
     }
 }
 

@@ -13,12 +13,14 @@ protocol FeedViewModelProtocol {
     var errorMessageChanged: ((String) -> Void)? { get set }
     var postLoaded: (() -> Void)? { get set }
     var postDidLiked: ((FeedTableViewCell) -> ())? { get set }
+    var postDidSetFavourite: ((FeedTableViewCell) -> ())? { get set }
     var coordinator: FeedCoordinatorProtocol? { get set }
     var postsCollections: [PostCollection] { get set }
     func getFeed()
     func showPostInfo(in collection: Int, of post: Int)
     func showUserProfile(for user: User)
     func likePost(in cell: FeedTableViewCell, post: Post)
+    func setPostInFavourites(in cell: FeedTableViewCell, post: Post)
 }
 
 class FeedViewModel: FeedViewModelProtocol {
@@ -27,6 +29,7 @@ class FeedViewModel: FeedViewModelProtocol {
     var errorMessageChanged: ((String) -> Void)?
     var postsCollections: [PostCollection] = []
     var postDidLiked: ((FeedTableViewCell) -> ())?
+    var postDidSetFavourite: ((FeedTableViewCell) -> ())?
     
     init(coordinator: FeedCoordinatorProtocol?) {
         self.coordinator = coordinator
@@ -43,25 +46,27 @@ class FeedViewModel: FeedViewModelProtocol {
             let reference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
             
             db.collection("Post").whereField("User",
-                                             isNotEqualTo: reference).order(by: "User").order(by: "Date",
-                                                                                              descending: true).getDocuments() { (querySnapshot, error) in
-                                                 
-                                                 guard error == nil else {
-                                                     self.errorMessageChanged?(error!.localizedDescription)
-                                                     operationGroup.leave()
-                                                     return
-                                                 }
-                                                 
-                                                 for document in querySnapshot!.documents {
-                                                     //                    let documentData = document.data()
-                                                     self.processPost(document: document, on: operationGroup)
-                                                 }
-                                                 
-                                                 operationGroup.leave()
-                                             }
+                                             isNotEqualTo: reference).getDocuments() { (querySnapshot, error) in
+                
+                guard error == nil else {
+                    self.errorMessageChanged?(error!.localizedDescription)
+                    operationGroup.leave()
+                    return
+                }
+                
+                for document in querySnapshot!.documents {
+                    //                    let documentData = document.data()
+                    self.processPost(document: document, on: operationGroup)
+                }
+                
+                operationGroup.leave()
+            }
         }
         
         operationGroup.notify(queue: DispatchQueue.main) {
+            self.postsCollections.sort {
+                $0.date < $1.date
+            }
             self.postLoaded?()
         }
     }
@@ -96,6 +101,7 @@ class FeedViewModel: FeedViewModelProtocol {
                                        image: data["image"] as? String)
                 
                 self.loadLikesInfo(for: currentPost, on: operationGroup)
+                self.loadFavouritesInfo(for: currentPost, on: operationGroup)
                 
                 let postCollection = self.postsCollections.firstIndex { collection in
                     collection.date.formatted(by: "MM/dd/yyyy") == currentPost.date.formatted(by: "MM/dd/yyyy")
@@ -110,6 +116,28 @@ class FeedViewModel: FeedViewModelProtocol {
                 operationGroup?.leave()
             }
         }
+    }
+    
+    private func loadFavouritesInfo(for post: Post, on group: DispatchGroup?) {
+        let db = Firestore.firestore()
+        let reference = db.document("Post/\(post.id)")
+        let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
+        
+        group?.enter()
+        db.collection("FavouritesPosts").whereField("post",
+                                                   isEqualTo: reference).whereField("user",
+                                                                                    isEqualTo: currentUserReference).getDocuments { snapshot, error in
+                                                       guard error == nil else {
+                                                           print(error!.localizedDescription)
+                                                           group?.leave()
+                                                           return
+                                                       }
+                                                       
+                                                       for _ in snapshot!.documents {
+                                                           post.isFavourite = true
+                                                       }
+                                                       group?.leave()
+                                                   }
     }
     
     private func loadLikesInfo(for post: Post, on group: DispatchGroup?) {
@@ -151,15 +179,11 @@ class FeedViewModel: FeedViewModelProtocol {
     }
     
     func likePost(in cell: FeedTableViewCell, post: Post) {
-        post.isLiked = !post.isLiked
-        
         let db = Firestore.firestore()
         let reference = db.document("Post/\(post.id)")
         let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
         
         if post.isLiked {
-            post.likes += 1
-            
             db.collection("PostsLikes").whereField("post",
                                                    isEqualTo: reference).whereField("user",
                                                                                     isEqualTo: currentUserReference).getDocuments {[ weak self ] snapshot, error in
@@ -175,12 +199,13 @@ class FeedViewModel: FeedViewModelProtocol {
                                                                return
                                                            }
                                                            
+                                                           post.isLiked = !post.isLiked
+                                                           post.likes -= 1
+                                                           
                                                            self?.postDidLiked?(cell)
                                                        }
             }
         } else {
-            post.likes -= 1
-            
             let documentData = [
                 "post": reference,
                 "user": currentUserReference
@@ -191,7 +216,52 @@ class FeedViewModel: FeedViewModelProtocol {
                     return
                 }
                 
+                post.isLiked = !post.isLiked
+                post.likes += 1
+                
                 self?.postDidLiked?(cell)
+            }
+        }
+    }
+    
+    func setPostInFavourites(in cell: FeedTableViewCell, post: Post) {
+        let db = Firestore.firestore()
+        let reference = db.document("Post/\(post.id)")
+        let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
+        
+        if post.isFavourite {
+           db.collection("FavouritesPosts").whereField("post",
+                                                   isEqualTo: reference).whereField("user",
+                                                                                    isEqualTo: currentUserReference).getDocuments {[ weak self ] snapshot, error in
+                                                       guard error == nil else {
+                                                           print(error!.localizedDescription)
+                                                           return
+                                                       }
+                                                       
+                                                       let document = snapshot?.documents[0].reference
+                                                       document?.delete() { error in
+                                                           guard error == nil else {
+                                                               print(error!.localizedDescription)
+                                                               return
+                                                           }
+                                                           
+                                                           post.isFavourite = !post.isFavourite
+                                                           self?.postDidSetFavourite?(cell)
+                                                       }
+            }
+        } else {
+            let documentData = [
+                "post": reference,
+                "user": currentUserReference
+            ]
+            db.collection("FavouritesPosts").addDocument(data: documentData) {[ weak self ] error in
+                guard error == nil else {
+                    print(error!.localizedDescription)
+                    return
+                }
+                
+                post.isFavourite = !post.isFavourite
+                self?.postDidSetFavourite?(cell)
             }
         }
     }

@@ -15,6 +15,7 @@ class Post {
     var author: User
     var image: String?
     var isLiked: Bool = false
+    var isFavourite: Bool = false
     
     init(id: String, date: Date?, likes: UInt, text: String?, author: User?, image: String?) {
         self.id = id

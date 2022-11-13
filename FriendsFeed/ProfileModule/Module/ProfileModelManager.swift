@@ -122,25 +122,82 @@ class ProfileModelManager: ProfileModelManagerProtocol {
     private func loadPostsData() {
         let db = Firestore.firestore()
         let userReference = db.document("User/\(profile?.id ?? "")")
+        
+        group.enter()
         db.collection("Post").whereField("User", isEqualTo: userReference).getDocuments { [ weak self ] snapshot, error in
             guard error == nil else {
                 print(error!.localizedDescription)
                 self?.delegate?.postDataDidLoad(error!)
+                self?.group.leave()
                 return
             }
             
             self?.posts = snapshot?.documents.map { document -> Post in
                 let postData = document.data()
                 
-                return Post(id: document.documentID,
+                let post = Post(id: document.documentID,
                             date: Date(timeIntervalSince1970: postData["Date"] as? Double ?? 0),
                             likes: postData["Likes"] as? UInt ?? 0,
                             text: postData["Text"] as? String,
                             author: self?.profile, //????
                             image: postData["image"] as? String)
+                
+                self?.loadFavouritesInfo(for: post)
+                self?.loadLikesInfo(for: post)
+                
+                return post
             } ?? []
             
-            self?.delegate?.postDataDidLoad(nil)
+            self?.group.leave()
+        }
+        
+        self.group.notify(queue: .main) {
+            self.delegate?.postDataDidLoad(nil)
+        }
+    }
+    
+    private func loadFavouritesInfo(for post: Post) {
+        let db = Firestore.firestore()
+        let reference = db.document("Post/\(post.id)")
+        let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
+        
+        group.enter()
+        db.collection("FavouritesPosts").whereField("post",
+                                                   isEqualTo: reference).whereField("user",
+                                                                                    isEqualTo: currentUserReference).getDocuments { snapshot, error in
+                                                       guard error == nil else {
+                                                           print(error!.localizedDescription)
+                                                           self.group.leave()
+                                                           return
+                                                       }
+                                                       
+                                                       for _ in snapshot!.documents {
+                                                           post.isFavourite = true
+                                                       }
+                                                       self.group.leave()
+                                                   }
+    }
+    
+    private func loadLikesInfo(for post: Post) {
+        let db = Firestore.firestore()
+        let reference = db.document("Post/\(post.id)")
+        let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
+        
+        group.enter()
+        db.collection("PostsLikes").whereField("post", isEqualTo: reference).getDocuments { snapshot, error in
+            guard error == nil else {
+                print(error!.localizedDescription)
+                self.group.leave()
+                return
+            }
+            
+            for document in snapshot!.documents {
+                post.likes += 1
+                if let user = document.data()["user"] as? DocumentReference, user == currentUserReference {
+                    post.isLiked = true
+                }
+            }
+            self.group.leave()
         }
     }
 }

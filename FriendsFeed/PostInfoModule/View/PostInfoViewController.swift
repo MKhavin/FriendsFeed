@@ -19,6 +19,12 @@ class PostInfoViewController: UIViewController {
                 self?.mainView?.postTitleView.subNameLabel.text = postData.author.lastName
                 self?.mainView?.postBottomView.likeButton.setTitle("\(postData.likes)", for: .normal)
             }
+            viewModel.postDidLiked = { [weak self] post in
+                self?.mainView?.postBottomView.setLikeButton(post: post)
+            }
+            viewModel.postDidSetFavourite = { [weak self] post in
+                self?.mainView?.postBottomView.setFavouritesButton(post: post)
+            }
         }
     }
     private weak var mainView: PostInfoView?
@@ -37,14 +43,13 @@ class PostInfoViewController: UIViewController {
         title = "Публикации"
         
         viewModel.loadPostData()
-        viewModel.postDidLiked = { post in
-            self.mainView?.postBottomView.setLikeButton(post: post)
-        }
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(postTitleDidTap(_:)))
         mainView?.postTitleView.addGestureRecognizer(tapGesture)
         mainView?.postBottomView.likeButton.addTarget(self, action: #selector(likeButtonDidTap), for: .touchUpInside)
+        mainView?.postBottomView.favouritesButton.addTarget(self, action: #selector(favouritesButtonDidTap), for: .touchUpInside)
         mainView?.postBottomView.setLikeButton(post: viewModel.getPost())
+        mainView?.postBottomView.setFavouritesButton(post: viewModel.getPost())
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -59,5 +64,9 @@ class PostInfoViewController: UIViewController {
     
     @objc private func likeButtonDidTap() {
         viewModel.likePost()
+    }
+    
+    @objc private func favouritesButtonDidTap() {
+        viewModel.setPostInFavourites()
     }
 }
