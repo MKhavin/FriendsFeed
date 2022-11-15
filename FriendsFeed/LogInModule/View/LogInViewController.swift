@@ -9,32 +9,17 @@ import UIKit
 import FirebaseAuth
 
 class LogInViewController: UIViewController {
-    //MARK: - Sub properties
-    private weak var logInView: LogInView?
-    var viewModel: LogInViewModelProtocol! {
-        didSet {
-            viewModel.errorMessage = { message in
-                let alert = UIAlertController(title: "Error occured",
-                                              message: message,
-                                              preferredStyle: .alert)
-                
-                let action = UIAlertAction(title: "Try again",
-                                           style: .default) { action in
-                    self.dismiss(animated: true)
-                }
-                
-                alert.addAction(action)
-                
-                self.present(alert, animated: true)
-            }
-        }
-    }
+    // MARK: - Sub properties
+    private weak var mainView: LogInView?
+    // swiftlint:disable:next implicitly_unwrapped_optional
+    var viewModel: LogInViewModelProtocol!
+    // swiftlint:disable:previous implicitly_unwrapped_optional
     
-    //MARK: - Life cycle
+    // MARK: - Life cycle
     override func loadView() {
         let currentView = LogInView()
         view = currentView
-        logInView = currentView
+        mainView = currentView
     }
     
     override func viewDidLoad() {
@@ -57,9 +42,9 @@ class LogInViewController: UIViewController {
         removeNotifications()
     }
     
-    //MARK: - Sub methods
+    // MARK: - Sub methods
     private func setButtonsAction() {
-        logInView?.logInButton.addTarget(self,
+        mainView?.logInButton.addTarget(self,
                                          action: #selector(logInButtonPressed(_:)),
                                          for: .touchUpInside)
     }
@@ -82,9 +67,26 @@ class LogInViewController: UIViewController {
                                                   object: nil)
     }
     
-    //MARK: - Actions
+    private func swtViewModelCallbacks() {
+        viewModel.errorOccured = { message in
+            let alert = UIAlertController(title: "Error occured",
+                                          message: message,
+                                          preferredStyle: .alert)
+            
+            let action = UIAlertAction(title: "Try again",
+                                       style: .default) { action in
+                self.dismiss(animated: true)
+            }
+            
+            alert.addAction(action)
+            
+            self.present(alert, animated: true)
+        }
+    }
+    
+    // MARK: - Actions
     @objc private func logInButtonPressed(_ sender: UIButton) {
-        viewModel.logIn(with: logInView?.numberTextField.text)
+        viewModel.logIn(with: mainView?.numberTextField.text)
     }
     
     @objc private func keyboardWillShow(_ sender: NSNotification) {

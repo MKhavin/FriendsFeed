@@ -48,8 +48,9 @@ final class ModuleFactory: ModuleFactoryProtocol {
     }
     
     func buildLogInModule(coordinator: AppCoordinatorProtocol?) -> UIViewController {
+        let model = LogInModelManager()
         let view = LogInViewController()
-        let viewModel = LogInViewModel(coordinator: coordinator)
+        let viewModel = LogInViewModel(coordinator: coordinator, model: model)
         view.viewModel = viewModel
         
         return view

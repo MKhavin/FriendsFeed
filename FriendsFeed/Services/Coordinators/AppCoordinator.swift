@@ -1,4 +1,5 @@
 import UIKit
+import FirebaseAuth
 
 // MARK: - App coordinator protocol
 protocol AppCoordinatorProtocol: NavigationCoordinatorProtocol {
@@ -22,7 +23,11 @@ final class AppCoordinator: AppCoordinatorProtocol {
     
     // MARK: - Basic navigation methods
     func pushInitialView() {
-        pushAuthenticationView()
+        if Auth.auth().currentUser != nil {
+            pushMainView()
+        } else {
+            pushAuthenticationView()
+        }
     }
     
     func popToRoot() {
