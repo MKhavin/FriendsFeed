@@ -1,23 +1,34 @@
-//
-//  AuthenticationView.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 15.09.2022.
-//
-
 import UIKit
 import SnapKit
 
+protocol AuthenticationViewDelegate: AnyObject {
+    func logInButtonPressed(_ sender: UIButton)
+}
+
 final class AuthenticationView: UIView {
-    //MARK: - UI Elements
+    // MARK: - Layout constants
+    private enum LayoutConstants {
+        static let buttonInset: CGFloat = 6
+        static let buttonTopInset: CGFloat = 4
+        static let buttomHeight: CGFloat = 50
+        static let buttonCornerRadius: CGFloat = 100
+    }
+    
+    // MARK: - Sub properties
+    weak var delegate: AuthenticationViewDelegate?
+    
+    // MARK: - UI Elements
     private lazy var logoImageView: UIImageView = {
         let view = UIImageView()
+        
         view.image = UIImage(named: "LaunchScreenIcon")
         view.contentMode = .scaleAspectFit
+        
         return view
     }()
-    private(set) lazy var registerButton: UIButton = {
+    private lazy var registerButton: UIButton = {
         let view = UIButton()
+        
         view.backgroundColor = .label
         
         view.layer.shadowColor = UIColor.label.withAlphaComponent(0.5).cgColor
@@ -29,10 +40,17 @@ final class AuthenticationView: UIView {
         view.titleLabel?.adjustsFontSizeToFitWidth = true
         view.titleLabel?.minimumScaleFactor = 0.2
         view.setTitleColor(UIColor.systemBackground, for: .normal)
+        
+        view.addTarget(
+            self,
+            action: #selector(logInButtonPressed(_:)),
+            for: .touchUpInside
+        )
+        
         return view
     }()
     
-    //MARK: - Life cycle
+    // MARK: - Life cycle
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -41,20 +59,20 @@ final class AuthenticationView: UIView {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
     }
     
     override func updateConstraints() {
         registerButton.snp.updateConstraints { make in
-            make.leading.trailing.equalTo(layoutMarginsGuide).inset(frame.width/6)
-            make.top.equalTo(safeAreaLayoutGuide.snp.centerY).offset(frame.height/4)
+            make.leading.trailing.equalTo(layoutMarginsGuide).inset(frame.width / LayoutConstants.buttonInset)
+            make.top.equalTo(safeAreaLayoutGuide.snp.centerY).offset(frame.height / LayoutConstants.buttonTopInset)
         }
-        registerButton.layer.cornerRadius = frame.height / 100
+        registerButton.layer.cornerRadius = frame.height / LayoutConstants.buttonCornerRadius
         
         super.updateConstraints()
     }
     
-    //MARK: - Sub methods
+    // MARK: - Sub methods
     private func setSubviewsLayout() {
         addSubview(logoImageView)
         logoImageView.snp.makeConstraints { make in
@@ -64,9 +82,14 @@ final class AuthenticationView: UIView {
         
         addSubview(registerButton)
         registerButton.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(layoutMarginsGuide).inset(frame.width/6)
-            make.top.equalTo(safeAreaLayoutGuide.snp.centerY).offset(frame.height/4)
-            make.height.equalTo(50)
+            make.leading.trailing.equalTo(layoutMarginsGuide).inset(frame.width / LayoutConstants.buttonInset)
+            make.top.equalTo(safeAreaLayoutGuide.snp.centerY).offset(frame.height / LayoutConstants.buttonTopInset)
+            make.height.equalTo(LayoutConstants.buttomHeight)
         }
+    }
+    
+    // MARK: - Actions
+    @objc private func logInButtonPressed(_ sender: UIButton) {
+        delegate?.logInButtonPressed(sender)
     }
 }
