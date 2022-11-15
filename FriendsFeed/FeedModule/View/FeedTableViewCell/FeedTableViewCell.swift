@@ -81,9 +81,9 @@ class FeedTableViewCell: UITableViewCell {
         post = data
         
         // Set titleView data
-        titleView.nameLabel.text = data.author.firstName
-        titleView.subNameLabel.text = data.author.lastName
-        titleView.avatarImageView.getImageFor(imagePath: data.author.avatar ?? "")
+        titleView.nameLabel.text = data.author?.firstName
+        titleView.subNameLabel.text = data.author?.lastName
+        titleView.avatarImageView.getImageFor(imagePath: data.author?.avatar ?? "")
         
         //Set postView data
         postView.postTextLabel.text = data.text

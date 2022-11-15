@@ -13,4 +13,5 @@ enum ItemsIdentifier: String {
     case profilePostsCell
     case profilePhotosCell
     case photosCell
+    case favouritesPostCell
 }

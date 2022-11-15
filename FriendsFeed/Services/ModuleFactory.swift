@@ -10,13 +10,13 @@ import UIKit
 protocol ModuleFactoryProtocol {
     func buildAuthenticationModule(coordinator: AppCoordinatorProtocol?) -> UIViewController
     func buildLogInModule(coordinator: AppCoordinatorProtocol?) -> UIViewController
-//    func buildRegisterModule(coordinator: AppCoordinatorProtocol?) -> UIViewController
     func buildFeedModule(coordinator: FeedCoordinatorProtocol?) -> UIViewController
     func buildMainView() -> UIViewController
     func buildPostInfoModule(coordinator: NavigationCoordinatorProtocol?, data: Post) -> UIViewController
     func buildSMSConfirmationModule(coordinator: AppCoordinatorProtocol?, phoneNumber: String) -> UIViewController
     func buildProfileModule(coordinator: ProfileCoordinatorProtocol?, user: User?, isCurrentUserProfile: Bool) -> UIViewController
     func buildPhotoModule(coordinator: NavigationCoordinatorProtocol?, user: String) -> UIViewController
+    func buildFavouritesPostsModule(coordinator: FavouritesPostsCoordinatorProtocol?) -> UIViewController
 }
 
 class ModuleFactory: ModuleFactoryProtocol {
@@ -64,23 +64,25 @@ class ModuleFactory: ModuleFactoryProtocol {
         let tabBarController = MainTabBarControllerViewController()
         
         let feedNavigationController = UINavigationController()
-        let feedCoordinator = FeedCoordinator(moduleFactory: self, navigationController: feedNavigationController)
+        let feedCoordinator = FeedCoordinator(moduleFactory: self,
+                                              navigationController: feedNavigationController)
         feedCoordinator.pushInitialView()
         
-        // Temporary
         let profileNavigationController = UINavigationController()
-        let profileCoordinator = ProfileCoordinator(moduleFactory: self, navigationController: profileNavigationController)
+        let profileCoordinator = ProfileCoordinator(moduleFactory: self,
+                                                    navigationController: profileNavigationController)
         profileCoordinator.pushInitialView()
         
-        let favouritesView = UIViewController()
-        favouritesView.title = "Сохраненные"
-        favouritesView.tabBarItem.image = UIImage(systemName: "heart")
-        //
+        let favouritesPostsNavigationController = UINavigationController()
+        let favouritesPostsCoordinator = FavouritesPostsCoordinator(moduleFactory: self,
+                                                                    navigationController: favouritesPostsNavigationController)
+        favouritesPostsCoordinator.pushInitialView()
+
         
         tabBarController.setViewControllers([
             feedNavigationController,
             profileNavigationController,
-            favouritesView
+            favouritesPostsNavigationController
         ],
                                             animated: false)
         
@@ -102,6 +104,15 @@ class ModuleFactory: ModuleFactoryProtocol {
     func buildPhotoModule(coordinator: NavigationCoordinatorProtocol?, user: String) -> UIViewController {
         let view = PhotosViewController()
         let viewModel = PhotosViewModel(coordinator: coordinator, user: user)
+        view.viewModel = viewModel
+        
+        return view
+    }
+    
+    func buildFavouritesPostsModule(coordinator: FavouritesPostsCoordinatorProtocol?) -> UIViewController {
+        let view = FavouritesViewController()
+        let model = FavouritesModelManager()
+        let viewModel = FavouritesViewModel(model: model, coordinator: coordinator)
         view.viewModel = viewModel
         
         return view

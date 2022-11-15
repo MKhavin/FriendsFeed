@@ -14,9 +14,9 @@ class PostInfoViewController: UIViewController {
             viewModel.postDataLoaded = { [weak self] postData in
                 self?.mainView?.postTextLabel.text = postData.text
                 self?.mainView?.postImageView.getImageFor(imagePath: postData.image ?? "")
-                self?.mainView?.postTitleView.avatarImageView.getImageFor(imagePath: postData.author.avatar ?? "")
-                self?.mainView?.postTitleView.nameLabel.text = postData.author.firstName
-                self?.mainView?.postTitleView.subNameLabel.text = postData.author.lastName
+                self?.mainView?.postTitleView.avatarImageView.getImageFor(imagePath: postData.author?.avatar ?? "")
+                self?.mainView?.postTitleView.nameLabel.text = postData.author?.firstName
+                self?.mainView?.postTitleView.subNameLabel.text = postData.author?.lastName
                 self?.mainView?.postBottomView.likeButton.setTitle("\(postData.likes)", for: .normal)
             }
             viewModel.postDidLiked = { [weak self] post in

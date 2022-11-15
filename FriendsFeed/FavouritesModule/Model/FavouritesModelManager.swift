@@ -1,155 +1,106 @@
-//
-//  FeedViewModel.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 08.10.2022.
-//
-
 import FirebaseAuth
 import FirebaseFirestore
-import FirebaseStorage
 
-protocol FeedViewModelProtocol {
-    var errorMessageChanged: ((String) -> Void)? { get set }
-    var postLoaded: (() -> Void)? { get set }
-    var postDidLiked: ((FeedTableViewCell) -> ())? { get set }
-    var postDidSetFavourite: ((FeedTableViewCell) -> ())? { get set }
-    var coordinator: FeedCoordinatorProtocol? { get set }
-    var postsCollections: [PostCollection] { get set }
-    func getFeed()
-    func showPostInfo(in collection: Int, of post: Int)
-    func showUserProfile(for user: User)
-    func likePost(in cell: FeedTableViewCell, post: Post)
-    func setPostInFavourites(in cell: FeedTableViewCell, post: Post)
+protocol FavouritesModelManagerDelegateProtocol {
+    func favouritesPostsLoadingFinished()
+    func favouritePostDidLiked(cell: FeedTableViewCell)
+    func postBecomeFavourite(cellPath: IndexPath)
 }
 
-class FeedViewModel: FeedViewModelProtocol {
-    var coordinator: FeedCoordinatorProtocol?
-    var postLoaded: (() -> Void)?
-    var errorMessageChanged: ((String) -> Void)?
-    var postsCollections: [PostCollection] = []
-    var postDidLiked: ((FeedTableViewCell) -> ())?
-    var postDidSetFavourite: ((FeedTableViewCell) -> ())?
+protocol FavouritesModelManagerProtocol {
+    var posts: [Post] { get }
+    var delegate: FavouritesModelManagerDelegateProtocol? { get set }
+    func loadFavouritesPosts()
+    func likePost(cell: FeedTableViewCell, post: Post)
+    func setPostInFavourites(cellPath: IndexPath, post: Post)
+}
+
+class FavouritesModelManager: FavouritesModelManagerProtocol {
+    private let asyncGroup = DispatchGroup()
+    private(set) var posts: [Post] = []
+    var delegate: FavouritesModelManagerDelegateProtocol?
     
-    init(coordinator: FeedCoordinatorProtocol?) {
-        self.coordinator = coordinator
-    }
-    
-    func getFeed() {
-        postsCollections = []
-        
+    func loadFavouritesPosts() {
         let db = Firestore.firestore()
-        let operationGroup = DispatchGroup()
+        let userReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
         
-        operationGroup.enter()
-        DispatchQueue.global(qos: .userInitiated).async(group: operationGroup) {
-            let reference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
+        asyncGroup.enter()
+        db.collection("FavouritesPosts").whereField("user", isEqualTo: userReference).getDocuments() { snapshot, error in
+            guard error == nil else {
+                print(error!.localizedDescription)
+                self.asyncGroup.leave()
+                return
+            }
             
-            db.collection("Post").whereField("User",
-                                             isNotEqualTo: reference).getDocuments() { (querySnapshot, error) in
+            snapshot?.documents.forEach { snapshot in
+                let documentData = snapshot.data()
+                let postReference = documentData["post"] as? DocumentReference
                 
-                guard error == nil else {
-                    self.errorMessageChanged?(error!.localizedDescription)
-                    operationGroup.leave()
-                    return
+                self.asyncGroup.enter()
+                postReference?.getDocument { snapshot, error in
+                    guard error == nil else {
+                        print(error!.localizedDescription)
+                        self.asyncGroup.leave()
+                        return
+                    }
+                     
+                    let postData = snapshot!.data()
+                    let post = Post(id: snapshot!.documentID,
+                                    date: Date(timeIntervalSince1970: postData?["Date"] as? Double ?? 0.0),
+                                    likes: 0,
+                                    text: postData?["Text"] as? String,
+                                    author: nil,
+                                    image: postData?["image"] as? String)
+                    self.posts.append(post)
+                    
+                    self.loadFavouritesInfo(for: post)
+                    self.loadLikesInfo(for: post)
+                    self.loadUserInfo(for: post, user: documentData["user"] as? DocumentReference)
+                    
+                    self.asyncGroup.leave()
                 }
-                
-                for document in querySnapshot!.documents {
-                    //                    let documentData = document.data()
-                    self.processPost(document: document, on: operationGroup)
-                }
-                
-                operationGroup.leave()
             }
+            
+            self.asyncGroup.leave()
         }
         
-        operationGroup.notify(queue: DispatchQueue.main) {
-            self.postsCollections.sort {
-                $0.date < $1.date
-            }
-            self.postLoaded?()
+        asyncGroup.notify(queue: .main) {
+            self.delegate?.favouritesPostsLoadingFinished()
         }
     }
     
-    private func processPost(document: QueryDocumentSnapshot, on operationGroup: DispatchGroup?) {
-        let data = document.data()
-        
-        if let userData = data["User"] as? DocumentReference {
-            operationGroup?.enter()
-            userData.getDocument { querySnapshot, error in
-                guard error == nil else {
-                    self.errorMessageChanged?(error!.localizedDescription)
-                    operationGroup?.leave()
-                    return
-                }
-                
-                let snapshotData = querySnapshot!.data()
-                
-                let currentAuthor = User(id: querySnapshot!.documentID,
-                                         firstName: snapshotData!["firstName"] as? String,
-                                         lastName: snapshotData!["lastName"] as? String,
-                                         birthDate: nil,
-                                         sex: .init(rawValue: (snapshotData!["sex"] as? String) ?? "male")!,
-                                         avatar: snapshotData!["avatar"] as? String,
-                                         phoneNumber: snapshotData!["phoneNumber"] as? String)
-                
-                let currentPost = Post(id: document.documentID,
-                                       date: (data["Date"] as? Timestamp)?.dateValue(),
-                                       likes: 0,
-                                       text: data["Text"] as? String,
-                                       author: currentAuthor,
-                                       image: data["image"] as? String)
-                
-                self.loadLikesInfo(for: currentPost, on: operationGroup)
-                self.loadFavouritesInfo(for: currentPost, on: operationGroup)
-                
-                let postCollection = self.postsCollections.firstIndex { collection in
-                    collection.date.formatted(by: "MM/dd/yyyy") == currentPost.date.formatted(by: "MM/dd/yyyy")
-                }
-                
-                if postCollection == nil {
-                    self.postsCollections.append(PostCollection(date: currentPost.date, posts: [currentPost]))
-                } else {
-                    self.postsCollections[postCollection!].posts.append(currentPost)
-                }
-                
-                operationGroup?.leave()
-            }
-        }
-    }
-    
-    private func loadFavouritesInfo(for post: Post, on group: DispatchGroup?) {
+    private func loadFavouritesInfo(for post: Post) {
         let db = Firestore.firestore()
         let reference = db.document("Post/\(post.id)")
         let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
         
-        group?.enter()
+        asyncGroup.enter()
         db.collection("FavouritesPosts").whereField("post",
                                                    isEqualTo: reference).whereField("user",
                                                                                     isEqualTo: currentUserReference).getDocuments { snapshot, error in
                                                        guard error == nil else {
                                                            print(error!.localizedDescription)
-                                                           group?.leave()
+                                                           self.asyncGroup.leave()
                                                            return
                                                        }
                                                        
                                                        for _ in snapshot!.documents {
                                                            post.isFavourite = true
                                                        }
-                                                       group?.leave()
+                                                       self.asyncGroup.leave()
                                                    }
     }
     
-    private func loadLikesInfo(for post: Post, on group: DispatchGroup?) {
+    private func loadLikesInfo(for post: Post) {
         let db = Firestore.firestore()
         let reference = db.document("Post/\(post.id)")
         let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
         
-        group?.enter()
+        asyncGroup.enter()
         db.collection("PostsLikes").whereField("post", isEqualTo: reference).getDocuments { snapshot, error in
             guard error == nil else {
                 print(error!.localizedDescription)
-                group?.leave()
+                self.asyncGroup.leave()
                 return
             }
             
@@ -159,26 +110,37 @@ class FeedViewModel: FeedViewModelProtocol {
                     post.isLiked = true
                 }
             }
-            group?.leave()
+            self.asyncGroup.leave()
         }
     }
     
-    func showPostInfo(in collection: Int, of post: Int) {
-        let data = postsCollections[collection].posts[post]
-        coordinator?.pushPostInfoView(with: data)
-    }
-    
-    func showUserProfile(for user: User) {
-        guard let moduleFactory = coordinator?.moduleFactory, let navigationController = coordinator?.navigationController else {
+    private func loadUserInfo(for post: Post, user: DocumentReference?) {
+        guard let userReference = user else {
             return
         }
         
-        let profileCoordinator = ProfileCoordinator(moduleFactory: moduleFactory,
-                                                    navigationController: navigationController)
-        profileCoordinator.pushProfileView(for: user, isCurrentUserProfile: false)
+        asyncGroup.enter()
+        userReference.getDocument { snapshot, error in
+            guard error == nil else {
+                print(error!.localizedDescription)
+                self.asyncGroup.leave()
+                return
+            }
+            
+            let userData = snapshot!.data()
+            post.author = User(id: snapshot?.documentID ?? "",
+                               firstName: userData?["firstName"] as? String,
+                               lastName: userData?["lastName"] as? String,
+                               birthDate: Date(timeIntervalSince1970: userData?["birthDate"] as? Double ?? 0.0),
+                               sex: .init(rawValue: userData?["sex"] as? String ?? "") ?? .male,
+                               avatar: userData?["avatar"] as? String,
+                               phoneNumber: userData?["phoneNumber"] as? String)
+            
+            self.asyncGroup.leave()
+        }
     }
     
-    func likePost(in cell: FeedTableViewCell, post: Post) {
+    func likePost(cell: FeedTableViewCell, post: Post) {
         let db = Firestore.firestore()
         let reference = db.document("Post/\(post.id)")
         let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
@@ -202,7 +164,7 @@ class FeedViewModel: FeedViewModelProtocol {
                                                            post.isLiked = !post.isLiked
                                                            post.likes -= 1
                                                            
-                                                           self?.postDidLiked?(cell)
+                                                           self?.delegate?.favouritePostDidLiked(cell: cell)
                                                        }
             }
         } else {
@@ -219,12 +181,12 @@ class FeedViewModel: FeedViewModelProtocol {
                 post.isLiked = !post.isLiked
                 post.likes += 1
                 
-                self?.postDidLiked?(cell)
+                self?.delegate?.favouritePostDidLiked(cell: cell)
             }
         }
     }
     
-    func setPostInFavourites(in cell: FeedTableViewCell, post: Post) {
+    func setPostInFavourites(cellPath: IndexPath, post: Post) {
         let db = Firestore.firestore()
         let reference = db.document("Post/\(post.id)")
         let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
@@ -246,7 +208,7 @@ class FeedViewModel: FeedViewModelProtocol {
                                                            }
                                                            
                                                            post.isFavourite = !post.isFavourite
-                                                           self?.postDidSetFavourite?(cell)
+                                                           self?.delegate?.postBecomeFavourite(cellPath: cellPath)
                                                        }
             }
         } else {
@@ -261,7 +223,7 @@ class FeedViewModel: FeedViewModelProtocol {
                 }
                 
                 post.isFavourite = !post.isFavourite
-                self?.postDidSetFavourite?(cell)
+                self?.delegate?.postBecomeFavourite(cellPath: cellPath)
             }
         }
     }

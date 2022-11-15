@@ -78,6 +78,10 @@ class CachedImageView: UIImageView {
     }
     
     func getImageFor(imagePath: String) {
+        guard !imagePath.isEmpty else {
+            return
+        }
+        
         DispatchQueue.global(qos: .userInitiated).async {
             if let imageData = CachedImageView.cache.object(forKey: NSString(string: imagePath)) {
                 DispatchQueue.main.async {
