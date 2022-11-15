@@ -1,12 +1,6 @@
-//
-//  AppCoordinator.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 16.09.2022.
-//
-
 import UIKit
 
+// MARK: - App coordinator protocol
 protocol AppCoordinatorProtocol: NavigationCoordinatorProtocol {
     func pushAuthenticationView()
     func pushLogInView()
@@ -14,19 +8,28 @@ protocol AppCoordinatorProtocol: NavigationCoordinatorProtocol {
     func pushMainView()
 }
 
-class AppCoordinator: AppCoordinatorProtocol {
+// MARK: - AppCoordinator implementation
+final class AppCoordinator: AppCoordinatorProtocol {
+    // MARK: - Properties
     private(set) var navigationController: UINavigationController
     private(set) var moduleFactory: ModuleFactoryProtocol
     
+    // MARK: - Life cycle
     required init(moduleFactory: ModuleFactoryProtocol, navigationController: UINavigationController) {
         self.navigationController = navigationController
         self.moduleFactory = moduleFactory
     }
     
+    // MARK: - Basic navigation methods
     func pushInitialView() {
         pushAuthenticationView()
     }
     
+    func popToRoot() {
+        navigationController.popToRootViewController(animated: true)
+    }
+    
+    // MARK: - Main navigation methods
     func pushAuthenticationView() {
         let view = moduleFactory.buildAuthenticationModule(coordinator: self)
         navigationController.pushViewController(view, animated: true)
@@ -35,10 +38,6 @@ class AppCoordinator: AppCoordinatorProtocol {
     func pushLogInView() {
         let view = moduleFactory.buildLogInModule(coordinator: self)
         navigationController.pushViewController(view, animated: true)
-    }
-    
-    func popToRoot() {
-        navigationController.popToRootViewController(animated: true)
     }
     
     func pushConfirmationView(for phone: String) {
@@ -52,4 +51,3 @@ class AppCoordinator: AppCoordinatorProtocol {
 //        navigationController.pushViewController(view, animated: true)
     }
 }
-

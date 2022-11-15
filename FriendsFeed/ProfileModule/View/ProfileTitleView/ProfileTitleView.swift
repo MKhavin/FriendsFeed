@@ -41,7 +41,7 @@ class ProfileTitleView: UIView {
         view.setTitle("Редактировать", for: .normal)
         view.setTitleColor(.white, for: .normal)
         view.layer.cornerRadius = 4
-        view.backgroundColor = CustomColors.lightOrange
+        view.backgroundColor = UIColor(hex: 0xF69707, alpha: 1.0)
         view.layer.shadowOffset = CGSize(width: 4, height: 4)
         view.layer.shadowRadius = 4
         view.layer.shadowColor = UIColor.black.cgColor

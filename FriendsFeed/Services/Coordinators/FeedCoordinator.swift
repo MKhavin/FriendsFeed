@@ -1,27 +1,25 @@
-//
-//  FeedCoordinator.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 14.10.2022.
-//
-
 import UIKit
 
+// MARK: - FeedCoordinatorProtocol
 protocol FeedCoordinatorProtocol: NavigationCoordinatorProtocol {
-    func pushPostInfoView(with data: Post)
     var navigationController: UINavigationController { get }
     var moduleFactory: ModuleFactoryProtocol { get }
+    func pushPostInfoView(with data: Post)
 }
-                                        
-class FeedCoordinator: FeedCoordinatorProtocol {
+                                      
+// MARK: - FeedCoordinator implementation
+final class FeedCoordinator: FeedCoordinatorProtocol {
+    // MARK: - Properties
     private(set) var navigationController: UINavigationController
     private(set) var moduleFactory: ModuleFactoryProtocol
     
+    // MARK: - Life cycle
     required init(moduleFactory: ModuleFactoryProtocol, navigationController: UINavigationController) {
         self.navigationController = navigationController
         self.moduleFactory = moduleFactory
     }
     
+    // MARK: - Basic navigation methods
     func pushInitialView() {
         let view = moduleFactory.buildFeedModule(coordinator: self)
         
@@ -33,6 +31,7 @@ class FeedCoordinator: FeedCoordinatorProtocol {
         navigationController.popToRootViewController(animated: true)
     }
     
+    // MARK: - Main navigation methods
     func pushPostInfoView(with data: Post) {
         let view = moduleFactory.buildPostInfoModule(coordinator: self, data: data)
         

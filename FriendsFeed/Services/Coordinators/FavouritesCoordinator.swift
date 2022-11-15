@@ -1,25 +1,23 @@
-//
-//  FavouritesCoordinator.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 13.11.2022.
-//
-
 import UIKit
 
-protocol FavouritesPostsCoordinatorProtocol: NavigationCoordinatorProtocol {
+// MARK: - Favourites coordinator protocol
+protocol FavouritesCoordinatorProtocol: NavigationCoordinatorProtocol {
     func pushPostInfoView(with data: Post)
 }
-                                        
-class FavouritesPostsCoordinator: FavouritesPostsCoordinatorProtocol {
+           
+// MARK: - Favourites coordinator implementation
+final class FavouritesCoordinator: FavouritesCoordinatorProtocol {
+    // MARK: - Properties
     var navigationController: UINavigationController
     var moduleFactory: ModuleFactoryProtocol
     
+    // MARK: - Life cycle
     required init(moduleFactory: ModuleFactoryProtocol, navigationController: UINavigationController) {
         self.navigationController = navigationController
         self.moduleFactory = moduleFactory
     }
     
+    // MARK: - Basic navigation methods
     func pushInitialView() {
         navigationController.tabBarItem.title = "Сохраненные"
         navigationController.tabBarItem.image = UIImage(systemName: "heart")
@@ -31,6 +29,7 @@ class FavouritesPostsCoordinator: FavouritesPostsCoordinatorProtocol {
         navigationController.popToRootViewController(animated: true)
     }
     
+    // MARK: - Main navigation methods
     private func pushFavouritesView() {
         let view = moduleFactory.buildFavouritesPostsModule(coordinator: self)
         

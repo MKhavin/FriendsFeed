@@ -18,9 +18,9 @@ class FavouritesViewModel: FavouritesViewModelProtocol {
     var postDidLiked: ((FeedTableViewCell) -> Void)?
     var postDidSetFavourite: ((IndexPath) -> Void)?
     private var model: FavouritesModelManagerProtocol?
-    private var coordinator: FavouritesPostsCoordinatorProtocol?
+    private var coordinator: FavouritesCoordinatorProtocol?
     
-    init(model: FavouritesModelManagerProtocol?, coordinator: FavouritesPostsCoordinatorProtocol?) {
+    init(model: FavouritesModelManagerProtocol?, coordinator: FavouritesCoordinatorProtocol?) {
         self.model = model
         self.model?.delegate = self
         

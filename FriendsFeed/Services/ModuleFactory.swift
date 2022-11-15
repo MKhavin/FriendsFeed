@@ -1,12 +1,6 @@
-//
-//  ModuleFactory.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 16.09.2022.
-//
-
 import UIKit
 
+// MARK: - Module factory protocol
 protocol ModuleFactoryProtocol {
     func buildAuthenticationModule(coordinator: AppCoordinatorProtocol?) -> UIViewController
     func buildLogInModule(coordinator: AppCoordinatorProtocol?) -> UIViewController
@@ -16,10 +10,11 @@ protocol ModuleFactoryProtocol {
     func buildSMSConfirmationModule(coordinator: AppCoordinatorProtocol?, phoneNumber: String) -> UIViewController
     func buildProfileModule(coordinator: ProfileCoordinatorProtocol?, user: User?, isCurrentUserProfile: Bool) -> UIViewController
     func buildPhotoModule(coordinator: NavigationCoordinatorProtocol?, user: String) -> UIViewController
-    func buildFavouritesPostsModule(coordinator: FavouritesPostsCoordinatorProtocol?) -> UIViewController
+    func buildFavouritesPostsModule(coordinator: FavouritesCoordinatorProtocol?) -> UIViewController
 }
 
-class ModuleFactory: ModuleFactoryProtocol {
+// MARK: - Module factory implementation
+final class ModuleFactory: ModuleFactoryProtocol {
     func buildSMSConfirmationModule(coordinator: AppCoordinatorProtocol?, phoneNumber: String) -> UIViewController {
         let view = SMSConfirmationViewController()
         let viewModel = SMSConfirmationViewModel(coordinator: coordinator, phoneNumber: phoneNumber)
@@ -74,17 +69,18 @@ class ModuleFactory: ModuleFactoryProtocol {
         profileCoordinator.pushInitialView()
         
         let favouritesPostsNavigationController = UINavigationController()
-        let favouritesPostsCoordinator = FavouritesPostsCoordinator(moduleFactory: self,
+        let favouritesPostsCoordinator = FavouritesCoordinator(moduleFactory: self,
                                                                     navigationController: favouritesPostsNavigationController)
         favouritesPostsCoordinator.pushInitialView()
 
-        
-        tabBarController.setViewControllers([
-            feedNavigationController,
-            profileNavigationController,
-            favouritesPostsNavigationController
-        ],
-                                            animated: false)
+        tabBarController.setViewControllers(
+            [
+                feedNavigationController,
+                profileNavigationController,
+                favouritesPostsNavigationController
+            ],
+            animated: false
+        )
         
         return tabBarController
     }
@@ -109,7 +105,7 @@ class ModuleFactory: ModuleFactoryProtocol {
         return view
     }
     
-    func buildFavouritesPostsModule(coordinator: FavouritesPostsCoordinatorProtocol?) -> UIViewController {
+    func buildFavouritesPostsModule(coordinator: FavouritesCoordinatorProtocol?) -> UIViewController {
         let view = FavouritesViewController()
         let model = FavouritesModelManager()
         let viewModel = FavouritesViewModel(model: model, coordinator: coordinator)
