@@ -1,15 +1,7 @@
-//
-//  FeedTableViewCellBottomView.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 10.10.2022.
-//
-
 import UIKit
 
-
 class LikeFavouritesBottomView: UIView {
-    //MARK: - UI elements
+    // MARK: - UI elements
     private(set) lazy var likeButton: UIButton = {
         let view = UIButton()
         view.setImage(UIImage(systemName: "heart"), for: .normal)
@@ -47,7 +39,7 @@ class LikeFavouritesBottomView: UIView {
         return stackView
     }()
     
-    //MARK: - Life cycle
+    // MARK: - Life cycle
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -63,7 +55,7 @@ class LikeFavouritesBottomView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Sub methods
+    // MARK: - Sub methods
     private func setSubviewsLayout() {
         topBorder.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(safeAreaLayoutGuide)
