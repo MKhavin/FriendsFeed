@@ -1,10 +1,3 @@
-//
-//  ProfileTitleButton.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 25.10.2022.
-//
-
 import UIKit
 
 class ProfileTitleButton: UIButton {

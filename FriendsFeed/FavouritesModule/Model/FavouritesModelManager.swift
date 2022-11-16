@@ -234,40 +234,22 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
         let reference = db.document("Post/\(post.id)")
         let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
         
-        if post.isFavourite {
-            db.collection("FavouritesPosts").whereField(
-                "post",
-                isEqualTo: reference
-            ).whereField(
-                "user",
-                isEqualTo: currentUserReference
-            ).getDocuments { [ weak self ] snapshot, error in
-                guard error == nil else {
-                    // swiftlint:disable:next force_unwrapping
-                    print(error!.localizedDescription)
-                    // swiftlint:disable:previous force_unwrapping
-                    return
-                }
-                
-                let document = snapshot?.documents[0].reference
-                document?.delete { error in
-                    guard error == nil else {
-                        // swiftlint:disable:next force_unwrapping
-                        print(error!.localizedDescription)
-                        // swiftlint:disable:previous force_unwrapping
-                        return
-                    }
-                    
-                    post.isFavourite = !post.isFavourite
-                    self?.delegate?.postBecomeFavourite(cellPath: cellPath)
-                }
+        db.collection("FavouritesPosts").whereField(
+            "post",
+            isEqualTo: reference
+        ).whereField(
+            "user",
+            isEqualTo: currentUserReference
+        ).getDocuments { [ weak self ] snapshot, error in
+            guard error == nil else {
+                // swiftlint:disable:next force_unwrapping
+                print(error!.localizedDescription)
+                // swiftlint:disable:previous force_unwrapping
+                return
             }
-        } else {
-            let documentData = [
-                "post": reference,
-                "user": currentUserReference
-            ]
-            db.collection("FavouritesPosts").addDocument(data: documentData) { [ weak self ] error in
+            
+            let document = snapshot?.documents[0].reference
+            document?.delete { error in
                 guard error == nil else {
                     // swiftlint:disable:next force_unwrapping
                     print(error!.localizedDescription)
@@ -275,7 +257,7 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
                     return
                 }
                 
-                post.isFavourite = !post.isFavourite
+                self?.posts.removeAll { $0 === post }
                 self?.delegate?.postBecomeFavourite(cellPath: cellPath)
             }
         }

@@ -7,8 +7,7 @@ class ProfileTitleView: UIView {
         view.clipsToBounds = true
         view.layer.borderWidth = 1
         view.layer.borderColor = UIColor.label.cgColor
-        view.layer.cornerRadius = 30
-        view.image = UIImage(named: "LaunchScreenIcon")
+        view.layer.cornerRadius = 25
         
         return view
     }()
@@ -16,7 +15,6 @@ class ProfileTitleView: UIView {
         let value = UILabel()
         value.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         value.textColor = .label
-        value.text = "Michael"
         
         return value
     }()
@@ -24,36 +22,35 @@ class ProfileTitleView: UIView {
         let value = UILabel()
         value.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         value.textColor = .lightGray
-        value.text = "Programmer"
         
         return value
     }()
-    private(set) lazy var editProfileButton: UIButton = {
-        let view = UIButton()
-        view.setTitle("Редактировать", for: .normal)
-        view.setTitleColor(.white, for: .normal)
-        view.layer.cornerRadius = 4
-        view.backgroundColor = UIColor(hex: 0xF69707, alpha: 1.0)
-        view.layer.shadowOffset = CGSize(width: 4, height: 4)
-        view.layer.shadowRadius = 4
-        view.layer.shadowColor = UIColor.black.cgColor
-        view.layer.shadowOpacity = 0.7
-        view.layer.cornerRadius = 10
-        
-        return view
-    }()
+//    private(set) lazy var editProfileButton: UIButton = {
+//        let view = UIButton()
+//        view.setTitle("Редактировать", for: .normal)
+//        view.setTitleColor(.white, for: .normal)
+//        view.layer.cornerRadius = 4
+//        view.backgroundColor = UIColor(hex: 0xF69707, alpha: 1.0)
+//        view.layer.shadowOffset = CGSize(width: 4, height: 4)
+//        view.layer.shadowRadius = 4
+//        view.layer.shadowColor = UIColor.black.cgColor
+//        view.layer.shadowOpacity = 0.7
+//        view.layer.cornerRadius = 10
+//
+//        return view
+//    }()
     private(set) lazy var postsCountLabel: UILabel = {
-        let view = ProfileTitleSubInfoLabel(with: "1440\npublications")
+        let view = ProfileTitleSubInfoLabel(with: "1440\nкол-во постов")
         
         return view
     }()
     private(set) lazy var subscriptionsCountLabel: UILabel = {
-        let view = ProfileTitleSubInfoLabel(with: "500\nsubscriptions")
+        let view = ProfileTitleSubInfoLabel(with: "500\nкол-во подписок")
         
         return view
     }()
     private(set) lazy var usersCountLabel: UILabel = {
-        let view = ProfileTitleSubInfoLabel(with: "1440\nfriends")
+        let view = ProfileTitleSubInfoLabel(with: "1440\nкол-во друзей")
         
         return view
     }()
@@ -63,14 +60,14 @@ class ProfileTitleView: UIView {
         
         return view
     }()
-    private lazy var newRecordButton: UIButton = {
-        let view = UIButton()
-        view.setImage(UIImage(systemName: "square.and.arrow.up"), for: .normal)
-        view.setTitle("Запись", for: .normal)
-        view.setTitleColor(.label, for: .normal)
-        view.tintColor = .label
-        return view
-    }()
+//    private lazy var newRecordButton: UIButton = {
+//        let view = UIButton()
+//        view.setImage(UIImage(systemName: "square.and.arrow.up"), for: .normal)
+//        view.setTitle("Запись", for: .normal)
+//        view.setTitleColor(.label, for: .normal)
+//        view.tintColor = .label
+//        return view
+//    }()
     
     // MARK: - Life cycle
     required init?(coder: NSCoder) {
@@ -80,21 +77,21 @@ class ProfileTitleView: UIView {
     init(isCurrentUserProfile: Bool) {
         super.init(frame: .zero)
         
-        setSubviewsVisibility(by: isCurrentUserProfile)
+//        setSubviewsVisibility(by: isCurrentUserProfile)
         addSubviews([
             avatarImageView,
-            editProfileButton,
-            lineView,
-            newRecordButton
+//            editProfileButton,
+            lineView
+//            newRecordButton
         ])
         setSubviewsLayout(by: isCurrentUserProfile)
     }
     
     // MARK: - Sub properties
-    private func setSubviewsVisibility(by isCurrentUserProfile: Bool) {
-        editProfileButton.isHidden = !isCurrentUserProfile
-        newRecordButton.isHidden = !isCurrentUserProfile
-    }
+//    private func setSubviewsVisibility(by isCurrentUserProfile: Bool) {
+//        editProfileButton.isHidden = !isCurrentUserProfile
+////        newRecordButton.isHidden = !isCurrentUserProfile
+//    }
     
     private func setSubviewsLayout(by isCurrentUserProfile: Bool) {
         avatarImageView.snp.makeConstraints { make in
@@ -118,13 +115,13 @@ class ProfileTitleView: UIView {
             make.bottom.equalTo(avatarImageView.snp.bottom)
         }
         
-        if isCurrentUserProfile {
-            editProfileButton.snp.makeConstraints { make in
-                make.top.equalTo(titleStack.snp.bottom).offset(50)
-                make.leading.trailing.equalTo(layoutMarginsGuide)
-                make.height.equalTo(50)
-            }
-        }
+//        if isCurrentUserProfile {
+//            editProfileButton.snp.makeConstraints { make in
+//                make.top.equalTo(titleStack.snp.bottom).offset(50)
+//                make.leading.trailing.equalTo(layoutMarginsGuide)
+//                make.height.equalTo(50)
+//            }
+//        }
         
         let subTitleInfoStack = UIStackView(arrangedSubviews: [
             postsCountLabel,
@@ -139,11 +136,11 @@ class ProfileTitleView: UIView {
         subTitleInfoStack.alignment = .center
         subTitleInfoStack.snp.makeConstraints { make in
             make.leading.trailing.equalTo(layoutMarginsGuide)
-            if isCurrentUserProfile {
-                make.top.equalTo(editProfileButton.snp.bottom).offset(15)
-            } else {
-                make.top.equalTo(titleStack.snp.bottom).offset(15)
-            }
+//            if isCurrentUserProfile {
+//                make.top.equalTo(editProfileButton.snp.bottom).offset(15)
+//            } else {
+            make.top.equalTo(titleStack.snp.bottom).offset(15)
+//            }
             make.height.equalTo(60)
         }
         
@@ -153,11 +150,11 @@ class ProfileTitleView: UIView {
             make.height.equalTo(1)
         }
         
-        if isCurrentUserProfile {
-            newRecordButton.snp.makeConstraints { make in
-                make.leading.trailing.bottom.equalTo(layoutMargins)
-                make.top.equalTo(lineView.snp.bottom).offset(10)
-            }
-        }
+//        if isCurrentUserProfile {
+//            newRecordButton.snp.makeConstraints { make in
+//                make.leading.trailing.bottom.equalTo(layoutMargins)
+//                make.top.equalTo(lineView.snp.bottom).offset(10)
+//            }
+//        }
     }
 }

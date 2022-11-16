@@ -5,7 +5,6 @@ class FeedTableViewCellPostView: UIView {
     private(set) lazy var postTextLabel: UILabel = {
         let view = UILabel()
         view.numberOfLines = 4
-        view.text = "Test post"
         
         return view
     }()

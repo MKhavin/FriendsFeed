@@ -1,6 +1,3 @@
-import FirebaseAuth
-import FirebaseFirestore
-
 protocol ProfileViewModelProtocol {
     var userDataDidLoaded: ((Result<User?, Error>) -> Void)? { get set }
     var postsDataDidLoad: ((Error?) -> Void)? { get set }
@@ -11,6 +8,7 @@ protocol ProfileViewModelProtocol {
     func pushPostInfo(for postNumber: Int)
     func pushPhotosView()
     func getUserInfo() -> User?
+    func logOut()
 }
 
 class ProfileViewModel: ProfileViewModelProtocol {
@@ -51,9 +49,17 @@ class ProfileViewModel: ProfileViewModelProtocol {
     func getUserInfo() -> User? {
         model.profile
     }
+    
+    func logOut() {
+        model.logOut()
+    }
 }
 
 extension ProfileViewModel: ProfileModelManagerDelegate {
+    func userDidLogOut() {
+        coordinator?.pushAuthenticationView()
+    }
+    
     func userDataDidLoad(_ result: Result<User?, Error>) {
         userDataDidLoaded?(result)
     }
