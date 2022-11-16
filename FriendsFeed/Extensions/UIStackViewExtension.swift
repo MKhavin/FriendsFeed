@@ -1,10 +1,3 @@
-//
-//  UIStackViewExtensions.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 04.10.2022.
-//
-
 import UIKit
 
 extension UIStackView {
@@ -15,14 +8,14 @@ extension UIStackView {
     }
     
     func resetStack() {
-        var count = arrangedSubviews.count
+        var subViewsCount = arrangedSubviews.count
         
-        while count != 0 {
-            let view = arrangedSubviews[count - 1]
+        while subViewsCount > 0 {
+            let view = arrangedSubviews[subViewsCount - 1]
             NSLayoutConstraint.deactivate(view.constraints)
             removeArrangedSubview(view)
             view.removeFromSuperview()
-            count -= 1
+            subViewsCount -= 1
         }
     }
 }

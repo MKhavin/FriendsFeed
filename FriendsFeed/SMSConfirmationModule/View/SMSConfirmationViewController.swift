@@ -46,6 +46,7 @@ class SMSConfirmationViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        mainView?.numberView.phoneNumberLabel.text = viewModel.phoneNumber
         navigationController?.isNavigationBarHidden = false
         setNotifications()
     }

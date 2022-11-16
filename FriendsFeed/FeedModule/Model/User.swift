@@ -7,7 +7,7 @@
 
 import Foundation
 
-class User {
+struct User {
     enum Sex: String {
         case male, female
     }

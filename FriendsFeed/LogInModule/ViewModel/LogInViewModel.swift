@@ -38,7 +38,7 @@ class LogInViewModel: LogInViewModelProtocol {
             
             UserDefaults.standard.set(verificationID, forKey: "verificationID")
             
-            self.coordinator?.pushConfirmationView()
+            self.coordinator?.pushConfirmationView(for: phoneNumber ?? "")
         }
     }
 }

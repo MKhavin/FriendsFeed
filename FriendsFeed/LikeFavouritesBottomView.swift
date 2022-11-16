@@ -1,14 +1,7 @@
-//
-//  FeedTableViewCellBottomView.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 10.10.2022.
-//
-
 import UIKit
 
 class LikeFavouritesBottomView: UIView {
-    //MARK: - UI elements
+    // MARK: - UI elements
     private(set) lazy var likeButton: UIButton = {
         let view = UIButton()
         view.setImage(UIImage(systemName: "heart"), for: .normal)
@@ -21,7 +14,7 @@ class LikeFavouritesBottomView: UIView {
     private(set) lazy var favouritesButton: UIButton = {
         let view = UIButton()
         view.setImage(UIImage(systemName: "bookmark.square"), for: .normal)
-        view.tintColor = .label
+        view.tintColor = .gray
         view.setTitle("Favourite", for: .normal)
         view.setTitleColor(UIColor.label, for: .normal)
         
@@ -46,7 +39,7 @@ class LikeFavouritesBottomView: UIView {
         return stackView
     }()
     
-    //MARK: - Life cycle
+    // MARK: - Life cycle
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -62,7 +55,7 @@ class LikeFavouritesBottomView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Sub methods
+    // MARK: - Sub methods
     private func setSubviewsLayout() {
         topBorder.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(safeAreaLayoutGuide)
@@ -72,6 +65,35 @@ class LikeFavouritesBottomView: UIView {
         stackView.snp.makeConstraints { make in
             make.leading.bottom.trailing.equalTo(safeAreaLayoutGuide)
             make.top.equalTo(topBorder.snp.bottom).offset(10)
+        }
+    }
+    
+    func setLikeButton(post: Post?) {
+        guard let currentPost = post else {
+            return
+        }
+        
+        likeButton.setTitle("\(currentPost.likes)", for: .normal)
+        if currentPost.isLiked {
+            likeButton.tintColor = .red
+            likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        } else {
+            likeButton.tintColor = .label
+            likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+        }
+    }
+    
+    func setFavouritesButton(post: Post?) {
+        guard let currentPost = post else {
+            return
+        }
+        
+        if currentPost.isFavourite {
+            favouritesButton.tintColor = .label
+            favouritesButton.setImage(UIImage(systemName: "bookmark.square.fill"), for: .normal)
+        } else {
+            favouritesButton.tintColor = .lightGray
+            favouritesButton.setImage(UIImage(systemName: "bookmark.square"), for: .normal)
         }
     }
 }

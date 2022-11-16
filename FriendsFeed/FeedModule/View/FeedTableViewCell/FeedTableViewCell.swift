@@ -11,14 +11,36 @@ import SnapKit
 
 protocol FeedTableViewCellDelegateProtocol: AnyObject {
     func titleDidTap(user: User?)
+    func likeButtonDidTap(_ sender: FeedTableViewCell, post: Post?)
+    func favouritesButtonDidTap(_ sender: FeedTableViewCell, post: Post?)
+}
+
+extension FeedTableViewCellDelegateProtocol {
+    func likeButtonDidTap(_ sender: FeedTableViewCell, post: Post?) {
+        
+    }
+    
+    func titleDidTap(user: User?) {
+        
+    }
+    
+    func favouritesButtonDidTap(_ sender: FeedTableViewCell, post: Post?) {
+        
+    }
 }
 
 class FeedTableViewCell: UITableViewCell {
     //MARK: - UI elements
     private(set) lazy var titleView = FeedTableViewCellTitleView()
     private lazy var postView: FeedTableViewCellPostView = FeedTableViewCellPostView()
-    private(set) lazy var bottomView: LikeFavouritesBottomView = LikeFavouritesBottomView()
-    private(set) var postAuthor: User?
+    private(set) lazy var bottomView: LikeFavouritesBottomView = {
+        let view = LikeFavouritesBottomView()
+        view.likeButton.addTarget(self, action: #selector(likeButtonTapped(_:)), for: .touchUpInside)
+        view.favouritesButton.addTarget(self, action: #selector(favouritesButtonTapped(_:)), for: .touchUpInside)
+        
+        return view
+    }()
+    private(set) var post: Post?
     private var tapGesture: UITapGestureRecognizer!
     weak var delegate: FeedTableViewCellDelegateProtocol?
     
@@ -51,24 +73,25 @@ class FeedTableViewCell: UITableViewCell {
         //Set bottomView data
         bottomView.likeButton.setTitle("", for: .normal)
         
-        postAuthor = nil
+        post = nil
     }
     
     //MARK: - Sub methods
     func setCell(data: Post) {
+        post = data
+        
         // Set titleView data
-        titleView.nameLabel.text = data.author.firstName
-        titleView.subNameLabel.text = data.author.lastName
-        titleView.avatarImageView.getImageFor(imagePath: data.author.avatar ?? "")
+        titleView.nameLabel.text = data.author?.firstName
+        titleView.subNameLabel.text = data.author?.lastName
+        titleView.avatarImageView.getImageFor(imagePath: data.author?.avatar ?? "")
         
         //Set postView data
         postView.postTextLabel.text = data.text
         postView.postImageView.getImageFor(imagePath: data.image ?? "")
         
         //Set bottomView data
-        bottomView.likeButton.setTitle("\(data.likes ?? 0)", for: .normal)
-        
-        postAuthor = data.author
+        bottomView.setLikeButton(post: post)
+        bottomView.setFavouritesButton(post: post)
     }
     
     private func setSubviewsLayout() {
@@ -103,6 +126,14 @@ class FeedTableViewCell: UITableViewCell {
     }
     
     @objc private func userAvatarTapped(_ sender: UIView) {
-        delegate?.titleDidTap(user: postAuthor)
+        delegate?.titleDidTap(user: post?.author)
+    }
+    
+    @objc private func likeButtonTapped(_ sender: UIButton) {
+        delegate?.likeButtonDidTap(self, post: post)
+    }
+    
+    @objc private func favouritesButtonTapped(_ sender: UIButton) {
+        delegate?.favouritesButtonDidTap(self, post: post)
     }
 }

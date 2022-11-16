@@ -10,6 +10,7 @@ import FirebaseAuth
 
 protocol SMSConfirmationViewModelProtocol {
     var coordinator: AppCoordinatorProtocol? { get set }
+    var phoneNumber: String { get }
     var showErrorMessage: ((String) -> Void)? { get set }
     var errorMessage: String { get set }
     func confirm(with code: String?)
@@ -17,6 +18,7 @@ protocol SMSConfirmationViewModelProtocol {
 
 class SMSConfirmationViewModel: SMSConfirmationViewModelProtocol {
     var coordinator: AppCoordinatorProtocol?
+    private(set) var phoneNumber: String
     var errorMessage: String = "" {
         didSet {
             showErrorMessage?(errorMessage)
@@ -24,8 +26,9 @@ class SMSConfirmationViewModel: SMSConfirmationViewModelProtocol {
     }
     var showErrorMessage: ((String) -> Void)?
     
-    init(coordinator: AppCoordinatorProtocol?) {
+    init(coordinator: AppCoordinatorProtocol?, phoneNumber: String) {
         self.coordinator = coordinator
+        self.phoneNumber = phoneNumber
     }
     
     func confirm(with code: String?) {

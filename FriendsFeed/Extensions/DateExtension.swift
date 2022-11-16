@@ -1,10 +1,3 @@
-//
-//  DateExtension.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 18.10.2022.
-//
-
 import Foundation
 
 extension Date {

@@ -1,30 +1,26 @@
-//
-//  CachedImageView.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 17.10.2022.
-//
 import UIKit
 import FirebaseStorage
 
-class CachedImageView: UIImageView {
-    //MARK: - Sub properties
+final class CachedImageView: UIImageView {
+    // MARK: - Sub properties
     static let cache: NSCache<NSString, NSData> = NSCache()
     
-    //MARK: - UI elements
+    // MARK: - UI elements
     private lazy var activityIndicatorView: UIActivityIndicatorView = {
         let view = UIActivityIndicatorView(style: .large)
-        view.backgroundColor = UIColor(red: 0,
-                                       green: 0,
-                                       blue: 0,
-                                       alpha: 0.2)
+        view.backgroundColor = UIColor(
+            red: 0,
+            green: 0,
+            blue: 0,
+            alpha: 0.2
+        )
         view.clipsToBounds = true
         view.startAnimating()
         
         return view
     }()
     
-    //MARK: - Life cycle
+    // MARK: - Life cycle
     convenience init() {
         self.init(frame: .zero)
     }
@@ -40,7 +36,7 @@ class CachedImageView: UIImageView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Sub methods
+    // MARK: - Sub methods
     private func setSubviewsLayout() {
         activityIndicatorView.snp.makeConstraints { make in
             make.edges.equalTo(self)
@@ -61,7 +57,10 @@ class CachedImageView: UIImageView {
         
         imageReference.getData(maxSize: 1024 * 1024 * 1024) { data, error in
             guard error == nil else {
+                // swiftlint:disable:next force_unwrapping
                 print(error!.localizedDescription)
+                // swiftlint:disable:previous force_unwrapping
+                
                 if let url = Bundle.main.url(forResource: "FriendsFeed", withExtension: "pdf"),
                    let defaultImage = try? Data(contentsOf: url) {
                     self.setNewImage(by: defaultImage)
@@ -71,17 +70,24 @@ class CachedImageView: UIImageView {
             
             if let unwrappedData = data {
                 self.setNewImage(by: unwrappedData)
-                CachedImageView.cache.setObject(NSData(data: unwrappedData),
-                                forKey: NSString(string: imagePath))
+                CachedImageView.cache.setObject(
+                    NSData(data: unwrappedData),
+                    forKey: NSString(string: imagePath)
+                )
             }
         }
     }
     
     func getImageFor(imagePath: String) {
+        guard !imagePath.isEmpty else {
+            return
+        }
+        
         DispatchQueue.global(qos: .userInitiated).async {
             if let imageData = CachedImageView.cache.object(forKey: NSString(string: imagePath)) {
                 DispatchQueue.main.async {
-                    self.image = UIImage(data: imageData as Data)
+                    let rawImage = UIImage(data: imageData as Data)
+                    self.image = UIImage(data: rawImage?.jpegData(compressionQuality: 0.5) ?? Data())
                     self.activityIndicatorView.isHidden = true
                 }
             } else {

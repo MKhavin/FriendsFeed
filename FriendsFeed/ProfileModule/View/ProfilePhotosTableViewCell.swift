@@ -16,14 +16,14 @@ class ProfilePhotosTableViewCell: UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = "Photos"
         view.font = .systemFont(ofSize: 24, weight: .bold)
-        view.textColor = .black
+        view.textColor = .label
         return view
     }()
     
     private lazy var headerImage: UIImageView = {
         let view = UIImageView(image: UIImage(systemName: "arrow.right"))
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.tintColor = .black
+        view.tintColor = .label
         return view
     }()
     

@@ -37,28 +37,40 @@ class FeedViewController: UIViewController {
         super.viewWillAppear(true)
         
         setNavigationBarApppearance()
+        mainView?.feedTableView.reloadData()
     }
     
     //MARK: - Sub methods
     private func setUpRootView() {
         mainView?.feedTableView.delegate = self
         mainView?.feedTableView.dataSource = self
+        mainView?.delegate = self
     }
     
     private func setViewModelCallbacks() {
         viewModel.postLoaded = {
-            self.mainView?.feedTableView.reloadData()
+            self.mainView?.feedTableView.refreshControl?.endRefreshing()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1){
+                self.mainView?.feedTableView.reloadData()
+            }
+        }
+        viewModel.postDidLiked = { cell in
+            cell.bottomView.setLikeButton(post: cell.post)
+        }
+        viewModel.postDidSetFavourite = { cell in
+            cell.bottomView.setFavouritesButton(post: cell.post)
         }
     }
     
     private func setNavigationBarApppearance() {
         navigationController?.isNavigationBarHidden = false
-        navigationController?.navigationBar.prefersLargeTitles = true
+//        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     //MARK: - Actions
     @objc private func userAvatarTapped(_ sender: UIView) {
-        guard let cell = sender as? FeedTableViewCell, let author = cell.postAuthor else {
+        guard let cell = sender as? FeedTableViewCell, let author = cell.post?.author else {
             return
         }
         
@@ -72,7 +84,11 @@ extension FeedViewController: UITableViewDelegate {
         guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: ItemsIdentifier.feedSectionHeader.rawValue) as? FeedSectionView else {
             return nil
         }
-    
+        
+        if viewModel.postsCollections.count < section {
+            return nil
+        }
+        
         let collectionDate = viewModel.postsCollections[section].date
         header.setCell(data: collectionDate)
         
@@ -122,5 +138,27 @@ extension FeedViewController: FeedTableViewCellDelegateProtocol {
         }
         
         viewModel.showUserProfile(for: author)
+    }
+    
+    func likeButtonDidTap(_ sender: FeedTableViewCell, post: Post?) {
+        guard let currentPost = post else {
+            return
+        }
+        
+        viewModel.likePost(in: sender, post: currentPost)
+    }
+    
+    func favouritesButtonDidTap(_ sender: FeedTableViewCell, post: Post?) {
+        guard let currentPost = post else {
+            return
+        }
+        
+        viewModel.setPostInFavourites(in: sender, post: currentPost)
+    }
+}
+
+extension FeedViewController: FeedViewDelegateProtocol {
+    func refreshDataDidLaunch() {
+        viewModel.getFeed()
     }
 }

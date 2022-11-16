@@ -18,12 +18,18 @@
 		511175C22901E4AF0037FF7D /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511175C12901E4AF0037FF7D /* ProfileViewController.swift */; };
 		511175C42901E4C80037FF7D /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511175C32901E4C80037FF7D /* ProfileView.swift */; };
 		511175C62901E7DD0037FF7D /* ProfileTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511175C52901E7DD0037FF7D /* ProfileTitleView.swift */; };
+		5123BE152921848300CAE758 /* FavouritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5123BE142921848300CAE758 /* FavouritesView.swift */; };
+		5123BE1729218D1300CAE758 /* FavouritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5123BE1629218D1300CAE758 /* FavouritesViewController.swift */; };
+		5123BE1929218EEC00CAE758 /* FavouritesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5123BE1829218EEC00CAE758 /* FavouritesCoordinator.swift */; };
+		5123BE1B29218FFC00CAE758 /* FavouritesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5123BE1A29218FFC00CAE758 /* FavouritesViewModel.swift */; };
+		5123BE1D292191DF00CAE758 /* FavouritesModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5123BE1C292191DF00CAE758 /* FavouritesModelManager.swift */; };
 		514664DA290086EE006B3EDE /* PostInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514664D9290086EE006B3EDE /* PostInfoView.swift */; };
 		514664DC29008702006B3EDE /* PostInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514664DB29008702006B3EDE /* PostInfoViewController.swift */; };
 		514664E029009CC7006B3EDE /* PostInfoTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514664DF29009CC7006B3EDE /* PostInfoTitleView.swift */; };
 		514664E22900A14D006B3EDE /* PostInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514664E12900A14D006B3EDE /* PostInfoViewModel.swift */; };
 		5149DB7828FF3ACD00D08EE2 /* NavigationCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5149DB7728FF3ACD00D08EE2 /* NavigationCoordinatorProtocol.swift */; };
 		5149DB7A28FF49C600D08EE2 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5149DB7928FF49C600D08EE2 /* DateExtension.swift */; };
+		516A74D4291C4BB6009312A9 /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516A74D3291C4BB6009312A9 /* ProfileEditView.swift */; };
 		516CCE5E2907ABC400DDB7D9 /* ProfilePhotosTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516CCE5D2907ABC400DDB7D9 /* ProfilePhotosTableViewCell.swift */; };
 		516CCE602907C3F200DDB7D9 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516CCE5F2907C3F200DDB7D9 /* ProfileViewModel.swift */; };
 		5185D1DC28F4A6ED003595A6 /* FeedTableViewCellTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5185D1DB28F4A6ED003595A6 /* FeedTableViewCellTitleView.swift */; };
@@ -37,7 +43,6 @@
 		51AFAF1E28D8EDA70075DB21 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51AFAF1D28D8EDA70075DB21 /* LogInViewController.swift */; };
 		51AFAF2028D8EDB50075DB21 /* LogInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51AFAF1F28D8EDB50075DB21 /* LogInView.swift */; };
 		51AFAF2328D8EE880075DB21 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51AFAF2228D8EE880075DB21 /* UIColorExtension.swift */; };
-		51AFAF2528D8F18F0075DB21 /* CustomColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51AFAF2428D8F18F0075DB21 /* CustomColors.swift */; };
 		51CD697D290F251C007F0FF8 /* ProfilePhotosViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51CD697C290F251C007F0FF8 /* ProfilePhotosViewModel.swift */; };
 		51DD900E290739E70036B521 /* ProfileTitleSubInfoLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DD900D290739E70036B521 /* ProfileTitleSubInfoLabel.swift */; };
 		51DD901129073E6F0036B521 /* ProfileTitleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DD901029073E6F0036B521 /* ProfileTitleButton.swift */; };
@@ -87,12 +92,18 @@
 		511175C12901E4AF0037FF7D /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		511175C32901E4C80037FF7D /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		511175C52901E7DD0037FF7D /* ProfileTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTitleView.swift; sourceTree = "<group>"; };
+		5123BE142921848300CAE758 /* FavouritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesView.swift; sourceTree = "<group>"; };
+		5123BE1629218D1300CAE758 /* FavouritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesViewController.swift; sourceTree = "<group>"; };
+		5123BE1829218EEC00CAE758 /* FavouritesCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesCoordinator.swift; sourceTree = "<group>"; };
+		5123BE1A29218FFC00CAE758 /* FavouritesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesViewModel.swift; sourceTree = "<group>"; };
+		5123BE1C292191DF00CAE758 /* FavouritesModelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesModelManager.swift; sourceTree = "<group>"; };
 		514664D9290086EE006B3EDE /* PostInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostInfoView.swift; sourceTree = "<group>"; };
 		514664DB29008702006B3EDE /* PostInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostInfoViewController.swift; sourceTree = "<group>"; };
 		514664DF29009CC7006B3EDE /* PostInfoTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostInfoTitleView.swift; sourceTree = "<group>"; };
 		514664E12900A14D006B3EDE /* PostInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostInfoViewModel.swift; sourceTree = "<group>"; };
 		5149DB7728FF3ACD00D08EE2 /* NavigationCoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCoordinatorProtocol.swift; sourceTree = "<group>"; };
 		5149DB7928FF49C600D08EE2 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
+		516A74D3291C4BB6009312A9 /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
 		516CCE5D2907ABC400DDB7D9 /* ProfilePhotosTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePhotosTableViewCell.swift; sourceTree = "<group>"; };
 		516CCE5F2907C3F200DDB7D9 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		5185D1DB28F4A6ED003595A6 /* FeedTableViewCellTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTableViewCellTitleView.swift; sourceTree = "<group>"; };
@@ -106,7 +117,6 @@
 		51AFAF1D28D8EDA70075DB21 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		51AFAF1F28D8EDB50075DB21 /* LogInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInView.swift; sourceTree = "<group>"; };
 		51AFAF2228D8EE880075DB21 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
-		51AFAF2428D8F18F0075DB21 /* CustomColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColors.swift; sourceTree = "<group>"; };
 		51CD697C290F251C007F0FF8 /* ProfilePhotosViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePhotosViewModel.swift; sourceTree = "<group>"; };
 		51DD900D290739E70036B521 /* ProfileTitleSubInfoLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTitleSubInfoLabel.swift; sourceTree = "<group>"; };
 		51DD901029073E6F0036B521 /* ProfileTitleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTitleButton.swift; sourceTree = "<group>"; };
@@ -232,6 +242,41 @@
 			path = Module;
 			sourceTree = "<group>";
 		};
+		5123BE10292180D300CAE758 /* FavouritesModule */ = {
+			isa = PBXGroup;
+			children = (
+				5123BE13292180E400CAE758 /* Model */,
+				5123BE12292180E200CAE758 /* View */,
+				5123BE11292180E000CAE758 /* ViewModel */,
+			);
+			path = FavouritesModule;
+			sourceTree = "<group>";
+		};
+		5123BE11292180E000CAE758 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				5123BE1A29218FFC00CAE758 /* FavouritesViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		5123BE12292180E200CAE758 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5123BE142921848300CAE758 /* FavouritesView.swift */,
+				5123BE1629218D1300CAE758 /* FavouritesViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		5123BE13292180E400CAE758 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				5123BE1C292191DF00CAE758 /* FavouritesModelManager.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		514664D5290082E1006B3EDE /* PostInfoModule */ = {
 			isa = PBXGroup;
 			children = (
@@ -261,6 +306,38 @@
 			sourceTree = "<group>";
 		};
 		514664D8290082F4006B3EDE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		516A74CF291C4B6E009312A9 /* ProfileEditModule */ = {
+			isa = PBXGroup;
+			children = (
+				516A74D2291C4B96009312A9 /* Model */,
+				516A74D1291C4B93009312A9 /* View */,
+				516A74D0291C4B91009312A9 /* ViewModel */,
+			);
+			path = ProfileEditModule;
+			sourceTree = "<group>";
+		};
+		516A74D0291C4B91009312A9 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		516A74D1291C4B93009312A9 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				516A74D3291C4BB6009312A9 /* ProfileEditView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		516A74D2291C4B96009312A9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 			);
@@ -349,7 +426,6 @@
 		51AFAF2128D8EE3C0075DB21 /* SupportObjects */ = {
 			isa = PBXGroup;
 			children = (
-				51AFAF2428D8F18F0075DB21 /* CustomColors.swift */,
 			);
 			name = SupportObjects;
 			sourceTree = "<group>";
@@ -406,10 +482,11 @@
 		51EA4EC228F9F19F00E6948B /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
+				5149DB7728FF3ACD00D08EE2 /* NavigationCoordinatorProtocol.swift */,
 				51FF36B628D3CA4300BFF814 /* AppCoordinator.swift */,
 				51EA4EC328F9F1B500E6948B /* FeedCoordinator.swift */,
-				5149DB7728FF3ACD00D08EE2 /* NavigationCoordinatorProtocol.swift */,
 				519D580A2916F6B5005E3D4A /* ProfileCoordinator.swift */,
+				5123BE1829218EEC00CAE758 /* FavouritesCoordinator.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -443,6 +520,8 @@
 				514664D5290082E1006B3EDE /* PostInfoModule */,
 				511175BD2901E4720037FF7D /* ProfileModule */,
 				519D580C2916FBBF005E3D4A /* PhotosModule */,
+				516A74CF291C4B6E009312A9 /* ProfileEditModule */,
+				5123BE10292180D300CAE758 /* FavouritesModule */,
 				5185D1DF28F4AA09003595A6 /* LikeFavouritesBottomView.swift */,
 				51EA4EC528F9FE4100E6948B /* MainTabBarControllerViewController.swift */,
 				51FF111B28D399AB00B0D334 /* AppDelegate.swift */,
@@ -522,6 +601,7 @@
 				51FF111428D399AB00B0D334 /* Sources */,
 				51FF111528D399AB00B0D334 /* Frameworks */,
 				51FF111628D399AB00B0D334 /* Resources */,
+				516564DF2923980C001A60A2 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -593,6 +673,27 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		516564DF2923980C001A60A2 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nexport PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		51FF111428D399AB00B0D334 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -600,6 +701,7 @@
 			files = (
 				51AFAF2028D8EDB50075DB21 /* LogInView.swift in Sources */,
 				519D58112916FBF8005E3D4A /* PhotosViewController.swift in Sources */,
+				5123BE1929218EEC00CAE758 /* FavouritesCoordinator.swift in Sources */,
 				519D58172917022E005E3D4A /* PhotosViewModel.swift in Sources */,
 				5106130828ECB0FC0060112E /* SMSConfirmationViewModel.swift in Sources */,
 				510612FE28EC3A170060112E /* LogInViewModel.swift in Sources */,
@@ -643,13 +745,17 @@
 				516CCE5E2907ABC400DDB7D9 /* ProfilePhotosTableViewCell.swift in Sources */,
 				51EC6A7128EF5AC6008BD2C7 /* FeedSectionView.swift in Sources */,
 				51FF111E28D399AB00B0D334 /* SceneDelegate.swift in Sources */,
-				51AFAF2528D8F18F0075DB21 /* CustomColors.swift in Sources */,
 				510612FC28EC39220060112E /* SMSConfirmationView.swift in Sources */,
+				5123BE1B29218FFC00CAE758 /* FavouritesViewModel.swift in Sources */,
 				516CCE602907C3F200DDB7D9 /* ProfileViewModel.swift in Sources */,
+				5123BE152921848300CAE758 /* FavouritesView.swift in Sources */,
+				5123BE1729218D1300CAE758 /* FavouritesViewController.swift in Sources */,
 				51FF36AF28D3B90A00BFF814 /* AuthenticationView.swift in Sources */,
+				5123BE1D292191DF00CAE758 /* FavouritesModelManager.swift in Sources */,
 				519D58132916FF4A005E3D4A /* PhotosCollectionViewCell.swift in Sources */,
 				51E5919528EE0B5B001D4EC0 /* FeedTableViewCell.swift in Sources */,
 				51DD901129073E6F0036B521 /* ProfileTitleButton.swift in Sources */,
+				516A74D4291C4BB6009312A9 /* ProfileEditView.swift in Sources */,
 				51FBF90728F1C77D00C7FA45 /* ItemsIdentifier.swift in Sources */,
 				511175C22901E4AF0037FF7D /* ProfileViewController.swift in Sources */,
 				514664E029009CC7006B3EDE /* PostInfoTitleView.swift in Sources */,

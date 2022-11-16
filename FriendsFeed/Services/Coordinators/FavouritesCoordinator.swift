@@ -1,17 +1,15 @@
 import UIKit
 
-// MARK: - FeedCoordinatorProtocol
-protocol FeedCoordinatorProtocol: NavigationCoordinatorProtocol {
-    var navigationController: UINavigationController { get }
-    var moduleFactory: ModuleFactoryProtocol { get }
+// MARK: - Favourites coordinator protocol
+protocol FavouritesCoordinatorProtocol: NavigationCoordinatorProtocol {
     func pushPostInfoView(with data: Post)
 }
-                                      
-// MARK: - FeedCoordinator implementation
-final class FeedCoordinator: FeedCoordinatorProtocol {
+           
+// MARK: - Favourites coordinator implementation
+final class FavouritesCoordinator: FavouritesCoordinatorProtocol {
     // MARK: - Properties
-    private(set) var navigationController: UINavigationController
-    private(set) var moduleFactory: ModuleFactoryProtocol
+    var navigationController: UINavigationController
+    var moduleFactory: ModuleFactoryProtocol
     
     // MARK: - Life cycle
     required init(moduleFactory: ModuleFactoryProtocol, navigationController: UINavigationController) {
@@ -21,10 +19,10 @@ final class FeedCoordinator: FeedCoordinatorProtocol {
     
     // MARK: - Basic navigation methods
     func pushInitialView() {
-        let view = moduleFactory.buildFeedModule(coordinator: self)
+        navigationController.tabBarItem.title = "Сохраненные"
+        navigationController.tabBarItem.image = UIImage(systemName: "heart")
         
-        navigationController.pushViewController(view, animated: true)
-        navigationController.tabBarItem.image = UIImage(systemName: "house.fill")
+        pushFavouritesView()
     }
     
     func popToRoot() {
@@ -32,6 +30,12 @@ final class FeedCoordinator: FeedCoordinatorProtocol {
     }
     
     // MARK: - Main navigation methods
+    private func pushFavouritesView() {
+        let view = moduleFactory.buildFavouritesPostsModule(coordinator: self)
+        
+        navigationController.pushViewController(view, animated: true)
+    }
+    
     func pushPostInfoView(with data: Post) {
         let view = moduleFactory.buildPostInfoModule(coordinator: self, data: data)
         

@@ -1,24 +1,20 @@
-//
-//  AuthenticationViewModel.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 15.09.2022.
-//
-
+// MARK: - Authentication view model protocol
 protocol AuthenticationViewModelProtocol {
-    var coordinator: AppCoordinatorProtocol? { get set }
     func pushLogInView()
 }
 
-class AuthenticationViewModel: AuthenticationViewModelProtocol {
-    var coordinator: AppCoordinatorProtocol?
+// MARK: - Authentication view model implementation
+final class AuthenticationViewModel: AuthenticationViewModelProtocol {
+    // MARK: - Properties
+    private var coordinator: AppCoordinatorProtocol?
     
+    // MARK: - Life cycle
     init(coordinator: AppCoordinatorProtocol?) {
         self.coordinator = coordinator
     }
     
+    // MARK: - Methods
     func pushLogInView() {
         coordinator?.pushLogInView()
     }
 }
-

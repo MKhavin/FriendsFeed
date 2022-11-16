@@ -19,7 +19,8 @@ class SMSConfirmationTextFieldView: UIView {
     private(set) lazy var smsCodeTextField: UITextField = {
         let view = UITextField()
         view.placeholder = "------"
-        view.backgroundColor = .white
+        view.backgroundColor = .label
+        view.textColor = .systemBackground
         view.layer.borderColor = UIColor.label.cgColor
         view.layer.borderWidth = 1
         view.textAlignment = .center

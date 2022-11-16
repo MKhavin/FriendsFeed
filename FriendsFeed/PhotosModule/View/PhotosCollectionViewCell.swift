@@ -13,7 +13,7 @@ class PhotosCollectionViewCell: UICollectionViewCell {
         let view = CachedImageView()
         view.clipsToBounds = true
         view.contentMode = .scaleAspectFit
-        view.backgroundColor = .black
+        view.backgroundColor = .label
         return view
     }()
     
