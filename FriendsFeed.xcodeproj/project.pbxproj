@@ -44,6 +44,7 @@
 		51AFAF1E28D8EDA70075DB21 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51AFAF1D28D8EDA70075DB21 /* LogInViewController.swift */; };
 		51AFAF2028D8EDB50075DB21 /* LogInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51AFAF1F28D8EDB50075DB21 /* LogInView.swift */; };
 		51AFAF2328D8EE880075DB21 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51AFAF2228D8EE880075DB21 /* UIColorExtension.swift */; };
+		51CA422729255341007B7737 /* SMSConfirmationModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51CA422629255341007B7737 /* SMSConfirmationModelManager.swift */; };
 		51CD697D290F251C007F0FF8 /* ProfilePhotosViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51CD697C290F251C007F0FF8 /* ProfilePhotosViewModel.swift */; };
 		51DD900E290739E70036B521 /* ProfileTitleSubInfoLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DD900D290739E70036B521 /* ProfileTitleSubInfoLabel.swift */; };
 		51DD901129073E6F0036B521 /* ProfileTitleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DD901029073E6F0036B521 /* ProfileTitleButton.swift */; };
@@ -119,6 +120,7 @@
 		51AFAF1D28D8EDA70075DB21 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		51AFAF1F28D8EDB50075DB21 /* LogInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInView.swift; sourceTree = "<group>"; };
 		51AFAF2228D8EE880075DB21 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		51CA422629255341007B7737 /* SMSConfirmationModelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSConfirmationModelManager.swift; sourceTree = "<group>"; };
 		51CD697C290F251C007F0FF8 /* ProfilePhotosViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePhotosViewModel.swift; sourceTree = "<group>"; };
 		51DD900D290739E70036B521 /* ProfileTitleSubInfoLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTitleSubInfoLabel.swift; sourceTree = "<group>"; };
 		51DD901029073E6F0036B521 /* ProfileTitleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTitleButton.swift; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 		510612F828EC38E80060112E /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				51CA422629255341007B7737 /* SMSConfirmationModelManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -713,6 +716,7 @@
 				519D580B2916F6B5005E3D4A /* ProfileCoordinator.swift in Sources */,
 				51DD900E290739E70036B521 /* ProfileTitleSubInfoLabel.swift in Sources */,
 				514664E22900A14D006B3EDE /* PostInfoViewModel.swift in Sources */,
+				51CA422729255341007B7737 /* SMSConfirmationModelManager.swift in Sources */,
 				51E5CF2628FDEFD30098CAD0 /* CachedImageView.swift in Sources */,
 				5185D1DE28F4A836003595A6 /* FeedTableViewCellPostView.swift in Sources */,
 				5185D1DC28F4A6ED003595A6 /* FeedTableViewCellTitleView.swift in Sources */,

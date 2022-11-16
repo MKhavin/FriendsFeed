@@ -1,15 +1,17 @@
-//
-//  SMSConfirmationTextFieldView.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 04.10.2022.
-//
-
 import UIKit
 
-class SMSConfirmationTextFieldView: UIView {
+final class SMSConfirmationTextFieldView: UIView {
+    // MARK: - Layout constraints
+    private enum LayoutConstraints {
+        static let leadingTrailingInset = 40
+        static let textFieldHeight = 50
+        static let titleInset = 10
+    }
+    
+    // MARK: - UI elements
     private lazy var smsTitleLabel: UILabel = {
         let view = UILabel()
+        
         view.text = "Введите код из SMS"
         view.textColor = .lightGray
         view.textAlignment = .left
@@ -18,18 +20,21 @@ class SMSConfirmationTextFieldView: UIView {
     }()
     private(set) lazy var smsCodeTextField: UITextField = {
         let view = UITextField()
+        
         view.placeholder = "------"
         view.backgroundColor = .label
         view.textColor = .systemBackground
+        view.textAlignment = .center
+        view.keyboardType = .numberPad
+        
+        view.layer.cornerRadius = 20
         view.layer.borderColor = UIColor.label.cgColor
         view.layer.borderWidth = 1
-        view.textAlignment = .center
-        view.layer.cornerRadius = 20
-        view.keyboardType = .numberPad
         
         return view
     }()
     
+    // MARK: - Life cycle
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -43,20 +48,22 @@ class SMSConfirmationTextFieldView: UIView {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
     }
     
+    // MARK: - Sub methods
     private func setSubviewsLayout() {
         smsCodeTextField.snp.makeConstraints { make in
             make.centerY.equalTo(safeAreaLayoutGuide)
-            make.leading.equalTo(safeAreaLayoutGuide).offset(40)
-            make.trailing.equalTo(safeAreaLayoutGuide).inset(40)
-            make.height.equalTo(50)
+            make.leading.equalTo(safeAreaLayoutGuide).offset(LayoutConstraints.leadingTrailingInset)
+            make.trailing.equalTo(safeAreaLayoutGuide).inset(LayoutConstraints.leadingTrailingInset)
+            make.height.equalTo(LayoutConstraints.textFieldHeight)
         }
+        
         smsTitleLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(smsCodeTextField.snp.top).inset(-10)
-            make.leading.equalTo(safeAreaLayoutGuide).offset(40)
-            make.trailing.equalTo(safeAreaLayoutGuide).inset(40)
+            make.bottom.equalTo(smsCodeTextField.snp.top).inset(-LayoutConstraints.titleInset)
+            make.leading.equalTo(safeAreaLayoutGuide).offset(LayoutConstraints.leadingTrailingInset)
+            make.trailing.equalTo(safeAreaLayoutGuide).inset(LayoutConstraints.leadingTrailingInset)
         }
     }
 }
