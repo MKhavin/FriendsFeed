@@ -1,15 +1,8 @@
-//
-//  PostInfoView.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 19.10.2022.
-//
-
 import UIKit
 import SwiftUI
 
 class PostInfoView: UIScrollView {
-    //MARK: - UI elements
+    // MARK: - UI elements
     private(set) lazy var postTextLabel: UILabel = {
         let view = UILabel()
         view.numberOfLines = 0
@@ -46,7 +39,7 @@ class PostInfoView: UIScrollView {
         return view
     }()
     
-    //MARK: - Life cycle
+    // MARK: - Life cycle
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -61,7 +54,7 @@ class PostInfoView: UIScrollView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Sub methods
+    // MARK: - Sub methods
     private func setSubviewsLayout() {
         contentView.snp.makeConstraints { make in
             make.leading.trailing.bottom.top.equalTo(contentLayoutGuide)

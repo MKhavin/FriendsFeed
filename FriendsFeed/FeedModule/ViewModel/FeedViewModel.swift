@@ -1,10 +1,3 @@
-//
-//  FeedViewModel.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 08.10.2022.
-//
-
 import FirebaseAuth
 import FirebaseFirestore
 import FirebaseStorage
@@ -12,8 +5,8 @@ import FirebaseStorage
 protocol FeedViewModelProtocol {
     var errorMessageChanged: ((String) -> Void)? { get set }
     var postLoaded: (() -> Void)? { get set }
-    var postDidLiked: ((FeedTableViewCell) -> ())? { get set }
-    var postDidSetFavourite: ((FeedTableViewCell) -> ())? { get set }
+    var postDidLiked: ((FeedTableViewCell) -> Void)? { get set }
+    var postDidSetFavourite: ((FeedTableViewCell) -> Void)? { get set }
     var coordinator: FeedCoordinatorProtocol? { get set }
     var postsCollections: [PostCollection] { get set }
     func getFeed()
@@ -28,8 +21,8 @@ class FeedViewModel: FeedViewModelProtocol {
     var postLoaded: (() -> Void)?
     var errorMessageChanged: ((String) -> Void)?
     var postsCollections: [PostCollection] = []
-    var postDidLiked: ((FeedTableViewCell) -> ())?
-    var postDidSetFavourite: ((FeedTableViewCell) -> ())?
+    var postDidLiked: ((FeedTableViewCell) -> Void)?
+    var postDidSetFavourite: ((FeedTableViewCell) -> Void)?
     
     init(coordinator: FeedCoordinatorProtocol?) {
         self.coordinator = coordinator
@@ -46,16 +39,22 @@ class FeedViewModel: FeedViewModelProtocol {
             let reference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
             
             db.collection("Post").whereField("User",
-                                             isNotEqualTo: reference).getDocuments() { (querySnapshot, error) in
+                                             isNotEqualTo: reference).getDocuments { (querySnapshot, error) in
                 
                 guard error == nil else {
+                    // swiftlint:disable:next force_unwrapping
                     self.errorMessageChanged?(error!.localizedDescription)
+                    // swiftlint:disable:previous force_unwrapping
                     operationGroup.leave()
                     return
                 }
                 
-                for document in querySnapshot!.documents {
-                    //                    let documentData = document.data()
+                guard let documentsSnapshot = querySnapshot else {
+                    print("Error occured while unwrapped feed snapshot")
+                    return
+                }
+                
+                for document in documentsSnapshot.documents {
                     self.processPost(document: document, on: operationGroup)
                 }
                 
@@ -78,20 +77,27 @@ class FeedViewModel: FeedViewModelProtocol {
             operationGroup?.enter()
             userData.getDocument { querySnapshot, error in
                 guard error == nil else {
+                    // swiftlint:disable:next force_unwrapping
                     self.errorMessageChanged?(error!.localizedDescription)
+                    // swiftlint:disable:previous force_unwrapping
                     operationGroup?.leave()
                     return
                 }
                 
-                let snapshotData = querySnapshot!.data()
+                guard let documentsSnapshot = querySnapshot, let snapshotData = documentsSnapshot.data() else {
+                    print("Error occured while unwrapping post feed snapshot")
+                    return
+                }
                 
-                let currentAuthor = User(id: querySnapshot!.documentID,
-                                         firstName: snapshotData!["firstName"] as? String,
-                                         lastName: snapshotData!["lastName"] as? String,
-                                         birthDate: nil,
-                                         sex: .init(rawValue: (snapshotData!["sex"] as? String) ?? "male")!,
-                                         avatar: snapshotData!["avatar"] as? String,
-                                         phoneNumber: snapshotData!["phoneNumber"] as? String)
+                let currentAuthor = User(
+                    id: documentsSnapshot.documentID,
+                    firstName: snapshotData["firstName"] as? String,
+                    lastName: snapshotData["lastName"] as? String,
+                    birthDate: nil,
+                    sex: .init(rawValue: (snapshotData["sex"] as? String) ?? "male") ?? .male,
+                    avatar: snapshotData["avatar"] as? String,
+                    phoneNumber: snapshotData["phoneNumber"] as? String
+                )
                 
                 let currentPost = Post(id: document.documentID,
                                        date: (data["Date"] as? Timestamp)?.dateValue(),
@@ -110,7 +116,9 @@ class FeedViewModel: FeedViewModelProtocol {
                 if postCollection == nil {
                     self.postsCollections.append(PostCollection(date: currentPost.date, posts: [currentPost]))
                 } else {
+                    // swiftlint:disable:next force_unwrapping
                     self.postsCollections[postCollection!].posts.append(currentPost)
+                    // swiftlint:disable:previous force_unwrapping
                 }
                 
                 operationGroup?.leave()
@@ -124,20 +132,31 @@ class FeedViewModel: FeedViewModelProtocol {
         let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
         
         group?.enter()
-        db.collection("FavouritesPosts").whereField("post",
-                                                   isEqualTo: reference).whereField("user",
-                                                                                    isEqualTo: currentUserReference).getDocuments { snapshot, error in
-                                                       guard error == nil else {
-                                                           print(error!.localizedDescription)
-                                                           group?.leave()
-                                                           return
-                                                       }
-                                                       
-                                                       for _ in snapshot!.documents {
-                                                           post.isFavourite = true
-                                                       }
-                                                       group?.leave()
-                                                   }
+        db.collection("FavouritesPosts").whereField(
+            "post",
+            isEqualTo: reference
+        ).whereField(
+            "user",
+            isEqualTo: currentUserReference
+        ).getDocuments { snapshot, error in
+            guard error == nil else {
+                // swiftlint:disable:next force_unwrapping
+                print(error!.localizedDescription)
+                // swiftlint:disable:previous force_unwrapping
+                group?.leave()
+                return
+            }
+            
+            guard let documentsSnapshot = snapshot else {
+                print("Error occured while loading feed favourites info snapshot")
+                return
+            }
+            
+            for _ in documentsSnapshot.documents {
+                post.isFavourite = true
+            }
+            group?.leave()
+        }
     }
     
     private func loadLikesInfo(for post: Post, on group: DispatchGroup?) {
@@ -148,12 +167,19 @@ class FeedViewModel: FeedViewModelProtocol {
         group?.enter()
         db.collection("PostsLikes").whereField("post", isEqualTo: reference).getDocuments { snapshot, error in
             guard error == nil else {
+                // swiftlint:disable:next force_unwrapping
                 print(error!.localizedDescription)
+                // swiftlint:disable:previous force_unwrapping
                 group?.leave()
                 return
             }
             
-            for document in snapshot!.documents {
+            guard let documentsSnapshot = snapshot else {
+                print("Error occured while loading feed favourites info snapshot")
+                return
+            }
+            
+            for document in documentsSnapshot.documents {
                 post.likes += 1
                 if let user = document.data()["user"] as? DocumentReference, user == currentUserReference {
                     post.isLiked = true
@@ -184,26 +210,34 @@ class FeedViewModel: FeedViewModelProtocol {
         let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
         
         if post.isLiked {
-            db.collection("PostsLikes").whereField("post",
-                                                   isEqualTo: reference).whereField("user",
-                                                                                    isEqualTo: currentUserReference).getDocuments {[ weak self ] snapshot, error in
-                                                       guard error == nil else {
-                                                           print(error!.localizedDescription)
-                                                           return
-                                                       }
-                                                       
-                                                       let document = snapshot?.documents[0].reference
-                                                       document?.delete() { error in
-                                                           guard error == nil else {
-                                                               print(error!.localizedDescription)
-                                                               return
-                                                           }
-                                                           
-                                                           post.isLiked = !post.isLiked
-                                                           post.likes -= 1
-                                                           
-                                                           self?.postDidLiked?(cell)
-                                                       }
+            db.collection("PostsLikes").whereField(
+                "post",
+                isEqualTo: reference
+            ).whereField(
+                "user",
+                isEqualTo: currentUserReference
+            ).getDocuments {[ weak self ] snapshot, error in
+                guard error == nil else {
+                    // swiftlint:disable:next force_unwrapping
+                    print(error!.localizedDescription)
+                    // swiftlint:disable:previous force_unwrapping
+                    return
+                }
+                
+                let document = snapshot?.documents[0].reference
+                document?.delete { error in
+                    guard error == nil else {
+                        // swiftlint:disable:next force_unwrapping
+                        print(error!.localizedDescription)
+                        // swiftlint:disable:previous force_unwrapping
+                        return
+                    }
+                    
+                    post.isLiked = !post.isLiked
+                    post.likes -= 1
+                    
+                    self?.postDidLiked?(cell)
+                }
             }
         } else {
             let documentData = [
@@ -212,7 +246,9 @@ class FeedViewModel: FeedViewModelProtocol {
             ]
             db.collection("PostsLikes").addDocument(data: documentData) {[ weak self ] error in
                 guard error == nil else {
+                    // swiftlint:disable:next force_unwrapping
                     print(error!.localizedDescription)
+                    // swiftlint:disable:previous force_unwrapping
                     return
                 }
                 
@@ -230,24 +266,32 @@ class FeedViewModel: FeedViewModelProtocol {
         let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
         
         if post.isFavourite {
-           db.collection("FavouritesPosts").whereField("post",
-                                                   isEqualTo: reference).whereField("user",
-                                                                                    isEqualTo: currentUserReference).getDocuments {[ weak self ] snapshot, error in
-                                                       guard error == nil else {
-                                                           print(error!.localizedDescription)
-                                                           return
-                                                       }
-                                                       
-                                                       let document = snapshot?.documents[0].reference
-                                                       document?.delete() { error in
-                                                           guard error == nil else {
-                                                               print(error!.localizedDescription)
-                                                               return
-                                                           }
-                                                           
-                                                           post.isFavourite = !post.isFavourite
-                                                           self?.postDidSetFavourite?(cell)
-                                                       }
+            db.collection("FavouritesPosts").whereField(
+                "post",
+                isEqualTo: reference
+            ).whereField(
+                "user",
+                isEqualTo: currentUserReference
+            ).getDocuments {[ weak self ] snapshot, error in
+                guard error == nil else {
+                    // swiftlint:disable:next force_unwrapping
+                    print(error!.localizedDescription)
+                    // swiftlint:disable:previous force_unwrapping
+                    return
+                }
+                
+                let document = snapshot?.documents[0].reference
+                document?.delete { error in
+                    guard error == nil else {
+                        // swiftlint:disable:next force_unwrapping
+                        print(error!.localizedDescription)
+                        // swiftlint:disable:previous force_unwrapping
+                        return
+                    }
+                    
+                    post.isFavourite = !post.isFavourite
+                    self?.postDidSetFavourite?(cell)
+                }
             }
         } else {
             let documentData = [
@@ -256,7 +300,9 @@ class FeedViewModel: FeedViewModelProtocol {
             ]
             db.collection("FavouritesPosts").addDocument(data: documentData) {[ weak self ] error in
                 guard error == nil else {
+                    // swiftlint:disable:next force_unwrapping
                     print(error!.localizedDescription)
+                    // swiftlint:disable:previous force_unwrapping
                     return
                 }
                 

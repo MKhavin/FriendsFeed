@@ -1,14 +1,7 @@
-//
-//  FeedTableViewCellPostView.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 10.10.2022.
-//
-
 import UIKit
 
 class FeedTableViewCellPostView: UIView {
-    //MARK: - UI elements
+    // MARK: - UI elements
     private(set) lazy var postTextLabel: UILabel = {
         let view = UILabel()
         view.numberOfLines = 4
@@ -31,7 +24,7 @@ class FeedTableViewCellPostView: UIView {
         return view
     }()
     
-    //MARK: - Life cycle
+    // MARK: - Life cycle
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -47,7 +40,7 @@ class FeedTableViewCellPostView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Sub methods
+    // MARK: - Sub methods
     private func setSubviewsLayout() {
         leftBorder.snp.makeConstraints { make in
             make.leading.equalTo(safeAreaLayoutGuide).offset(10)

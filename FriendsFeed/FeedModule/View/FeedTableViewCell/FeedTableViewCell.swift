@@ -1,12 +1,4 @@
-//
-//  FeedTableViewCell.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 05.10.2022.
-//
-
 import UIKit
-import SwiftUI
 import SnapKit
 
 protocol FeedTableViewCellDelegateProtocol: AnyObject {
@@ -16,21 +8,15 @@ protocol FeedTableViewCellDelegateProtocol: AnyObject {
 }
 
 extension FeedTableViewCellDelegateProtocol {
-    func likeButtonDidTap(_ sender: FeedTableViewCell, post: Post?) {
-        
-    }
+    func likeButtonDidTap(_ sender: FeedTableViewCell, post: Post?) { }
     
-    func titleDidTap(user: User?) {
-        
-    }
+    func titleDidTap(user: User?) { }
     
-    func favouritesButtonDidTap(_ sender: FeedTableViewCell, post: Post?) {
-        
-    }
+    func favouritesButtonDidTap(_ sender: FeedTableViewCell, post: Post?) { }
 }
 
 class FeedTableViewCell: UITableViewCell {
-    //MARK: - UI elements
+    // MARK: - UI elements
     private(set) lazy var titleView = FeedTableViewCellTitleView()
     private lazy var postView: FeedTableViewCellPostView = FeedTableViewCellPostView()
     private(set) lazy var bottomView: LikeFavouritesBottomView = {
@@ -41,10 +27,12 @@ class FeedTableViewCell: UITableViewCell {
         return view
     }()
     private(set) var post: Post?
+    // swiftlint:disable:next implicitly_unwrapped_optional
     private var tapGesture: UITapGestureRecognizer!
+    // swiftlint:disable:previous implicitly_unwrapped_optional
     weak var delegate: FeedTableViewCellDelegateProtocol?
     
-    //MARK: - Life cycle
+    // MARK: - Life cycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -66,17 +54,17 @@ class FeedTableViewCell: UITableViewCell {
         titleView.subNameLabel.text = ""
         titleView.avatarImageView.image = nil
         
-        //Set postView data
+        // Set postView data
         postView.postTextLabel.text = ""
         postView.postImageView.image = nil
         
-        //Set bottomView data
+        // Set bottomView data
         bottomView.likeButton.setTitle("", for: .normal)
         
         post = nil
     }
     
-    //MARK: - Sub methods
+    // MARK: - Sub methods
     func setCell(data: Post) {
         post = data
         
@@ -85,11 +73,11 @@ class FeedTableViewCell: UITableViewCell {
         titleView.subNameLabel.text = data.author?.lastName
         titleView.avatarImageView.getImageFor(imagePath: data.author?.avatar ?? "")
         
-        //Set postView data
+        // Set postView data
         postView.postTextLabel.text = data.text
         postView.postImageView.getImageFor(imagePath: data.image ?? "")
         
-        //Set bottomView data
+        // Set bottomView data
         bottomView.setLikeButton(post: post)
         bottomView.setFavouritesButton(post: post)
     }
@@ -100,10 +88,12 @@ class FeedTableViewCell: UITableViewCell {
         stackView.spacing = 2
         stackView.distribution = .fillProportionally
         stackView.alignment = .fill
-        stackView.backgroundColor = UIColor(red: 245/255.0,
-                                            green: 243/255.0,
-                                            blue: 238/255.0,
-                                            alpha: 1)
+        stackView.backgroundColor = UIColor(
+            red: 245 / 255.0,
+            green: 243 / 255.0,
+            blue: 238 / 255.0,
+            alpha: 1
+        )
         
         stackView.addArrangedSubview(titleView)
         stackView.addArrangedSubview(postView)

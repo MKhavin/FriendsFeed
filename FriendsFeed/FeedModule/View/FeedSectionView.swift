@@ -1,16 +1,9 @@
-//
-//  FeedSectionView.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 06.10.2022.
-//
-
 import UIKit
 import SwiftUI
 import SnapKit
 
 class FeedSectionView: UITableViewHeaderFooterView {
-    //MARK: - UI elements
+    // MARK: - UI elements
     private(set) lazy var dateLabel: UILabelWithPadding = {
         let view = UILabelWithPadding()
         view.layer.borderWidth = 1
@@ -20,7 +13,7 @@ class FeedSectionView: UITableViewHeaderFooterView {
         return view
     }()
     
-    //MARK: -  Life cycle
+    // MARK: - Life cycle
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         
@@ -33,7 +26,7 @@ class FeedSectionView: UITableViewHeaderFooterView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Sub methods
+    // MARK: - Sub methods
     private func setSubviewsLayout() {
         let leftBorder = UIView(frame: .zero)
         let rightBorder = UIView(frame: .zero)

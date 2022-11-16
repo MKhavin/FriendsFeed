@@ -1,7 +1,7 @@
 import UIKit
 
 class ProfilePhotosTableViewCell: UITableViewCell {
-    //MARK: - UI Elements
+    // MARK: - UI Elements
     private lazy var headerStack: UIStackView = {
         let view = UIStackView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -35,7 +35,9 @@ class ProfilePhotosTableViewCell: UITableViewCell {
         view.spacing = 8
         return view
     }()
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var viewModel: ProfilePhotosViewModelProtocol!
+    // swiftlint:disable:previous implicitly_unwrapped_optional
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -115,8 +117,6 @@ class ProfilePhotosTableViewCell: UITableViewCell {
         }
     }
     
-    
-    //remove cell line borders
     override func addSubview(_ view: UIView) {
         if (view.frame.height * UIScreen.main.scale) == 1 {
             return

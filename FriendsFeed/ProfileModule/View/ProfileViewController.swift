@@ -1,15 +1,9 @@
-//
-//  ProfileViewController.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 20.10.2022.
-//
-
 import UIKit
-import SwiftUI
 
 class ProfileViewController: UIViewController {
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var viewModel: ProfileViewModelProtocol!
+    // swiftlint:disable:previous implicitly_unwrapped_optional
     private weak var mainView: ProfileView?
     
     override func loadView() {
@@ -37,7 +31,7 @@ class ProfileViewController: UIViewController {
                 }
             case .failure(let error):
                 let alert = UIAlertController(title: "Error occured", message: error.localizedDescription, preferredStyle: .alert)
-                let action = UIAlertAction(title: "Ok", style: .default) { action in
+                let action = UIAlertAction(title: "Ok", style: .default) { _ in
                     self.dismiss(animated: true)
                 }
                 alert.addAction(action)
@@ -46,8 +40,11 @@ class ProfileViewController: UIViewController {
         }
         viewModel.postsDataDidLoad = { error in
             guard error == nil else {
+                // swiftlint:disable:next force_unwrapping
                 let alert = UIAlertController(title: "Error occured", message: error!.localizedDescription, preferredStyle: .alert)
-                let action = UIAlertAction(title: "Ok", style: .default) { action in
+                // swiftlint:disable:previous force_unwrapping
+                
+                let action = UIAlertAction(title: "Ok", style: .default) { _ in
                     self.dismiss(animated: true)
                 }
                 alert.addAction(action)
@@ -62,6 +59,8 @@ class ProfileViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
         navigationItem.largeTitleDisplayMode = .never
     }
 }
@@ -82,9 +81,11 @@ extension ProfileViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
         case 0:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ItemsIdentifier.profilePhotosCell.rawValue,
-                                                                              for: indexPath) as? ProfilePhotosTableViewCell else {
-                fatalError()
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: ItemsIdentifier.profilePhotosCell.rawValue,
+                for: indexPath
+            ) as? ProfilePhotosTableViewCell else {
+                return UITableViewCell()
             }
             
             let currentUser = viewModel.getUserInfo()
@@ -92,9 +93,11 @@ extension ProfileViewController: UITableViewDataSource {
             
             return cell
         case 1:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ItemsIdentifier.profilePostsCell.rawValue,
-                                                                              for: indexPath) as? FeedTableViewCell else {
-                fatalError()
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: ItemsIdentifier.profilePostsCell.rawValue,
+                for: indexPath
+            ) as? FeedTableViewCell else {
+                return UITableViewCell()
             }
             
             let postData = viewModel.getPostData(for: indexPath.row)

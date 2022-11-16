@@ -1,20 +1,15 @@
-//
-//  FeedViewController.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 05.10.2022.
-//
-
 import UIKit
 
 class FeedViewController: UIViewController {
-    //MARK: - UI elements
+    // MARK: - UI elements
     private weak var mainView: FeedView?
     
-    //MARK: - Sub properties
+    // MARK: - Sub properties
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var viewModel: FeedViewModelProtocol!
+    // swiftlint:disable:previous implicitly_unwrapped_optional
     
-    //MARK: - Life cycle
+    // MARK: - Life cycle
     override func loadView() {
         let feedView = FeedView()
         mainView = feedView
@@ -40,7 +35,7 @@ class FeedViewController: UIViewController {
         mainView?.feedTableView.reloadData()
     }
     
-    //MARK: - Sub methods
+    // MARK: - Sub methods
     private func setUpRootView() {
         mainView?.feedTableView.delegate = self
         mainView?.feedTableView.dataSource = self
@@ -51,7 +46,7 @@ class FeedViewController: UIViewController {
         viewModel.postLoaded = {
             self.mainView?.feedTableView.refreshControl?.endRefreshing()
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1){
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.mainView?.feedTableView.reloadData()
             }
         }
@@ -68,7 +63,7 @@ class FeedViewController: UIViewController {
 //        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
-    //MARK: - Actions
+    // MARK: - Actions
     @objc private func userAvatarTapped(_ sender: UIView) {
         guard let cell = sender as? FeedTableViewCell, let author = cell.post?.author else {
             return
@@ -78,7 +73,7 @@ class FeedViewController: UIViewController {
     }
 }
 
-//MARK: - UITableViewDelegate implementation
+// MARK: - UITableViewDelegate implementation
 extension FeedViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: ItemsIdentifier.feedSectionHeader.rawValue) as? FeedSectionView else {
@@ -109,7 +104,7 @@ extension FeedViewController: UITableViewDelegate {
     }
 }
 
-//MARK: - UITableViewDataSource implementation
+// MARK: - UITableViewDataSource implementation
 extension FeedViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         viewModel.postsCollections.count

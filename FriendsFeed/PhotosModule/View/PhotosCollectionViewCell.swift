@@ -1,10 +1,3 @@
-//
-//  PhotosCollectionTableViewCell.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 05.11.2022.
-//
-
 import UIKit
 
 class PhotosCollectionViewCell: UICollectionViewCell {
@@ -37,5 +30,4 @@ class PhotosCollectionViewCell: UICollectionViewCell {
     func setCellImage(image: String) {
         photo.getImageFor(imagePath: image)
     }
-    
 }

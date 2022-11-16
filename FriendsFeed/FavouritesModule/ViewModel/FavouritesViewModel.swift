@@ -59,7 +59,9 @@ class FavouritesViewModel: FavouritesViewModelProtocol {
     func getCellPath(by post: Post) -> IndexPath? {
         let index = model?.posts.firstIndex { $0 === post }
         
+        // swiftlint:disable:next force_unwrapping
         return index != nil ? IndexPath(row: index!, section: 0) : nil
+        // swiftlint:disable:previous force_unwrapping
     }
 }
 
