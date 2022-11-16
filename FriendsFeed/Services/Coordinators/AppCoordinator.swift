@@ -51,7 +51,7 @@ final class AppCoordinator: AppCoordinatorProtocol {
     }
     
     func pushMainView() {
-        let view = moduleFactory.buildMainView()
+        let view = moduleFactory.buildMainView(appCoordinator: self)
         navigationController.setViewControllers([view], animated: true)
 //        navigationController.pushViewController(view, animated: true)
     }

@@ -21,7 +21,6 @@ class FavouritesViewController: UIViewController {
         title = "Сохраненные"
         viewModel.favouritesPostsDidLoad = {
             self.mainView?.favouritesTableView.reloadData()
-//            self.scrollCollectionToTop()
         }
         viewModel.postDidLiked = { cell in
             cell.bottomView.setLikeButton(post: cell.post)
@@ -29,22 +28,13 @@ class FavouritesViewController: UIViewController {
         viewModel.postDidSetFavourite = { cellPath in
             self.mainView?.favouritesTableView.deleteRows(at: [cellPath], with: .fade)
         }
-        viewModel.getFavouritesPosts()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        mainView?.favouritesTableView.reloadData()
+        viewModel.getFavouritesPosts()
     }
-    
-//    private func scrollCollectionToTop() {
-//        let topRow = IndexPath(row: 0,
-//                               section: 0)
-//        likedPostsTableView.scrollToRow(at: topRow,
-//                                        at: .top,
-//                                        animated: false)
-//    }
 }
 
 // MARK: Liked post table biew data source

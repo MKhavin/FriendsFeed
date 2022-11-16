@@ -33,8 +33,8 @@ class ProfileView: UIView {
     
     override func updateConstraints() {
         titleView.snp.updateConstraints { make in
-            let multiplier: CGFloat = isCurrentUserProfile ? 3 : 5
-            make.height.equalTo(frame.height / multiplier)
+//            let multiplier: CGFloat = isCurrentUserProfile ? 3 : 5
+            make.height.equalTo(frame.height / 5)
         }
         
         super.updateConstraints()
@@ -44,8 +44,8 @@ class ProfileView: UIView {
     private func setSubviewsLayout() {
         titleView.snp.makeConstraints { make in
             make.leading.trailing.top.equalTo(safeAreaLayoutGuide)
-            let multiplier: CGFloat = isCurrentUserProfile ? 3 : 5
-            make.height.equalTo(frame.height / multiplier)
+//            let multiplier: CGFloat = isCurrentUserProfile ? 3 : 5
+            make.height.equalTo(frame.height / 5)
         }
         tableView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalTo(safeAreaLayoutGuide)

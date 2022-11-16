@@ -5,6 +5,7 @@ protocol ProfileCoordinatorProtocol: NavigationCoordinatorProtocol {
     func pushPostInfoView(with data: Post)
     func pushPhotosView(for user: String)
     func pushProfileView(for user: User?, isCurrentUserProfile: Bool)
+    func pushAuthenticationView()
 }
 
 // MARK: - Profile coordinator implementation
@@ -12,11 +13,18 @@ final class ProfileCoordinator: ProfileCoordinatorProtocol {
     // MARK: - Properties
     var navigationController: UINavigationController
     var moduleFactory: ModuleFactoryProtocol
+    var appCoordinator: AppCoordinatorProtocol?
     
     // MARK: - Life cycle
     required init(moduleFactory: ModuleFactoryProtocol, navigationController: UINavigationController) {
         self.navigationController = navigationController
         self.moduleFactory = moduleFactory
+    }
+    
+    init(moduleFactory: ModuleFactoryProtocol, navigationController: UINavigationController, appCoordinator: AppCoordinatorProtocol?) {
+        self.navigationController = navigationController
+        self.moduleFactory = moduleFactory
+        self.appCoordinator = appCoordinator
     }
     
     // MARK: - Basic navigation methods
@@ -51,5 +59,9 @@ final class ProfileCoordinator: ProfileCoordinatorProtocol {
         )
         
         navigationController.pushViewController(view, animated: true)
+    }
+    
+    func pushAuthenticationView() {
+        appCoordinator?.pushInitialView()
     }
 }

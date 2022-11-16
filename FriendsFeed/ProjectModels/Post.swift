@@ -1,10 +1,3 @@
-//
-//  Post.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 08.10.2022.
-//
-
 import Foundation
 
 class Post {

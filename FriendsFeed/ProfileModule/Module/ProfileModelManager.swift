@@ -8,12 +8,14 @@ protocol ProfileModelManagerProtocol {
     var posts: [Post] { get }
     var profile: User? { get }
     func loadUserData()
+    func logOut()
 }
 
 // MARK: - Profile model manager deleagte protocol
 protocol ProfileModelManagerDelegate: AnyObject {
     func userDataDidLoad(_ result: Result<User?, Error>)
     func postDataDidLoad(_ error: Error?)
+    func userDidLogOut()
 }
 
 class ProfileModelManager: ProfileModelManagerProtocol {
@@ -147,7 +149,7 @@ class ProfileModelManager: ProfileModelManagerProtocol {
                     date: Date(timeIntervalSince1970: postData["Date"] as? Double ?? 0),
                     likes: postData["Likes"] as? UInt ?? 0,
                     text: postData["Text"] as? String,
-                    author: self?.profile, //????
+                    author: self?.profile,
                     image: postData["image"] as? String
                 )
                 
@@ -225,6 +227,15 @@ class ProfileModelManager: ProfileModelManagerProtocol {
                 }
             }
             self.group.leave()
+        }
+    }
+    
+    func logOut() {
+        do {
+            try FirebaseAuth.Auth.auth().signOut()
+            delegate?.userDidLogOut()
+        } catch {
+            print("Sign-out error")
         }
     }
 }

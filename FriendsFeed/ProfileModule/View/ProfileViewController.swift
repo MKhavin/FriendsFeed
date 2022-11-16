@@ -18,6 +18,18 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        setNavigationBar()
+        setViewModelCallbacks()
+        viewModel.loadUserData()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationItem.largeTitleDisplayMode = .never
+    }
+    
+    private func setViewModelCallbacks() {
         viewModel.userDataDidLoaded = { result in
             switch result {
             case .success(let profile):
@@ -25,9 +37,9 @@ class ProfileViewController: UIViewController {
                     self.mainView?.titleView.avatarImageView.getImageFor(imagePath: unwrappedData.avatar ?? "")
                     self.mainView?.titleView.firstNameLabel.text = unwrappedData.firstName
                     self.mainView?.titleView.workNameLabel.text = unwrappedData.lastName
-                    self.mainView?.titleView.postsCountLabel.text = "\(unwrappedData.postsCount)\nposts"
-                    self.mainView?.titleView.subscriptionsCountLabel.text = "\(unwrappedData.subscriptions)\nsubscriptions"
-                    self.mainView?.titleView.usersCountLabel.text = "\(unwrappedData.friends)\nfriends"
+                    self.mainView?.titleView.postsCountLabel.text = "\(unwrappedData.postsCount)\nкол-во постов"
+                    self.mainView?.titleView.subscriptionsCountLabel.text = "\(unwrappedData.subscriptions)\nкол-во подписок"
+                    self.mainView?.titleView.usersCountLabel.text = "\(unwrappedData.friends)\nкол-во друзей"
                 }
             case .failure(let error):
                 let alert = UIAlertController(title: "Error occured", message: error.localizedDescription, preferredStyle: .alert)
@@ -55,13 +67,20 @@ class ProfileViewController: UIViewController {
             
             self.mainView?.tableView.reloadData()
         }
-        viewModel.loadUserData()
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        navigationItem.largeTitleDisplayMode = .never
+    
+    private func setNavigationBar() {
+        if viewModel.isCurrentUserProfile {
+            let navBarButton = UIBarButtonItem(image: UIImage(systemName: "rectangle.portrait.and.arrow.right"),
+                                               style: .plain,
+                                               target: self,
+                                               action: #selector(logOutButtonDidPressed(_:)))
+            navigationItem.rightBarButtonItem = navBarButton
+        }
+    }
+                                           
+    @objc private func logOutButtonDidPressed(_ sender: UIBarButtonItem) {
+        viewModel.logOut()
     }
 }
 

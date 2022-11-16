@@ -5,10 +5,12 @@ protocol ModuleFactoryProtocol {
     func buildAuthenticationModule(coordinator: AppCoordinatorProtocol?) -> UIViewController
     func buildLogInModule(coordinator: AppCoordinatorProtocol?) -> UIViewController
     func buildFeedModule(coordinator: FeedCoordinatorProtocol?) -> UIViewController
-    func buildMainView() -> UIViewController
+    func buildMainView(appCoordinator: AppCoordinatorProtocol?) -> UIViewController
     func buildPostInfoModule(coordinator: NavigationCoordinatorProtocol?, data: Post) -> UIViewController
     func buildSMSConfirmationModule(coordinator: AppCoordinatorProtocol?, phoneNumber: String) -> UIViewController
-    func buildProfileModule(coordinator: ProfileCoordinatorProtocol?, user: User?, isCurrentUserProfile: Bool) -> UIViewController
+    func buildProfileModule(coordinator: ProfileCoordinatorProtocol?,
+                            user: User?,
+                            isCurrentUserProfile: Bool) -> UIViewController
     func buildPhotoModule(coordinator: NavigationCoordinatorProtocol?, user: String) -> UIViewController
     func buildFavouritesPostsModule(coordinator: FavouritesCoordinatorProtocol?) -> UIViewController
 }
@@ -57,7 +59,7 @@ final class ModuleFactory: ModuleFactoryProtocol {
         return view
     }
     
-    func buildMainView() -> UIViewController {
+    func buildMainView(appCoordinator: AppCoordinatorProtocol?) -> UIViewController {
         let tabBarController = MainTabBarControllerViewController()
         
         let feedNavigationController = UINavigationController()
@@ -70,7 +72,8 @@ final class ModuleFactory: ModuleFactoryProtocol {
         let profileNavigationController = UINavigationController()
         let profileCoordinator = ProfileCoordinator(
             moduleFactory: self,
-            navigationController: profileNavigationController
+            navigationController: profileNavigationController,
+            appCoordinator: appCoordinator
         )
         profileCoordinator.pushInitialView()
         
@@ -93,7 +96,9 @@ final class ModuleFactory: ModuleFactoryProtocol {
         return tabBarController
     }
     
-    func buildProfileModule(coordinator: ProfileCoordinatorProtocol?, user: User?, isCurrentUserProfile: Bool) -> UIViewController {
+    func buildProfileModule(coordinator: ProfileCoordinatorProtocol?,
+                            user: User?,
+                            isCurrentUserProfile: Bool) -> UIViewController {
         let model = ProfileModelManager(profile: user)
         let view = ProfileViewController()
         let viewModel = ProfileViewModel(model: model, coordinator: coordinator, isCurrentProfile: isCurrentUserProfile)
