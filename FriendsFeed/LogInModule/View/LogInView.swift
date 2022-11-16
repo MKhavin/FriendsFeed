@@ -1,13 +1,15 @@
-//
-//  LogInView.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 19.09.2022.
-//
-
 import UIKit
 
+// MARK: - LogIn view delegate protocol
+protocol LogInViewDelegate: AnyObject {
+    func logInButtonDidTapped(with phoneNumber: String?)
+}
+
+// MARK: - LogIn view implementation
 class LogInView: UIView {
+    // MARK: - Sub properties
+    weak var delegate: LogInViewDelegate?
+    
     // MARK: - UI Elements
     private lazy var topView: UIView = {
         let view = UIView()
@@ -54,7 +56,7 @@ class LogInView: UIView {
         
         return view
     }()
-    private(set) lazy var numberTextField: UITextField = {
+    private lazy var numberTextField: UITextField = {
         let view = UITextField()
         
         view.placeholder = "+7__________"
@@ -69,13 +71,19 @@ class LogInView: UIView {
         
         return view
     }()
-    private(set) lazy var logInButton: UIButton = {
+    private lazy var logInButton: UIButton = {
        let view = UIButton()
         
         view.setTitle("ДАЛЕЕ", for: .normal)
         view.backgroundColor = .label
         view.setTitleColor(UIColor.systemBackground, for: .normal)
         view.layer.cornerRadius = 5
+        
+        view.addTarget(
+            self,
+            action: #selector(logInButtonPressed(_:)),
+            for: .touchUpInside
+        )
         
         return view
     }()
@@ -158,5 +166,10 @@ class LogInView: UIView {
         stackView.snp.makeConstraints { make in
             make.edges.equalTo(layoutMarginsGuide)
         }
+    }
+    
+    // MARK: - Actions
+    @objc private func logInButtonPressed(_ sender: UIButton) {
+        delegate?.logInButtonDidTapped(with: numberTextField.text)
     }
 }

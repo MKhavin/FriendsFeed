@@ -60,18 +60,24 @@ final class ModuleFactory: ModuleFactoryProtocol {
         let tabBarController = MainTabBarControllerViewController()
         
         let feedNavigationController = UINavigationController()
-        let feedCoordinator = FeedCoordinator(moduleFactory: self,
-                                              navigationController: feedNavigationController)
+        let feedCoordinator = FeedCoordinator(
+            moduleFactory: self,
+            navigationController: feedNavigationController
+        )
         feedCoordinator.pushInitialView()
         
         let profileNavigationController = UINavigationController()
-        let profileCoordinator = ProfileCoordinator(moduleFactory: self,
-                                                    navigationController: profileNavigationController)
+        let profileCoordinator = ProfileCoordinator(
+            moduleFactory: self,
+            navigationController: profileNavigationController
+        )
         profileCoordinator.pushInitialView()
         
         let favouritesPostsNavigationController = UINavigationController()
-        let favouritesPostsCoordinator = FavouritesCoordinator(moduleFactory: self,
-                                                                    navigationController: favouritesPostsNavigationController)
+        let favouritesPostsCoordinator = FavouritesCoordinator(
+            moduleFactory: self,
+            navigationController: favouritesPostsNavigationController
+        )
         favouritesPostsCoordinator.pushInitialView()
 
         tabBarController.setViewControllers(
