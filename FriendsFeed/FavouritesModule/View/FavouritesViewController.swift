@@ -1,15 +1,10 @@
-//
-//  FavouritesViewController.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 13.11.2022.
-//
-
 import UIKit
 
 class FavouritesViewController: UIViewController {
     private weak var mainView: FavouritesView?
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var viewModel: FavouritesViewModelProtocol!
+    // swiftlint:disable:previous implicitly_unwrapped_optional
     
     override func loadView() {
         let currentView = FavouritesView()

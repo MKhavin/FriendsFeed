@@ -5,7 +5,9 @@ class FeedViewController: UIViewController {
     private weak var mainView: FeedView?
     
     // MARK: - Sub properties
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var viewModel: FeedViewModelProtocol!
+    // swiftlint:disable:previous implicitly_unwrapped_optional
     
     // MARK: - Life cycle
     override func loadView() {

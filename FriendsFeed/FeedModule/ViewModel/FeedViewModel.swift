@@ -42,7 +42,9 @@ class FeedViewModel: FeedViewModelProtocol {
                                              isNotEqualTo: reference).getDocuments { (querySnapshot, error) in
                 
                 guard error == nil else {
+                    // swiftlint:disable:next force_unwrapping
                     self.errorMessageChanged?(error!.localizedDescription)
+                    // swiftlint:disable:previous force_unwrapping
                     operationGroup.leave()
                     return
                 }
@@ -127,7 +129,9 @@ class FeedViewModel: FeedViewModelProtocol {
             isEqualTo: currentUserReference
         ).getDocuments { snapshot, error in
             guard error == nil else {
+                // swiftlint:disable:next force_unwrapping
                 print(error!.localizedDescription)
+                // swiftlint:disable:previous force_unwrapping
                 group?.leave()
                 return
             }
@@ -147,7 +151,9 @@ class FeedViewModel: FeedViewModelProtocol {
         group?.enter()
         db.collection("PostsLikes").whereField("post", isEqualTo: reference).getDocuments { snapshot, error in
             guard error == nil else {
+                // swiftlint:disable:next force_unwrapping
                 print(error!.localizedDescription)
+                // swiftlint:disable:previous force_unwrapping
                 group?.leave()
                 return
             }
@@ -191,14 +197,18 @@ class FeedViewModel: FeedViewModelProtocol {
                 isEqualTo: currentUserReference
             ).getDocuments {[ weak self ] snapshot, error in
                 guard error == nil else {
+                    // swiftlint:disable:next force_unwrapping
                     print(error!.localizedDescription)
+                    // swiftlint:disable:previous force_unwrapping
                     return
                 }
                 
                 let document = snapshot?.documents[0].reference
                 document?.delete { error in
                     guard error == nil else {
+                        // swiftlint:disable:next force_unwrapping
                         print(error!.localizedDescription)
+                        // swiftlint:disable:previous force_unwrapping
                         return
                     }
                     
@@ -215,7 +225,9 @@ class FeedViewModel: FeedViewModelProtocol {
             ]
             db.collection("PostsLikes").addDocument(data: documentData) {[ weak self ] error in
                 guard error == nil else {
+                    // swiftlint:disable:next force_unwrapping
                     print(error!.localizedDescription)
+                    // swiftlint:disable:previous force_unwrapping
                     return
                 }
                 
@@ -241,14 +253,18 @@ class FeedViewModel: FeedViewModelProtocol {
                 isEqualTo: currentUserReference
             ).getDocuments {[ weak self ] snapshot, error in
                 guard error == nil else {
+                    // swiftlint:disable:next force_unwrapping
                     print(error!.localizedDescription)
+                    // swiftlint:disable:previous force_unwrapping
                     return
                 }
                 
                 let document = snapshot?.documents[0].reference
-                document?.delete() { error in
+                document?.delete { error in
                     guard error == nil else {
+                        // swiftlint:disable:next force_unwrapping
                         print(error!.localizedDescription)
+                        // swiftlint:disable:previous force_unwrapping
                         return
                     }
                     
@@ -263,7 +279,9 @@ class FeedViewModel: FeedViewModelProtocol {
             ]
             db.collection("FavouritesPosts").addDocument(data: documentData) {[ weak self ] error in
                 guard error == nil else {
+                    // swiftlint:disable:next force_unwrapping
                     print(error!.localizedDescription)
+                    // swiftlint:disable:previous force_unwrapping
                     return
                 }
                 

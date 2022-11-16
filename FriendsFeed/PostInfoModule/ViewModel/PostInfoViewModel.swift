@@ -57,14 +57,18 @@ class PostInfoViewModel: PostInfoViewModelProtocol {
                 isEqualTo: currentUserReference
             ).getDocuments {[ weak self ] snapshot, error in
                 guard error == nil else {
+                    // swiftlint:disable:next force_unwrapping
                     print(error!.localizedDescription)
+                    // swiftlint:disable:previous force_unwrapping
                     return
                 }
                 
                 let document = snapshot?.documents[0].reference
                 document?.delete { error in
                     guard error == nil else {
+                        // swiftlint:disable:next force_unwrapping
                         print(error!.localizedDescription)
+                        // swiftlint:disable:previous force_unwrapping
                         return
                     }
                     
@@ -80,7 +84,9 @@ class PostInfoViewModel: PostInfoViewModelProtocol {
             ]
             db.collection("PostsLikes").addDocument(data: documentData) {[ weak self ] error in
                 guard error == nil else {
+                    // swiftlint:disable:next force_unwrapping
                     print(error!.localizedDescription)
+                    // swiftlint:disable:previous force_unwrapping
                     return
                 }
                 
@@ -107,14 +113,18 @@ class PostInfoViewModel: PostInfoViewModelProtocol {
                 isEqualTo: currentUserReference
             ).getDocuments { [ weak self ] snapshot, error in
                 guard error == nil else {
+                    // swiftlint:disable:next force_unwrapping
                     print(error!.localizedDescription)
+                    // swiftlint:disable:previous force_unwrapping
                     return
                 }
                 
                 let document = snapshot?.documents[0].reference
                 document?.delete { error in
                     guard error == nil else {
+                        // swiftlint:disable:next force_unwrapping
                         print(error!.localizedDescription)
+                        // swiftlint:disable:previous force_unwrapping
                         return
                     }
                     
@@ -129,7 +139,9 @@ class PostInfoViewModel: PostInfoViewModelProtocol {
             ]
             db.collection("FavouritesPosts").addDocument(data: documentData) {[ weak self ] error in
                 guard error == nil else {
+                    // swiftlint:disable:next force_unwrapping
                     print(error!.localizedDescription)
+                    // swiftlint:disable:previous force_unwrapping
                     return
                 }
                 

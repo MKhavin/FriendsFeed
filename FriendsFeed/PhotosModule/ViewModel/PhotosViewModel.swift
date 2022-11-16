@@ -26,7 +26,9 @@ class PhotosViewModel: PhotosViewModelProtocol {
         
         db.collection("UsersPhoto").whereField("user", isEqualTo: userReference).getDocuments { snapshot, error in
             guard error == nil else {
+                // swiftlint:disable:next force_unwrapping
                 print(error!.localizedDescription)
+                // swiftlint:disable:previous force_unwrapping
                 return
             }
             

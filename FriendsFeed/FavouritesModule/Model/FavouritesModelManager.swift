@@ -27,7 +27,9 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
         asyncGroup.enter()
         db.collection("FavouritesPosts").whereField("user", isEqualTo: userReference).getDocuments { snapshot, error in
             guard error == nil else {
+                // swiftlint:disable:next force_unwrapping
                 print(error!.localizedDescription)
+                // swiftlint:disable:previous force_unwrapping
                 self.asyncGroup.leave()
                 return
             }
@@ -39,7 +41,9 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
                 self.asyncGroup.enter()
                 postReference?.getDocument { snapshot, error in
                     guard error == nil else {
+                        // swiftlint:disable:next force_unwrapping
                         print(error!.localizedDescription)
+                        // swiftlint:disable:previous force_unwrapping
                         self.asyncGroup.leave()
                         return
                     }
@@ -83,7 +87,9 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
             isEqualTo: currentUserReference
         ).getDocuments { snapshot, error in
             guard error == nil else {
+                // swiftlint:disable:next force_unwrapping
                 print(error!.localizedDescription)
+                // swiftlint:disable:previous force_unwrapping
                 self.asyncGroup.leave()
                 return
             }
@@ -103,7 +109,9 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
         asyncGroup.enter()
         db.collection("PostsLikes").whereField("post", isEqualTo: reference).getDocuments { snapshot, error in
             guard error == nil else {
+                // swiftlint:disable:next force_unwrapping
                 print(error!.localizedDescription)
+                // swiftlint:disable:previous force_unwrapping
                 self.asyncGroup.leave()
                 return
             }
@@ -126,7 +134,9 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
         asyncGroup.enter()
         userReference.getDocument { snapshot, error in
             guard error == nil else {
+                // swiftlint:disable:next force_unwrapping
                 print(error!.localizedDescription)
+                // swiftlint:disable:previous force_unwrapping
                 self.asyncGroup.leave()
                 return
             }
@@ -158,14 +168,18 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
                 isEqualTo: currentUserReference
             ).getDocuments {[ weak self ] snapshot, error in
                 guard error == nil else {
+                    // swiftlint:disable:next force_unwrapping
                     print(error!.localizedDescription)
+                    // swiftlint:disable:previous force_unwrapping
                     return
                 }
                 
                 let document = snapshot?.documents[0].reference
                 document?.delete { error in
                     guard error == nil else {
+                        // swiftlint:disable:next force_unwrapping
                         print(error!.localizedDescription)
+                        // swiftlint:disable:previous force_unwrapping
                         return
                     }
                     
@@ -182,7 +196,9 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
             ]
             db.collection("PostsLikes").addDocument(data: documentData) {[ weak self ] error in
                 guard error == nil else {
+                    // swiftlint:disable:next force_unwrapping
                     print(error!.localizedDescription)
+                    // swiftlint:disable:previous force_unwrapping
                     return
                 }
                 
@@ -208,14 +224,18 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
                 isEqualTo: currentUserReference
             ).getDocuments { [ weak self ] snapshot, error in
                 guard error == nil else {
+                    // swiftlint:disable:next force_unwrapping
                     print(error!.localizedDescription)
+                    // swiftlint:disable:previous force_unwrapping
                     return
                 }
                 
                 let document = snapshot?.documents[0].reference
                 document?.delete { error in
                     guard error == nil else {
+                        // swiftlint:disable:next force_unwrapping
                         print(error!.localizedDescription)
+                        // swiftlint:disable:previous force_unwrapping
                         return
                     }
                     
@@ -230,7 +250,9 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
             ]
             db.collection("FavouritesPosts").addDocument(data: documentData) { [ weak self ] error in
                 guard error == nil else {
+                    // swiftlint:disable:next force_unwrapping
                     print(error!.localizedDescription)
+                    // swiftlint:disable:previous force_unwrapping
                     return
                 }
                 

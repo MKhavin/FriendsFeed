@@ -2,7 +2,9 @@ import UIKit
 
 class PhotosViewController: UIViewController {
     private weak var mainView: PhotosView?
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var viewModel: PhotosViewModelProtocol!
+    // swiftlint:disable:previous implicitly_unwrapped_optional
     
     // MARK: - Life cycle
     override func loadView() {

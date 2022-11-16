@@ -1,8 +1,9 @@
 import UIKit
-import SwiftUI
 
 class ProfileViewController: UIViewController {
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var viewModel: ProfileViewModelProtocol!
+    // swiftlint:disable:previous implicitly_unwrapped_optional
     private weak var mainView: ProfileView?
     
     override func loadView() {

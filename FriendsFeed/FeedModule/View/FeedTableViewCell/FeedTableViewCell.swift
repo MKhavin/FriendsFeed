@@ -1,12 +1,4 @@
-//
-//  FeedTableViewCell.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 05.10.2022.
-//
-
 import UIKit
-import SwiftUI
 import SnapKit
 
 protocol FeedTableViewCellDelegateProtocol: AnyObject {
