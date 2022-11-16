@@ -7,6 +7,13 @@ protocol LogInViewDelegate: AnyObject {
 
 // MARK: - LogIn view implementation
 class LogInView: UIView {
+    // MARK: - Layout constraints
+    private enum LayoutConstraints {
+        static let mainElementLeadingTrailingInset = 80
+        static let subElementLeadingTrailingInset = 30
+        static let logInButtonHeight = 50
+    }
+    
     // MARK: - Sub properties
     weak var delegate: LogInViewDelegate?
     
@@ -129,30 +136,30 @@ class LogInView: UIView {
     private func setTopViewSubviewsLayout() {
         numberTextField.snp.makeConstraints { make in
             make.bottom.equalTo(topView.layoutMarginsGuide).inset(-20)
-            make.leading.trailing.equalTo(topView.layoutMarginsGuide).inset(30)
-            make.height.equalTo(50)
+            make.leading.trailing.equalTo(topView.layoutMarginsGuide).inset(LayoutConstraints.subElementLeadingTrailingInset)
+            make.height.equalTo(LayoutConstraints.logInButtonHeight)
         }
         
         subtitleLabel.snp.makeConstraints { make in
             make.bottom.equalTo(numberTextField.snp.top).inset(-15)
-            make.leading.trailing.equalTo(topView.layoutMarginsGuide).inset(80)
+            make.leading.trailing.equalTo(topView.layoutMarginsGuide).inset(LayoutConstraints.mainElementLeadingTrailingInset)
         }
         
         titleLabel.snp.makeConstraints { make in
             make.bottom.equalTo(subtitleLabel.snp.top).inset(-2)
-            make.leading.trailing.equalTo(topView.layoutMarginsGuide).inset(80)
+            make.leading.trailing.equalTo(topView.layoutMarginsGuide).inset(LayoutConstraints.mainElementLeadingTrailingInset)
         }
     }
     
     private func setBottomViewSubviewsLayout() {
         logInButton.snp.makeConstraints { make in
             make.top.equalTo(bottomView.layoutMarginsGuide).offset(60)
-            make.leading.trailing.equalTo(bottomView.layoutMarginsGuide).inset(80)
+            make.leading.trailing.equalTo(bottomView.layoutMarginsGuide).inset(LayoutConstraints.mainElementLeadingTrailingInset)
         }
         
         privacyLabel.snp.makeConstraints { make in
             make.top.equalTo(logInButton.snp.bottom).offset(10)
-            make.leading.trailing.equalTo(bottomView.layoutMarginsGuide).inset(30)
+            make.leading.trailing.equalTo(bottomView.layoutMarginsGuide).inset(LayoutConstraints.subElementLeadingTrailingInset)
         }
     }
     
