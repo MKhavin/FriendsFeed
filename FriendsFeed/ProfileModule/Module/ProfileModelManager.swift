@@ -147,7 +147,7 @@ class ProfileModelManager: ProfileModelManagerProtocol {
                     date: Date(timeIntervalSince1970: postData["Date"] as? Double ?? 0),
                     likes: postData["Likes"] as? UInt ?? 0,
                     text: postData["Text"] as? String,
-                    author: self?.profile, //????
+                    author: self?.profile, 
                     image: postData["image"] as? String
                 )
                 

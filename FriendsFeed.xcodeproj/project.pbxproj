@@ -394,6 +394,16 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		51A4E29E29259E43007DFDC1 /* ProjectModels */ = {
+			isa = PBXGroup;
+			children = (
+				51FBF90828F1E87500C7FA45 /* Post.swift */,
+				51FBF90A28F1E89C00C7FA45 /* User.swift */,
+				51E5CF2728FDFD8D0098CAD0 /* PostCollection.swift */,
+			);
+			path = ProjectModels;
+			sourceTree = "<group>";
+		};
 		51AFAF1928D8ED780075DB21 /* LogInModule */ = {
 			isa = PBXGroup;
 			children = (
@@ -478,9 +488,6 @@
 		51E5918F28EE0948001D4EC0 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				51FBF90828F1E87500C7FA45 /* Post.swift */,
-				51FBF90A28F1E89C00C7FA45 /* User.swift */,
-				51E5CF2728FDFD8D0098CAD0 /* PostCollection.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -516,6 +523,7 @@
 		51FF111A28D399AB00B0D334 /* FriendsFeed */ = {
 			isa = PBXGroup;
 			children = (
+				51A4E29E29259E43007DFDC1 /* ProjectModels */,
 				51AFAF2128D8EE3C0075DB21 /* SupportObjects */,
 				51FF36B528D3CA1300BFF814 /* Services */,
 				51FF36B028D3BBE800BFF814 /* Extensions */,

@@ -97,7 +97,7 @@ class FeedTableViewCell: UITableViewCell {
         
         stackView.addArrangedSubview(titleView)
         stackView.addArrangedSubview(postView)
-        stackView.addArrangedSubview(bottomView)
+//        stackView.addArrangedSubview(bottomView)
         
         contentView.addSubview(stackView)
         
@@ -110,9 +110,9 @@ class FeedTableViewCell: UITableViewCell {
             make.top.bottom.equalTo(layoutMarginsGuide)
         }
         
-        bottomView.snp.makeConstraints { make in
-            make.height.equalTo(50)
-        }
+//        bottomView.snp.makeConstraints { make in
+//            make.height.equalTo(50)
+//        }
     }
     
     @objc private func userAvatarTapped(_ sender: UIView) {

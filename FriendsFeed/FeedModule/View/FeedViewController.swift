@@ -60,7 +60,6 @@ class FeedViewController: UIViewController {
     
     private func setNavigationBarApppearance() {
         navigationController?.isNavigationBarHidden = false
-//        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     // MARK: - Actions
@@ -85,7 +84,12 @@ extension FeedViewController: UITableViewDelegate {
         }
         
         let collectionDate = viewModel.postsCollections[section].date
+        
+        let backgroundView = UIView(frame: header.frame)
+        backgroundView.backgroundColor = .systemBackground
+        
         header.setCell(data: collectionDate)
+        header.backgroundView = backgroundView
         
         return header
     }

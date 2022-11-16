@@ -1,5 +1,4 @@
 import UIKit
-import SwiftUI
 import SnapKit
 
 class FeedSectionView: UITableViewHeaderFooterView {
@@ -17,7 +16,6 @@ class FeedSectionView: UITableViewHeaderFooterView {
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = .systemBackground
         addSubview(dateLabel)
         setSubviewsLayout()
     }

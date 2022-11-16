@@ -7,7 +7,6 @@ protocol FeedViewModelProtocol {
     var postLoaded: (() -> Void)? { get set }
     var postDidLiked: ((FeedTableViewCell) -> Void)? { get set }
     var postDidSetFavourite: ((FeedTableViewCell) -> Void)? { get set }
-    var coordinator: FeedCoordinatorProtocol? { get set }
     var postsCollections: [PostCollection] { get set }
     func getFeed()
     func showPostInfo(in collection: Int, of post: Int)
@@ -17,7 +16,7 @@ protocol FeedViewModelProtocol {
 }
 
 class FeedViewModel: FeedViewModelProtocol {
-    var coordinator: FeedCoordinatorProtocol?
+    private var coordinator: FeedCoordinatorProtocol?
     var postLoaded: (() -> Void)?
     var errorMessageChanged: ((String) -> Void)?
     var postsCollections: [PostCollection] = []

@@ -49,15 +49,15 @@ class FeedTableViewCellPostView: UIView {
         }
         
         postTextLabel.snp.makeConstraints { make in
-            make.top.trailing.equalTo(safeAreaLayoutGuide)
+            make.top.equalTo(layoutMarginsGuide)
             make.leading.equalTo(leftBorder.snp.trailing).offset(5)
             make.bottom.equalTo(snp.centerY).inset(-2)
         }
-        
+
         postImageView.snp.makeConstraints { make in
             make.trailing.bottom.equalTo(layoutMarginsGuide)
             make.top.equalTo(snp.centerY).offset(2)
-            make.leading.equalTo(postTextLabel)
+            make.leading.equalTo(postTextLabel.snp.leading)
         }
     }
 }

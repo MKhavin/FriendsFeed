@@ -47,18 +47,16 @@ class FeedTableViewCellTitleView: UIView {
     // MARK: - Sub methods
     private func setSubviewsLayout() {
         avatarImageView.snp.makeConstraints { make in
-            make.leading.equalTo(layoutMarginsGuide)
+            make.centerY.leading.equalTo(layoutMarginsGuide)
             make.width.height.equalTo(50)
         }
         
         nameLabel.snp.makeConstraints { make in
-            make.trailing.equalTo(layoutMarginsGuide)
             make.leading.equalTo(avatarImageView.snp.trailing).offset(15)
             make.top.equalTo(avatarImageView)
         }
-        
+
         subNameLabel.snp.makeConstraints { make in
-            make.trailing.equalTo(layoutMarginsGuide)
             make.leading.equalTo(avatarImageView.snp.trailing).offset(15)
             make.top.equalTo(nameLabel.snp.bottom).offset(5)
             make.bottom.equalTo(avatarImageView)
