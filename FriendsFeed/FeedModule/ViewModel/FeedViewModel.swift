@@ -49,8 +49,12 @@ class FeedViewModel: FeedViewModelProtocol {
                     return
                 }
                 
-                for document in querySnapshot!.documents {
-                    //                    let documentData = document.data()
+                guard let documentsSnapshot = querySnapshot else {
+                    print("Error occured while unwrapped feed snapshot")
+                    return
+                }
+                
+                for document in documentsSnapshot.documents {
                     self.processPost(document: document, on: operationGroup)
                 }
                 
@@ -73,21 +77,26 @@ class FeedViewModel: FeedViewModelProtocol {
             operationGroup?.enter()
             userData.getDocument { querySnapshot, error in
                 guard error == nil else {
+                    // swiftlint:disable:next force_unwrapping
                     self.errorMessageChanged?(error!.localizedDescription)
+                    // swiftlint:disable:previous force_unwrapping
                     operationGroup?.leave()
                     return
                 }
                 
-                let snapshotData = querySnapshot!.data()
+                guard let documentsSnapshot = querySnapshot, let snapshotData = documentsSnapshot.data() else {
+                    print("Error occured while unwrapping post feed snapshot")
+                    return
+                }
                 
                 let currentAuthor = User(
-                    id: querySnapshot!.documentID,
-                    firstName: snapshotData!["firstName"] as? String,
-                    lastName: snapshotData!["lastName"] as? String,
+                    id: documentsSnapshot.documentID,
+                    firstName: snapshotData["firstName"] as? String,
+                    lastName: snapshotData["lastName"] as? String,
                     birthDate: nil,
-                    sex: .init(rawValue: (snapshotData!["sex"] as? String) ?? "male")!,
-                    avatar: snapshotData!["avatar"] as? String,
-                    phoneNumber: snapshotData!["phoneNumber"] as? String
+                    sex: .init(rawValue: (snapshotData["sex"] as? String) ?? "male") ?? .male,
+                    avatar: snapshotData["avatar"] as? String,
+                    phoneNumber: snapshotData["phoneNumber"] as? String
                 )
                 
                 let currentPost = Post(id: document.documentID,
@@ -107,7 +116,9 @@ class FeedViewModel: FeedViewModelProtocol {
                 if postCollection == nil {
                     self.postsCollections.append(PostCollection(date: currentPost.date, posts: [currentPost]))
                 } else {
+                    // swiftlint:disable:next force_unwrapping
                     self.postsCollections[postCollection!].posts.append(currentPost)
+                    // swiftlint:disable:previous force_unwrapping
                 }
                 
                 operationGroup?.leave()
@@ -136,7 +147,12 @@ class FeedViewModel: FeedViewModelProtocol {
                 return
             }
             
-            for _ in snapshot!.documents {
+            guard let documentsSnapshot = snapshot else {
+                print("Error occured while loading feed favourites info snapshot")
+                return
+            }
+            
+            for _ in documentsSnapshot.documents {
                 post.isFavourite = true
             }
             group?.leave()
@@ -158,7 +174,12 @@ class FeedViewModel: FeedViewModelProtocol {
                 return
             }
             
-            for document in snapshot!.documents {
+            guard let documentsSnapshot = snapshot else {
+                print("Error occured while loading feed favourites info snapshot")
+                return
+            }
+            
+            for document in documentsSnapshot.documents {
                 post.likes += 1
                 if let user = document.data()["user"] as? DocumentReference, user == currentUserReference {
                     post.isLiked = true

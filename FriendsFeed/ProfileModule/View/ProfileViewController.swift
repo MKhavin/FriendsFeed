@@ -40,7 +40,10 @@ class ProfileViewController: UIViewController {
         }
         viewModel.postsDataDidLoad = { error in
             guard error == nil else {
+                // swiftlint:disable:next force_unwrapping
                 let alert = UIAlertController(title: "Error occured", message: error!.localizedDescription, preferredStyle: .alert)
+                // swiftlint:disable:previous force_unwrapping
+                
                 let action = UIAlertAction(title: "Ok", style: .default) { _ in
                     self.dismiss(animated: true)
                 }

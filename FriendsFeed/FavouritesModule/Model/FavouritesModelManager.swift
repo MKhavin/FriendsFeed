@@ -48,13 +48,17 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
                         return
                     }
                     
-                    let postData = snapshot!.data()
-                    let post = Post(id: snapshot!.documentID,
-                                    date: Date(timeIntervalSince1970: postData?["Date"] as? Double ?? 0.0),
+                    guard let documentSnapshot = snapshot, let postData = documentSnapshot.data() else {
+                        print("Error occured while unwrapped favourites posts snapshot data")
+                        return
+                    }
+                    
+                    let post = Post(id: documentSnapshot.documentID,
+                                    date: Date(timeIntervalSince1970: postData["Date"] as? Double ?? 0.0),
                                     likes: 0,
-                                    text: postData?["Text"] as? String,
+                                    text: postData["Text"] as? String,
                                     author: nil,
-                                    image: postData?["image"] as? String)
+                                    image: postData["image"] as? String)
                     self.posts.append(post)
                     
                     self.loadFavouritesInfo(for: post)
@@ -94,7 +98,12 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
                 return
             }
             
-            for _ in snapshot!.documents {
+            guard let documentsSnapshot = snapshot else {
+                print("Error occured while unwrapped favourites posts info snapshot")
+                return
+            }
+            
+            for _ in documentsSnapshot.documents {
                 post.isFavourite = true
             }
             self.asyncGroup.leave()
@@ -116,8 +125,14 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
                 return
             }
             
-            for document in snapshot!.documents {
+            guard let documentsSnapshot = snapshot else {
+                print("Error occured while unwrapped favourites posts liked info data")
+                return
+            }
+            
+            for document in documentsSnapshot.documents {
                 post.likes += 1
+                
                 if let user = document.data()["user"] as? DocumentReference, user == currentUserReference {
                     post.isLiked = true
                 }
@@ -141,15 +156,19 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
                 return
             }
             
-            let userData = snapshot!.data()
-            post.author = User(id: snapshot?.documentID ?? "",
-                               firstName: userData?["firstName"] as? String,
-                               lastName: userData?["lastName"] as? String,
-                               birthDate: Date(timeIntervalSince1970: userData?["birthDate"] as? Double ?? 0.0),
-                               sex: .init(rawValue: userData?["sex"] as? String ?? "") ?? .male,
-                               avatar: userData?["avatar"] as? String,
-                               phoneNumber: userData?["phoneNumber"] as? String)
+            guard let documentSnapshot = snapshot, let userData = documentSnapshot.data() else {
+                print("Error occured while unwrapped user info of favourites posts")
+                return
+            }
             
+            post.author = User(id: snapshot?.documentID ?? "",
+                               firstName: userData["firstName"] as? String,
+                               lastName: userData["lastName"] as? String,
+                               birthDate: Date(timeIntervalSince1970: userData["birthDate"] as? Double ?? 0.0),
+                               sex: .init(rawValue: userData["sex"] as? String ?? "") ?? .male,
+                               avatar: userData["avatar"] as? String,
+                               phoneNumber: userData["phoneNumber"] as? String)
+        
             self.asyncGroup.leave()
         }
     }

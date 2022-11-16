@@ -27,7 +27,9 @@ class FeedTableViewCell: UITableViewCell {
         return view
     }()
     private(set) var post: Post?
+    // swiftlint:disable:next implicitly_unwrapped_optional
     private var tapGesture: UITapGestureRecognizer!
+    // swiftlint:disable:previous implicitly_unwrapped_optional
     weak var delegate: FeedTableViewCellDelegateProtocol?
     
     // MARK: - Life cycle

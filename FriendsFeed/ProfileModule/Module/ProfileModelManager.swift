@@ -34,7 +34,7 @@ class ProfileModelManager: ProfileModelManagerProtocol {
     
     // MARK: - Properties
     private let group: DispatchGroup = DispatchGroup()
-    private var currentLogin: String!
+    private var currentLogin: String?
     private(set) var posts: [Post] = []
     private(set) var profile: User?
     weak var delegate: ProfileModelManagerDelegate?
@@ -53,13 +53,13 @@ class ProfileModelManager: ProfileModelManagerProtocol {
               return
             }
         } else {
-            currentLogin = profile!.phoneNumber
+            currentLogin = profile?.phoneNumber
         }
         
         group.enter()
         let db = Firestore.firestore()
         
-        db.collection("User").whereField("phoneNumber", isEqualTo: currentLogin!).getDocuments { [ weak self ] (querySnapshot, error) in
+        db.collection("User").whereField("phoneNumber", isEqualTo: currentLogin ?? "").getDocuments { [ weak self ] (querySnapshot, error) in
             guard error == nil else {
                 self?.group.leave()
                 // swiftlint:disable:next force_unwrapping
@@ -186,7 +186,12 @@ class ProfileModelManager: ProfileModelManagerProtocol {
                 return
             }
             
-            for _ in snapshot!.documents {
+            guard let documentsSnapshot = snapshot else {
+                print("Error occured while unwrapping profile favourites info snapshot")
+                return
+            }
+            
+            for _ in documentsSnapshot.documents {
                 post.isFavourite = true
             }
             self?.group.leave()
@@ -208,7 +213,12 @@ class ProfileModelManager: ProfileModelManagerProtocol {
                 return
             }
             
-            for document in snapshot!.documents {
+            guard let documentsSnapshot = snapshot else {
+                print("Error occured while unwrapping likes info snapshot")
+                return
+            }
+            
+            for document in documentsSnapshot.documents {
                 post.likes += 1
                 if let user = document.data()["user"] as? DocumentReference, user == currentUserReference {
                     post.isLiked = true
