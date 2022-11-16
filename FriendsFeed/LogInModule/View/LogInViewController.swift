@@ -1,49 +1,23 @@
-//
-//  LogInViewController.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 19.09.2022.
-//
-
 import UIKit
-import FirebaseAuth
 
+// MARK: - LogIn view controller implementation
 class LogInViewController: UIViewController {
-    //MARK: - Sub properties
-    private weak var logInView: LogInView?
-    var viewModel: LogInViewModelProtocol! {
-        didSet {
-            viewModel.errorMessage = { message in
-                let alert = UIAlertController(title: "Error occured",
-                                              message: message,
-                                              preferredStyle: .alert)
-                
-                let action = UIAlertAction(title: "Try again",
-                                           style: .default) { action in
-                    self.dismiss(animated: true)
-                }
-                
-                alert.addAction(action)
-                
-                self.present(alert, animated: true)
-            }
-        }
-    }
+    // MARK: - Sub properties
+    private weak var mainView: LogInView?
+    // swiftlint:disable:next implicitly_unwrapped_optional
+    var viewModel: LogInViewModelProtocol!
+    // swiftlint:disable:previous implicitly_unwrapped_optional
     
-    //MARK: - Life cycle
+    // MARK: - Life cycle
     override func loadView() {
         let currentView = LogInView()
+        
         view = currentView
-        logInView = currentView
+        
+        mainView = currentView
+        mainView?.delegate = self
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-        setButtonsAction()
-    }
-    
+        
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -57,13 +31,7 @@ class LogInViewController: UIViewController {
         removeNotifications()
     }
     
-    //MARK: - Sub methods
-    private func setButtonsAction() {
-        logInView?.logInButton.addTarget(self,
-                                         action: #selector(logInButtonPressed(_:)),
-                                         for: .touchUpInside)
-    }
-    
+    // MARK: - Sub methods
     private func setNotifications() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillShow(_:)),
@@ -82,11 +50,26 @@ class LogInViewController: UIViewController {
                                                   object: nil)
     }
     
-    //MARK: - Actions
-    @objc private func logInButtonPressed(_ sender: UIButton) {
-        viewModel.logIn(with: logInView?.numberTextField.text)
+    private func swtViewModelCallbacks() {
+        viewModel.errorOccured = { message in
+            let alert = UIAlertController(title: "Возникла ошибка",
+                                          message: message,
+                                          preferredStyle: .alert)
+            
+            let action = UIAlertAction(
+                title: "Попробовать еще раз",
+                style: .default
+            ) { _ in
+                self.dismiss(animated: true)
+            }
+            
+            alert.addAction(action)
+            
+            self.present(alert, animated: true)
+        }
     }
     
+    // MARK: - Actions    
     @objc private func keyboardWillShow(_ sender: NSNotification) {
         guard let keyboardSize = (sender.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
             return
@@ -97,5 +80,12 @@ class LogInViewController: UIViewController {
     
     @objc private func keyboardWillHide(_ sender: NSNotification) {
         self.view.frame.origin.y = 0
+    }
+}
+
+// MARK: - LogIn view delegate implementation
+extension LogInViewController: LogInViewDelegate {
+    func logInButtonDidTapped(with phoneNumber: String?) {
+        viewModel.logIn(with: phoneNumber)
     }
 }

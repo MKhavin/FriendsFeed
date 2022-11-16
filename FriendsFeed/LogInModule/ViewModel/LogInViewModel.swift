@@ -1,44 +1,41 @@
-//
-//  LogInViewModel.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 04.10.2022.
-//
-
-import Foundation
-import FirebaseAuth
-
+// MARK: - Log in view model protocol implementation
 protocol LogInViewModelProtocol {
-    var coordinator: AppCoordinatorProtocol? { get set }
-    var errorMessage: ((String) -> Void)? { get set }
+    var errorOccured: ((String) -> Void)? { get set }
     func logIn(with phoneNumber: String?)
 }
 
-class LogInViewModel: LogInViewModelProtocol {
-    var coordinator: AppCoordinatorProtocol?
-    var errorMessage: ((String) -> Void)?
+// MARK: - Log in view model implementation
+final class LogInViewModel: LogInViewModelProtocol {
+    // MARK: - Properties
+    private var coordinator: AppCoordinatorProtocol?
+    var errorOccured: ((String) -> Void)?
+    var model: LogInModelManagerProtocol?
     
-    init(coordinator: AppCoordinatorProtocol?) {
+    // MARK: - Life cycle
+    init(coordinator: AppCoordinatorProtocol?, model: LogInModelManagerProtocol?) {
         self.coordinator = coordinator
+        self.model = model
+        self.model?.delegate = self
     }
     
+    // MARK: - Methods
     func logIn(with phoneNumber: String?) {
-        guard let number = phoneNumber else {
-            errorMessage?("Phone number must be set")
+        guard let currentNumber = phoneNumber else {
+            errorOccured?("Проверьте введенный номер телефона")
             return
         }
         
-        PhoneAuthProvider.provider().verifyPhoneNumber(number,
-                                                       uiDelegate: nil) {[unowned self] verificationID, error in
-            guard error == nil else {
-                self.errorMessage?(error!.localizedDescription)
-                print(error!.localizedDescription)
-                return
-            }
-            
-            UserDefaults.standard.set(verificationID, forKey: "verificationID")
-            
-            self.coordinator?.pushConfirmationView(for: phoneNumber ?? "")
-        }
+        model?.logIn(with: currentNumber)
+    }
+}
+
+// MARK: - LogIn model manager delegate
+extension LogInViewModel: LogInModelManagerDelegate {
+    func userDidLogIn(with phoneNumber: String) {
+        coordinator?.pushConfirmationView(for: phoneNumber)
+    }
+    
+    func userLogInError(message: String) {
+        errorOccured?(message)
     }
 }
