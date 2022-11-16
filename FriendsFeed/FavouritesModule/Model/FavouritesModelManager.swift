@@ -1,7 +1,7 @@
 import FirebaseAuth
 import FirebaseFirestore
 
-protocol FavouritesModelManagerDelegateProtocol {
+protocol FavouritesModelManagerDelegateProtocol: AnyObject {
     func favouritesPostsLoadingFinished()
     func favouritePostDidLiked(cell: FeedTableViewCell)
     func postBecomeFavourite(cellPath: IndexPath)
@@ -18,14 +18,14 @@ protocol FavouritesModelManagerProtocol {
 class FavouritesModelManager: FavouritesModelManagerProtocol {
     private let asyncGroup = DispatchGroup()
     private(set) var posts: [Post] = []
-    var delegate: FavouritesModelManagerDelegateProtocol?
+    weak var delegate: FavouritesModelManagerDelegateProtocol?
     
     func loadFavouritesPosts() {
         let db = Firestore.firestore()
         let userReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
         
         asyncGroup.enter()
-        db.collection("FavouritesPosts").whereField("user", isEqualTo: userReference).getDocuments() { snapshot, error in
+        db.collection("FavouritesPosts").whereField("user", isEqualTo: userReference).getDocuments { snapshot, error in
             guard error == nil else {
                 print(error!.localizedDescription)
                 self.asyncGroup.leave()
@@ -43,7 +43,7 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
                         self.asyncGroup.leave()
                         return
                     }
-                     
+                    
                     let postData = snapshot!.data()
                     let post = Post(id: snapshot!.documentID,
                                     date: Date(timeIntervalSince1970: postData?["Date"] as? Double ?? 0.0),
@@ -75,20 +75,24 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
         let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
         
         asyncGroup.enter()
-        db.collection("FavouritesPosts").whereField("post",
-                                                   isEqualTo: reference).whereField("user",
-                                                                                    isEqualTo: currentUserReference).getDocuments { snapshot, error in
-                                                       guard error == nil else {
-                                                           print(error!.localizedDescription)
-                                                           self.asyncGroup.leave()
-                                                           return
-                                                       }
-                                                       
-                                                       for _ in snapshot!.documents {
-                                                           post.isFavourite = true
-                                                       }
-                                                       self.asyncGroup.leave()
-                                                   }
+        db.collection("FavouritesPosts").whereField(
+            "post",
+            isEqualTo: reference
+        ).whereField(
+            "user",
+            isEqualTo: currentUserReference
+        ).getDocuments { snapshot, error in
+            guard error == nil else {
+                print(error!.localizedDescription)
+                self.asyncGroup.leave()
+                return
+            }
+            
+            for _ in snapshot!.documents {
+                post.isFavourite = true
+            }
+            self.asyncGroup.leave()
+        }
     }
     
     private func loadLikesInfo(for post: Post) {
@@ -146,26 +150,30 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
         let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
         
         if post.isLiked {
-            db.collection("PostsLikes").whereField("post",
-                                                   isEqualTo: reference).whereField("user",
-                                                                                    isEqualTo: currentUserReference).getDocuments {[ weak self ] snapshot, error in
-                                                       guard error == nil else {
-                                                           print(error!.localizedDescription)
-                                                           return
-                                                       }
-                                                       
-                                                       let document = snapshot?.documents[0].reference
-                                                       document?.delete() { error in
-                                                           guard error == nil else {
-                                                               print(error!.localizedDescription)
-                                                               return
-                                                           }
-                                                           
-                                                           post.isLiked = !post.isLiked
-                                                           post.likes -= 1
-                                                           
-                                                           self?.delegate?.favouritePostDidLiked(cell: cell)
-                                                       }
+            db.collection("PostsLikes").whereField(
+                "post",
+                isEqualTo: reference
+            ).whereField(
+                "user",
+                isEqualTo: currentUserReference
+            ).getDocuments {[ weak self ] snapshot, error in
+                guard error == nil else {
+                    print(error!.localizedDescription)
+                    return
+                }
+                
+                let document = snapshot?.documents[0].reference
+                document?.delete { error in
+                    guard error == nil else {
+                        print(error!.localizedDescription)
+                        return
+                    }
+                    
+                    post.isLiked = !post.isLiked
+                    post.likes -= 1
+                    
+                    self?.delegate?.favouritePostDidLiked(cell: cell)
+                }
             }
         } else {
             let documentData = [
@@ -192,31 +200,35 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
         let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
         
         if post.isFavourite {
-           db.collection("FavouritesPosts").whereField("post",
-                                                   isEqualTo: reference).whereField("user",
-                                                                                    isEqualTo: currentUserReference).getDocuments {[ weak self ] snapshot, error in
-                                                       guard error == nil else {
-                                                           print(error!.localizedDescription)
-                                                           return
-                                                       }
-                                                       
-                                                       let document = snapshot?.documents[0].reference
-                                                       document?.delete() { error in
-                                                           guard error == nil else {
-                                                               print(error!.localizedDescription)
-                                                               return
-                                                           }
-                                                           
-                                                           post.isFavourite = !post.isFavourite
-                                                           self?.delegate?.postBecomeFavourite(cellPath: cellPath)
-                                                       }
+            db.collection("FavouritesPosts").whereField(
+                "post",
+                isEqualTo: reference
+            ).whereField(
+                "user",
+                isEqualTo: currentUserReference
+            ).getDocuments { [ weak self ] snapshot, error in
+                guard error == nil else {
+                    print(error!.localizedDescription)
+                    return
+                }
+                
+                let document = snapshot?.documents[0].reference
+                document?.delete { error in
+                    guard error == nil else {
+                        print(error!.localizedDescription)
+                        return
+                    }
+                    
+                    post.isFavourite = !post.isFavourite
+                    self?.delegate?.postBecomeFavourite(cellPath: cellPath)
+                }
             }
         } else {
             let documentData = [
                 "post": reference,
                 "user": currentUserReference
             ]
-            db.collection("FavouritesPosts").addDocument(data: documentData) {[ weak self ] error in
+            db.collection("FavouritesPosts").addDocument(data: documentData) { [ weak self ] error in
                 guard error == nil else {
                     print(error!.localizedDescription)
                     return

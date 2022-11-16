@@ -1,18 +1,11 @@
-//
-//  PostInfoViewModel.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 20.10.2022.
-//
-
 import FirebaseAuth
 import FirebaseFirestore
 
 protocol PostInfoViewModelProtocol {
     var coordinator: NavigationCoordinatorProtocol? { get set }
-    var postDataLoaded: ((Post) -> ())? { get set }
-    var postDidLiked: ((Post?) -> ())? { get set }
-    var postDidSetFavourite: ((Post?) -> ())? { get set }
+    var postDataLoaded: ((Post) -> Void)? { get set }
+    var postDidLiked: ((Post?) -> Void)? { get set }
+    var postDidSetFavourite: ((Post?) -> Void)? { get set }
     func likePost()
     func loadPostData()
     func showProfileInfo()
@@ -21,10 +14,10 @@ protocol PostInfoViewModelProtocol {
 }
 
 class PostInfoViewModel: PostInfoViewModelProtocol {
-    var postDataLoaded: ((Post) -> ())?
+    var postDataLoaded: ((Post) -> Void)?
     var coordinator: NavigationCoordinatorProtocol?
-    var postDidLiked: ((Post?) -> ())?
-    var postDidSetFavourite: ((Post?) -> ())?
+    var postDidLiked: ((Post?) -> Void)?
+    var postDidSetFavourite: ((Post?) -> Void)?
     private let post: Post
     
     init(coordinator: NavigationCoordinatorProtocol?, data: Post) {
@@ -56,23 +49,27 @@ class PostInfoViewModel: PostInfoViewModelProtocol {
         if post.isLiked {
             post.likes += 1
             
-            db.collection("PostsLikes").whereField("post",
-                                                   isEqualTo: reference).whereField("user",
-                                                                                    isEqualTo: currentUserReference).getDocuments {[ weak self ] snapshot, error in
-                                                       guard error == nil else {
-                                                           print(error!.localizedDescription)
-                                                           return
-                                                       }
-                                                       
-                                                       let document = snapshot?.documents[0].reference
-                                                       document?.delete() { error in
-                                                           guard error == nil else {
-                                                               print(error!.localizedDescription)
-                                                               return
-                                                           }
-                                                           
-                                                           self?.postDidLiked?(self?.post)
-                                                       }
+            db.collection("PostsLikes").whereField(
+                "post",
+                isEqualTo: reference
+            ).whereField(
+                "user",
+                isEqualTo: currentUserReference
+            ).getDocuments {[ weak self ] snapshot, error in
+                guard error == nil else {
+                    print(error!.localizedDescription)
+                    return
+                }
+                
+                let document = snapshot?.documents[0].reference
+                document?.delete { error in
+                    guard error == nil else {
+                        print(error!.localizedDescription)
+                        return
+                    }
+                    
+                    self?.postDidLiked?(self?.post)
+                }
             }
         } else {
             post.likes -= 1
@@ -102,24 +99,28 @@ class PostInfoViewModel: PostInfoViewModelProtocol {
         let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
         
         if post.isFavourite {
-           db.collection("FavouritesPosts").whereField("post",
-                                                   isEqualTo: reference).whereField("user",
-                                                                                    isEqualTo: currentUserReference).getDocuments {[ weak self ] snapshot, error in
-                                                       guard error == nil else {
-                                                           print(error!.localizedDescription)
-                                                           return
-                                                       }
-                                                       
-                                                       let document = snapshot?.documents[0].reference
-                                                       document?.delete() { error in
-                                                           guard error == nil else {
-                                                               print(error!.localizedDescription)
-                                                               return
-                                                           }
-                                                           
-                                                           self?.post.isFavourite = !(self?.post.isFavourite ?? false)
-                                                           self?.postDidSetFavourite?(self?.post)
-                                                       }
+            db.collection("FavouritesPosts").whereField(
+                "post",
+                isEqualTo: reference
+            ).whereField(
+                "user",
+                isEqualTo: currentUserReference
+            ).getDocuments { [ weak self ] snapshot, error in
+                guard error == nil else {
+                    print(error!.localizedDescription)
+                    return
+                }
+                
+                let document = snapshot?.documents[0].reference
+                document?.delete { error in
+                    guard error == nil else {
+                        print(error!.localizedDescription)
+                        return
+                    }
+                    
+                    self?.post.isFavourite = !(self?.post.isFavourite ?? false)
+                    self?.postDidSetFavourite?(self?.post)
+                }
             }
         } else {
             let documentData = [

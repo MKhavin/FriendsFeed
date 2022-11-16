@@ -1,17 +1,10 @@
-//
-//  PhotosViewController.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 05.11.2022.
-//
 import UIKit
 
 class PhotosViewController: UIViewController {
-    
     private weak var mainView: PhotosView?
     var viewModel: PhotosViewModelProtocol!
     
-    //MARK: - Life cycle
+    // MARK: - Life cycle
     override func loadView() {
         let newView = PhotosView()
         view = newView
@@ -35,11 +28,9 @@ class PhotosViewController: UIViewController {
         
         navigationItem.title = "Фотографии"
     }
-    
 }
 
 extension PhotosViewController: UICollectionViewDataSource {
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         viewModel.getPhotosCount()
     }
@@ -49,20 +40,20 @@ extension PhotosViewController: UICollectionViewDataSource {
                                                             for: indexPath) as? PhotosCollectionViewCell else {
             return UICollectionViewCell()
         }
-
+        
         let photo = viewModel.getPhoto(by: indexPath.item)
         cell.setCellImage(image: photo)
         
         return cell
     }
-    
 }
 
 extension PhotosViewController: UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView,
-                                 layout collectionViewLayout: UICollectionViewLayout,
-                                 insetForSectionAt section: Int) -> UIEdgeInsets {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
         return UIEdgeInsets(top: 8,
                             left: 8,
                             bottom: 8,
@@ -81,8 +72,4 @@ extension PhotosViewController: UICollectionViewDelegateFlowLayout {
         let size = ((UIScreen.main.bounds.width - 8 * 4) / 3).rounded()
         return CGSize(width: size, height: size)
     }
-    
 }
-
-
-

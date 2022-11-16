@@ -1,15 +1,8 @@
-//
-//  ProfileView.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 20.10.2022.
-//
-
 import UIKit
 import SwiftUI
 
 class ProfileView: UIView {
-    //MARK: - UI elemens
+    // MARK: - UI elemens
     private(set) var titleView: ProfileTitleView
     private(set) lazy var tableView: UITableView = {
         let view = UITableView()
@@ -20,7 +13,7 @@ class ProfileView: UIView {
     }()
     private let isCurrentUserProfile: Bool
     
-    //MARK: - Life cycle
+    // MARK: - Life cycle
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -47,7 +40,7 @@ class ProfileView: UIView {
         super.updateConstraints()
     }
     
-    //MARK: - Sub methods
+    // MARK: - Sub methods
     private func setSubviewsLayout() {
         titleView.snp.makeConstraints { make in
             make.leading.trailing.top.equalTo(safeAreaLayoutGuide)

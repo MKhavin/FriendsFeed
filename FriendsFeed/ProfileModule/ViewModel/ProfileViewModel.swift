@@ -1,17 +1,9 @@
-//
-//  ProfileViewModel.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 25.10.2022.
-//
-
-import Foundation
 import FirebaseAuth
 import FirebaseFirestore
 
 protocol ProfileViewModelProtocol {
-    var userDataDidLoaded: ((Result<User?, Error>) -> ())? { get set }
-    var postsDataDidLoad: ((Error?) -> ())? { get set }
+    var userDataDidLoaded: ((Result<User?, Error>) -> Void)? { get set }
+    var postsDataDidLoad: ((Error?) -> Void)? { get set }
     var isCurrentUserProfile: Bool { get }
     func loadUserData()
     func getPostsCount() -> Int
@@ -22,8 +14,8 @@ protocol ProfileViewModelProtocol {
 }
 
 class ProfileViewModel: ProfileViewModelProtocol {
-    var postsDataDidLoad: ((Error?) -> ())?
-    var userDataDidLoaded: ((Result<User?, Error>) -> ())?
+    var postsDataDidLoad: ((Error?) -> Void)?
+    var userDataDidLoaded: ((Result<User?, Error>) -> Void)?
     private(set) var isCurrentUserProfile: Bool
     private var coordinator: ProfileCoordinatorProtocol?
     private var model: ProfileModelManagerProtocol
@@ -61,7 +53,7 @@ class ProfileViewModel: ProfileViewModelProtocol {
     }
 }
 
-extension ProfileViewModel: ProfileModelManagerDelegateProtocol {
+extension ProfileViewModel: ProfileModelManagerDelegate {
     func userDataDidLoad(_ result: Result<User?, Error>) {
         userDataDidLoaded?(result)
     }

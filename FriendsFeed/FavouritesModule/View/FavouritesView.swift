@@ -1,7 +1,7 @@
 import UIKit
 
 class FavouritesView: UIView {
-    //MARK: UI properties
+    // MARK: UI properties
     private(set) lazy var favouritesTableView: UITableView = {
         let view = UITableView()
         view.register(FeedTableViewCell.self,

@@ -1,15 +1,7 @@
-//
-//  ProfileTitleView.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 20.10.2022.
-//
-
 import UIKit
-import SwiftUI
 
 class ProfileTitleView: UIView {
-    //MARK: - UI Elements
+    // MARK: - UI Elements
     private(set) lazy var avatarImageView: CachedImageView = {
         let view = CachedImageView()
         view.clipsToBounds = true
@@ -80,7 +72,7 @@ class ProfileTitleView: UIView {
         return view
     }()
     
-    //MARK: - Life cycle
+    // MARK: - Life cycle
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -98,7 +90,7 @@ class ProfileTitleView: UIView {
         setSubviewsLayout(by: isCurrentUserProfile)
     }
     
-    //MARK: - Sub properties
+    // MARK: - Sub properties
     private func setSubviewsVisibility(by isCurrentUserProfile: Bool) {
         editProfileButton.isHidden = !isCurrentUserProfile
         newRecordButton.isHidden = !isCurrentUserProfile

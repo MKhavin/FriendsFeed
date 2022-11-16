@@ -1,14 +1,7 @@
-//
-//  PostInfoViewController.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 19.10.2022.
-//
-
 import UIKit
 
 class PostInfoViewController: UIViewController {
-    //MARK: - Sub properties
+    // MARK: - Sub properties
     var viewModel: PostInfoViewModelProtocol! {
         didSet {
             viewModel.postDataLoaded = { [weak self] postData in
@@ -29,7 +22,7 @@ class PostInfoViewController: UIViewController {
     }
     private weak var mainView: PostInfoView?
     
-    //MARK: - Life cycle
+    // MARK: - Life cycle
     override func loadView() {
         let currentView = PostInfoView()
         mainView = currentView

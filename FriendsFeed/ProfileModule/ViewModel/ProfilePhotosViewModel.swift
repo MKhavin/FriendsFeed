@@ -1,21 +1,13 @@
-//
-//  ProfilePhotosViewModel.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 30.10.2022.
-//
-
-import Foundation
 import FirebaseAuth
 import FirebaseFirestore
 
 protocol ProfilePhotosViewModelProtocol {
-    var imagesDidLoad: ((Result<[String], Error>) -> ())? { get set }
+    var imagesDidLoad: ((Result<[String], Error>) -> Void)? { get set }
     func loadUserImages()
 }
 
 class ProfilePhotosViewModel: ProfilePhotosViewModelProtocol {
-    var imagesDidLoad: ((Result<[String], Error>) -> ())?
+    var imagesDidLoad: ((Result<[String], Error>) -> Void)?
     private var user: User
     
     init(user: User) {
@@ -27,8 +19,10 @@ class ProfilePhotosViewModel: ProfilePhotosViewModelProtocol {
         let userReference = db.document("User/\(user.id)")
         db.collection("UsersPhoto").whereField("user", isEqualTo: userReference).getDocuments { snapshot, error in
             guard error == nil else {
+                // swiftlint:disable:next force_unwrapping
                 print(error!.localizedDescription)
                 self.imagesDidLoad?(.failure(error!))
+                // swiftlint:disable:previous force_unwrapping
                 return
             }
             

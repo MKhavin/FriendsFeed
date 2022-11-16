@@ -1,16 +1,9 @@
-//
-//  PhotosViewModel.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 05.11.2022.
-//
-
 import Foundation
 import FirebaseFirestore
 import FirebaseStorage
 
 protocol PhotosViewModelProtocol {
-    var photosDidLoad: (() -> ())? { get set }
+    var photosDidLoad: (() -> Void)? { get set }
     func loadUserPhotos()
     func getPhotosCount() -> Int
     func getPhoto(by photoNumber: Int) -> String
@@ -20,7 +13,7 @@ class PhotosViewModel: PhotosViewModelProtocol {
     private let coordinator: NavigationCoordinatorProtocol?
     private var photos = [String]()
     private let user: String
-    var photosDidLoad: (() -> ())?
+    var photosDidLoad: (() -> Void)?
     
     init(coordinator: NavigationCoordinatorProtocol?, user: String) {
         self.coordinator = coordinator

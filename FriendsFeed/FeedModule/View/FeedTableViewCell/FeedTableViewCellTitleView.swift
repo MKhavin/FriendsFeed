@@ -1,14 +1,7 @@
-//
-//  FeedTableViewCellTitleView.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 10.10.2022.
-//
-
 import UIKit
 
 class FeedTableViewCellTitleView: UIView {
-    //MARK: - UI elements
+    // MARK: - UI elements
     private(set) lazy var avatarImageView: CachedImageView = {
         let view = CachedImageView()
         view.contentMode = .scaleAspectFit
@@ -32,7 +25,7 @@ class FeedTableViewCellTitleView: UIView {
         return view
     }()
     
-    //MARK: - Life cycle
+    // MARK: - Life cycle
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -51,7 +44,7 @@ class FeedTableViewCellTitleView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Sub methods
+    // MARK: - Sub methods
     private func setSubviewsLayout() {
         avatarImageView.snp.makeConstraints { make in
             make.leading.equalTo(layoutMarginsGuide)

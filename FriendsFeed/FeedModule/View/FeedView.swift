@@ -1,10 +1,3 @@
-//
-//  FeedView.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 05.10.2022.
-//
-
 import UIKit
 import SnapKit
 
@@ -13,7 +6,7 @@ protocol FeedViewDelegateProtocol: AnyObject {
 }
 
 class FeedView: UIView {
-    //MARK: - UI elements
+    // MARK: - UI elements
     private(set) lazy var feedTableView: UITableView = {
         let view = UITableView()
         
@@ -29,7 +22,7 @@ class FeedView: UIView {
     }()
     weak var delegate: FeedViewDelegateProtocol?
     
-    //MARK: - Life cycle
+    // MARK: - Life cycle
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -42,7 +35,7 @@ class FeedView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Sub methods
+    // MARK: - Sub methods
     private func setSubviewsLayout() {
         feedTableView.snp.makeConstraints { make in
             make.edges.equalTo(safeAreaLayoutGuide)
