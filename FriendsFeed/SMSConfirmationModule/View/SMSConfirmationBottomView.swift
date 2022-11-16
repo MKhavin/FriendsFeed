@@ -1,29 +1,33 @@
-//
-//  SMSConfirmationBottomView.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 04.10.2022.
-//
-
 import UIKit
 
-class SMSConfirmationBottomView: UIView {
-    //MARK: - Sub methods
+final class SMSConfirmationBottomView: UIView {
+    // MARK: - Layout constraints
+    private enum LayoutConstraints {
+        static let leadgingTrailingOffset = 40
+        static let topOffset = 20
+        static let buttonHeight = 50
+    }
+    
+    // MARK: - Sub methods
     private(set) lazy var registrationButton: UIButton = {
         let view = UIButton()
+        
         view.setTitle("ЗАРЕГИСТРИРОВАТЬСЯ", for: .normal)
         view.backgroundColor = .label
         view.setTitleColor(UIColor.systemBackground, for: .normal)
         view.layer.cornerRadius = 20
+        
         return view
     }()
     private lazy var imageView: UIImageView = {
         let view = UIImageView(image: UIImage(named: "RegistrationIcon"))
+        
         view.contentMode = .scaleAspectFit
+        
         return view
     }()
     
-    //MARK: - Life cycle
+    // MARK: - Life cycle
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -37,40 +41,22 @@ class SMSConfirmationBottomView: UIView {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
     }
     
-    override func updateConstraints() {
-//        registrationButton.snp.updateConstraints { make in
-//            make.leading.equalTo(safeAreaLayoutGuide).offset(frame.width / 6)
-//            make.trailing.equalTo(safeAreaLayoutGuide).inset(frame.width / 6)
-//            make.top.equalTo(safeAreaLayoutGuide).offset(20)
-//        }
-//
-//        imageView.snp.updateConstraints { make in
-//            make.height.width.equalTo(150)
-//            make.bottom.equalTo(safeAreaLayoutGuide).inset(15)
-//            make.leading.equalTo(safeAreaLayoutGuide).offset(frame.width / 6)
-//            make.trailing.equalTo(safeAreaLayoutGuide).inset(frame.width / 6)
-//        }
-//
-        super.updateConstraints()
-    }
-    
-    //MARK: - Sub methods
+    // MARK: - Sub methods
     private func setSubviewsLayout() {
         registrationButton.snp.makeConstraints { make in
-            make.height.equalTo(50)
-            make.top.equalTo(safeAreaLayoutGuide).offset(20)
-            make.leading.equalTo(safeAreaLayoutGuide).offset(40)
-            make.trailing.equalTo(safeAreaLayoutGuide).inset(40)
+            make.height.equalTo(LayoutConstraints.buttonHeight)
+            make.top.equalTo(safeAreaLayoutGuide).offset(LayoutConstraints.topOffset)
+            make.leading.equalTo(safeAreaLayoutGuide).offset(LayoutConstraints.leadgingTrailingOffset)
+            make.trailing.equalTo(safeAreaLayoutGuide).inset(LayoutConstraints.leadgingTrailingOffset)
         }
         imageView.snp.makeConstraints { make in
-            make.height.width.equalTo(150)
-            make.centerX.equalTo(safeAreaLayoutGuide)
-            make.bottom.equalTo(safeAreaLayoutGuide).inset(15)
-            make.leading.equalTo(safeAreaLayoutGuide).offset(40)
-            make.trailing.equalTo(safeAreaLayoutGuide).inset(40)
+            make.top.equalTo(registrationButton.snp.bottom).offset(LayoutConstraints.topOffset)
+            make.bottom.equalTo(safeAreaLayoutGuide).inset(LayoutConstraints.topOffset)
+            make.leading.equalTo(safeAreaLayoutGuide).offset(LayoutConstraints.leadgingTrailingOffset)
+            make.trailing.equalTo(safeAreaLayoutGuide).inset(LayoutConstraints.leadgingTrailingOffset)
         }
     }
 }

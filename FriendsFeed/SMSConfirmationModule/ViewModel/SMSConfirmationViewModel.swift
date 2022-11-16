@@ -1,62 +1,54 @@
-//
-//  SMSConfirmationViewModel.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 04.10.2022.
-//
-
-import Foundation
 import FirebaseAuth
 
+// MARK: - SMSConfirmation view model protocol
 protocol SMSConfirmationViewModelProtocol {
-    var coordinator: AppCoordinatorProtocol? { get set }
     var phoneNumber: String { get }
     var showErrorMessage: ((String) -> Void)? { get set }
-    var errorMessage: String { get set }
     func confirm(with code: String?)
 }
 
-class SMSConfirmationViewModel: SMSConfirmationViewModelProtocol {
-    var coordinator: AppCoordinatorProtocol?
+// MARK: - SMSConfimation view model implementation
+final class SMSConfirmationViewModel: SMSConfirmationViewModelProtocol {
+    // MARK: - Properties
+    private var coordinator: AppCoordinatorProtocol?
+    private var model: SMSConfirmationModelManagerProtocol?
     private(set) var phoneNumber: String
-    var errorMessage: String = "" {
-        didSet {
-            showErrorMessage?(errorMessage)
-        }
-    }
     var showErrorMessage: ((String) -> Void)?
     
-    init(coordinator: AppCoordinatorProtocol?, phoneNumber: String) {
+    // MARK: - Life cycle
+    init(coordinator: AppCoordinatorProtocol?, model: SMSConfirmationModelManagerProtocol?, phoneNumber: String) {
         self.coordinator = coordinator
         self.phoneNumber = phoneNumber
+        
+        self.model = model
+        self.model?.delegate = self
     }
     
+    // MARK: - Main methods
     func confirm(with code: String?) {
-        guard let number = code else {
-            errorMessage = "Check your SMS-code"
+        guard let value = code else {
+            showErrorMessage?("Проверьте код в SMS-сообщении.")
             return
         }
         
         let verificationID = UserDefaults.standard.string(forKey: "verificationID")
         
         guard let id = verificationID else {
-            errorMessage = "Check your SMS-code"
+            showErrorMessage?("Вернитесь на предыдущий экран и попробуйте войти снова.")
             return
         }
         
-        let credential = PhoneAuthProvider.provider().credential(
-          withVerificationID: id,
-          verificationCode: number
-        )
-        
-        Auth.auth().signIn(with: credential) { authResult, error in
-            guard error == nil else {
-                self.errorMessage = "Check your SMS-code"
-                print(error!.localizedDescription)
-                return
-            }
+        model?.signIn(with: id, verificationCode: value)
+    }
+}
 
-            self.coordinator?.pushMainView()
-        }
+// MARK: - SMSConfirmation model manager delegate implementation
+extension SMSConfirmationViewModel: SMSConfirmationModelManagerDelegate {
+    func errorMessageOccured(message: String) {
+        showErrorMessage?(message)
+    }
+    
+    func userDidSignIn() {
+        coordinator?.pushMainView()
     }
 }

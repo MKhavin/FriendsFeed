@@ -1,35 +1,13 @@
-//
-//  SMSConfirmationViewController.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 04.10.2022.
-//
-
 import UIKit
 
-class SMSConfirmationViewController: UIViewController {
-    //MARK: - Sub properties
-    var viewModel: SMSConfirmationViewModelProtocol! {
-        didSet {
-            viewModel.showErrorMessage = { message in
-                let alert = UIAlertController(title: "Error occured",
-                                              message: message,
-                                              preferredStyle: .alert)
-                
-                let action = UIAlertAction(title: "Ok",
-                                           style: .default) { action in
-                    self.dismiss(animated: true)
-                }
-                
-                alert.addAction(action)
-                
-                self.present(alert, animated: true)
-            }
-        }
-    }
+final class SMSConfirmationViewController: UIViewController {
+    // MARK: - Sub properties
+    // swiftlint:disable:next implicitly_unwrapped_optional
+    var viewModel: SMSConfirmationViewModelProtocol!
+    // swiftlint:disable:previous implicitly_unwrapped_optional
     private weak var mainView: SMSConfirmationView?
     
-    //MARK: - Life cycle
+    // MARK: - Life cycle
     override func loadView() {
         let subView = SMSConfirmationView()
         view = subView
@@ -40,14 +18,16 @@ class SMSConfirmationViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        setViewModelCallbacks()
         setButtonsActions()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        mainView?.numberView.phoneNumberLabel.text = viewModel.phoneNumber
         navigationController?.isNavigationBarHidden = false
+        
+        mainView?.setTitle(phoneNumber: viewModel.phoneNumber)
         setNotifications()
     }
     
@@ -57,7 +37,24 @@ class SMSConfirmationViewController: UIViewController {
         removeNotifications()
     }
     
-    //MARK: - Sub methods
+    // MARK: - Sub methods
+    private func setViewModelCallbacks() {
+        viewModel.showErrorMessage = { message in
+            let alert = UIAlertController(title: "Возникла ошибка",
+                                          message: message,
+                                          preferredStyle: .alert)
+            
+            let action = UIAlertAction(title: "Ввести код еще раз",
+                                       style: .default) { _ in
+                self.dismiss(animated: true)
+            }
+            
+            alert.addAction(action)
+            
+            self.present(alert, animated: true)
+        }
+    }
+    
     private func setButtonsActions() {
         mainView?.bottomView.registrationButton.addTarget(self,
                                                           action: #selector(registerButtonPressed(_:)),
@@ -82,7 +79,7 @@ class SMSConfirmationViewController: UIViewController {
                                                   object: nil)
     }
     
-    //MARK: - Actions
+    // MARK: - Actions
     @objc private func keyboardWillShow(_ sender: NSNotification) {
         guard let keyboardSize = (sender.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
             return

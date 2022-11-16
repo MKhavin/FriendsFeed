@@ -19,7 +19,7 @@ final class LogInModelManager: LogInModelManagerProtocol {
     
     // MARK: - Methods
     func logIn(with phoneNumber: String) {
-        PhoneAuthProvider.provider().verifyPhoneNumber(phoneNumber, uiDelegate: nil) {[ weak self ] _, error in
+        PhoneAuthProvider.provider().verifyPhoneNumber(phoneNumber, uiDelegate: nil) {[ weak self ] verificationID, error in
             guard error == nil else {
                 // swiftlint:disable:next force_unwrapping
                 self?.delegate?.userLogInError(message: error!.localizedDescription)
@@ -27,6 +27,8 @@ final class LogInModelManager: LogInModelManagerProtocol {
                 // swiftlint:disable:previous force_unwrapping
                 return
             }
+            
+            UserDefaults.standard.set(verificationID, forKey: "verificationID")
             
             self?.delegate?.userDidLogIn(with: phoneNumber)
         }

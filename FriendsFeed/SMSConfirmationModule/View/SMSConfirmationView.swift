@@ -1,15 +1,8 @@
-//
-//  SMSConfirmation.swift
-//  FriendsFeed
-//
-//  Created by Michael Khavin on 04.10.2022.
-//
-
 import UIKit
 
-class SMSConfirmationView: UIView {
-    //MARK: - UI elements
-    private(set) lazy var numberView: SMSConfirmationTitleView = {
+final class SMSConfirmationView: UIView {
+    // MARK: - UI elements
+    private lazy var numberView: SMSConfirmationTitleView = {
         let view = SMSConfirmationTitleView()
         return view
     }()
@@ -22,7 +15,7 @@ class SMSConfirmationView: UIView {
         return view
     }()
     
-    //MARK: - Life cycle
+    // MARK: - Life cycle
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -31,10 +24,10 @@ class SMSConfirmationView: UIView {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
     }
     
-    //MARK: - Sub methods
+    // MARK: - Sub methods
     private func setSubviewsLayout() {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -53,5 +46,9 @@ class SMSConfirmationView: UIView {
         stackView.snp.makeConstraints { make in
             make.edges.equalTo(safeAreaLayoutGuide)
         }
+    }
+    
+    func setTitle(phoneNumber: String) {
+        numberView.phoneNumberLabel.text = phoneNumber
     }
 }
