@@ -409,7 +409,7 @@
 			isa = PBXGroup;
 			children = (
 			);
-			name = SupportObjects;
+			path = SupportObjects;
 			sourceTree = "<group>";
 		};
 		51DD900F29073BB50036B521 /* ProfileTitleView */ = {
@@ -528,7 +528,7 @@
 			children = (
 				51FF36B328D3C9B300BFF814 /* AuthenticationViewModel.swift */,
 			);
-			name = ViewModel;
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		51FF36AA28D3B8C800BFF814 /* View */ = {
@@ -537,14 +537,14 @@
 				51FF36AC28D3B8EA00BFF814 /* AuthenticationViewController.swift */,
 				51FF36AE28D3B90900BFF814 /* AuthenticationView.swift */,
 			);
-			name = View;
+			path = View;
 			sourceTree = "<group>";
 		};
 		51FF36AB28D3B8CD00BFF814 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			name = Model;
+			path = Model;
 			sourceTree = "<group>";
 		};
 		51FF36B028D3BBE800BFF814 /* Extensions */ = {
