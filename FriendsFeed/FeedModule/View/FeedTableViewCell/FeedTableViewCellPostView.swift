@@ -48,7 +48,7 @@ class FeedTableViewCellPostView: UIView {
         }
         
         postTextLabel.snp.makeConstraints { make in
-            make.top.equalTo(layoutMarginsGuide)
+            make.top.trailing.equalTo(layoutMarginsGuide)
             make.leading.equalTo(leftBorder.snp.trailing).offset(5)
             make.bottom.equalTo(snp.centerY).inset(-2)
         }

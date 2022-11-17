@@ -21,6 +21,8 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
     weak var delegate: FavouritesModelManagerDelegateProtocol?
     
     func loadFavouritesPosts() {
+        posts = []
+        
         let db = Firestore.firestore()
         let userReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
         
