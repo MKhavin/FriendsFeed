@@ -43,6 +43,12 @@
 		51AFAF1E28D8EDA70075DB21 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51AFAF1D28D8EDA70075DB21 /* LogInViewController.swift */; };
 		51AFAF2028D8EDB50075DB21 /* LogInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51AFAF1F28D8EDB50075DB21 /* LogInView.swift */; };
 		51AFAF2328D8EE880075DB21 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51AFAF2228D8EE880075DB21 /* UIColorExtension.swift */; };
+		51B947D5292D733F009CDA3C /* FirestoreTables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B947D4292D733F009CDA3C /* FirestoreTables.swift */; };
+		51B947D7292D73CB009CDA3C /* UserTableColumns.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B947D6292D73CB009CDA3C /* UserTableColumns.swift */; };
+		51B947D9292D7476009CDA3C /* PostTableColumns.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B947D8292D7476009CDA3C /* PostTableColumns.swift */; };
+		51B947DB292D770B009CDA3C /* PostsLikesTableColumns.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B947DA292D770B009CDA3C /* PostsLikesTableColumns.swift */; };
+		51B947DD292D773E009CDA3C /* SubscriptionTableColumns.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B947DC292D773E009CDA3C /* SubscriptionTableColumns.swift */; };
+		51B947DF292D7780009CDA3C /* UsersPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B947DE292D7780009CDA3C /* UsersPhoto.swift */; };
 		51CA422729255341007B7737 /* SMSConfirmationModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51CA422629255341007B7737 /* SMSConfirmationModelManager.swift */; };
 		51CD697D290F251C007F0FF8 /* ProfilePhotosViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51CD697C290F251C007F0FF8 /* ProfilePhotosViewModel.swift */; };
 		51DD900E290739E70036B521 /* ProfileTitleSubInfoLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DD900D290739E70036B521 /* ProfileTitleSubInfoLabel.swift */; };
@@ -118,6 +124,12 @@
 		51AFAF1D28D8EDA70075DB21 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		51AFAF1F28D8EDB50075DB21 /* LogInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInView.swift; sourceTree = "<group>"; };
 		51AFAF2228D8EE880075DB21 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		51B947D4292D733F009CDA3C /* FirestoreTables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreTables.swift; sourceTree = "<group>"; };
+		51B947D6292D73CB009CDA3C /* UserTableColumns.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTableColumns.swift; sourceTree = "<group>"; };
+		51B947D8292D7476009CDA3C /* PostTableColumns.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableColumns.swift; sourceTree = "<group>"; };
+		51B947DA292D770B009CDA3C /* PostsLikesTableColumns.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsLikesTableColumns.swift; sourceTree = "<group>"; };
+		51B947DC292D773E009CDA3C /* SubscriptionTableColumns.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionTableColumns.swift; sourceTree = "<group>"; };
+		51B947DE292D7780009CDA3C /* UsersPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersPhoto.swift; sourceTree = "<group>"; };
 		51CA422629255341007B7737 /* SMSConfirmationModelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSConfirmationModelManager.swift; sourceTree = "<group>"; };
 		51CD697C290F251C007F0FF8 /* ProfilePhotosViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePhotosViewModel.swift; sourceTree = "<group>"; };
 		51DD900D290739E70036B521 /* ProfileTitleSubInfoLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTitleSubInfoLabel.swift; sourceTree = "<group>"; };
@@ -412,6 +424,19 @@
 			path = SupportObjects;
 			sourceTree = "<group>";
 		};
+		51B947D3292D72CD009CDA3C /* FirestoreStruct */ = {
+			isa = PBXGroup;
+			children = (
+				51B947D4292D733F009CDA3C /* FirestoreTables.swift */,
+				51B947D6292D73CB009CDA3C /* UserTableColumns.swift */,
+				51B947D8292D7476009CDA3C /* PostTableColumns.swift */,
+				51B947DA292D770B009CDA3C /* PostsLikesTableColumns.swift */,
+				51B947DC292D773E009CDA3C /* SubscriptionTableColumns.swift */,
+				51B947DE292D7780009CDA3C /* UsersPhoto.swift */,
+			);
+			path = FirestoreStruct;
+			sourceTree = "<group>";
+		};
 		51DD900F29073BB50036B521 /* ProfileTitleView */ = {
 			isa = PBXGroup;
 			children = (
@@ -561,6 +586,7 @@
 		51FF36B528D3CA1300BFF814 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				51B947D3292D72CD009CDA3C /* FirestoreStruct */,
 				51EA4EC228F9F19F00E6948B /* Coordinators */,
 				51FF36B828D3CB5500BFF814 /* ModuleFactory.swift */,
 				51EC6A7228EF62B1008BD2C7 /* UILabelWithPadding.swift */,
@@ -683,6 +709,7 @@
 				5123BE1929218EEC00CAE758 /* FavouritesCoordinator.swift in Sources */,
 				519D58172917022E005E3D4A /* PhotosViewModel.swift in Sources */,
 				5106130828ECB0FC0060112E /* SMSConfirmationViewModel.swift in Sources */,
+				51B947D5292D733F009CDA3C /* FirestoreTables.swift in Sources */,
 				510612FE28EC3A170060112E /* LogInViewModel.swift in Sources */,
 				5106130028EC68AB0060112E /* SMSConfirmationTitleView.swift in Sources */,
 				519D5815291700C9005E3D4A /* PhotosView.swift in Sources */,
@@ -693,6 +720,7 @@
 				51E5CF2628FDEFD30098CAD0 /* CachedImageView.swift in Sources */,
 				5185D1DE28F4A836003595A6 /* FeedTableViewCellPostView.swift in Sources */,
 				5185D1DC28F4A6ED003595A6 /* FeedTableViewCellTitleView.swift in Sources */,
+				51B947DD292D773E009CDA3C /* SubscriptionTableColumns.swift in Sources */,
 				51E5919328EE0A58001D4EC0 /* FeedView.swift in Sources */,
 				51FBF90D28F1EAA600C7FA45 /* FeedViewModel.swift in Sources */,
 				5149DB7A28FF49C600D08EE2 /* DateExtension.swift in Sources */,
@@ -702,7 +730,9 @@
 				514664DA290086EE006B3EDE /* PostInfoView.swift in Sources */,
 				514A3A1B292448DC00980E27 /* LogInModelManager.swift in Sources */,
 				51E5919128EE0984001D4EC0 /* FeedViewController.swift in Sources */,
+				51B947D7292D73CB009CDA3C /* UserTableColumns.swift in Sources */,
 				51FF36B928D3CB5500BFF814 /* ModuleFactory.swift in Sources */,
+				51B947D9292D7476009CDA3C /* PostTableColumns.swift in Sources */,
 				51AFAF1E28D8EDA70075DB21 /* LogInViewController.swift in Sources */,
 				5106130228EC70790060112E /* SMSConfirmationTextFieldView.swift in Sources */,
 				510612FA28EC39100060112E /* SMSConfirmationViewController.swift in Sources */,
@@ -725,6 +755,7 @@
 				51FBF90928F1E87500C7FA45 /* Post.swift in Sources */,
 				516CCE5E2907ABC400DDB7D9 /* ProfilePhotosTableViewCell.swift in Sources */,
 				51EC6A7128EF5AC6008BD2C7 /* FeedSectionView.swift in Sources */,
+				51B947DF292D7780009CDA3C /* UsersPhoto.swift in Sources */,
 				51FF111E28D399AB00B0D334 /* SceneDelegate.swift in Sources */,
 				510612FC28EC39220060112E /* SMSConfirmationView.swift in Sources */,
 				5123BE1B29218FFC00CAE758 /* FavouritesViewModel.swift in Sources */,
@@ -732,6 +763,7 @@
 				5123BE152921848300CAE758 /* FavouritesView.swift in Sources */,
 				5123BE1729218D1300CAE758 /* FavouritesViewController.swift in Sources */,
 				51FF36AF28D3B90A00BFF814 /* AuthenticationView.swift in Sources */,
+				51B947DB292D770B009CDA3C /* PostsLikesTableColumns.swift in Sources */,
 				5123BE1D292191DF00CAE758 /* FavouritesModelManager.swift in Sources */,
 				519D58132916FF4A005E3D4A /* PhotosCollectionViewCell.swift in Sources */,
 				51E5919528EE0B5B001D4EC0 /* FeedTableViewCell.swift in Sources */,
