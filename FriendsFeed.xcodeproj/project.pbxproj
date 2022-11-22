@@ -49,6 +49,7 @@
 		51B947DB292D770B009CDA3C /* PostsLikesTableColumns.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B947DA292D770B009CDA3C /* PostsLikesTableColumns.swift */; };
 		51B947DD292D773E009CDA3C /* SubscriptionTableColumns.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B947DC292D773E009CDA3C /* SubscriptionTableColumns.swift */; };
 		51B947DF292D7780009CDA3C /* UsersPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B947DE292D7780009CDA3C /* UsersPhoto.swift */; };
+		51B947E1292D7A91009CDA3C /* FavouritesPostsTableColumns.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B947E0292D7A91009CDA3C /* FavouritesPostsTableColumns.swift */; };
 		51CA422729255341007B7737 /* SMSConfirmationModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51CA422629255341007B7737 /* SMSConfirmationModelManager.swift */; };
 		51CD697D290F251C007F0FF8 /* ProfilePhotosViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51CD697C290F251C007F0FF8 /* ProfilePhotosViewModel.swift */; };
 		51DD900E290739E70036B521 /* ProfileTitleSubInfoLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DD900D290739E70036B521 /* ProfileTitleSubInfoLabel.swift */; };
@@ -130,6 +131,7 @@
 		51B947DA292D770B009CDA3C /* PostsLikesTableColumns.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsLikesTableColumns.swift; sourceTree = "<group>"; };
 		51B947DC292D773E009CDA3C /* SubscriptionTableColumns.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionTableColumns.swift; sourceTree = "<group>"; };
 		51B947DE292D7780009CDA3C /* UsersPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersPhoto.swift; sourceTree = "<group>"; };
+		51B947E0292D7A91009CDA3C /* FavouritesPostsTableColumns.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesPostsTableColumns.swift; sourceTree = "<group>"; };
 		51CA422629255341007B7737 /* SMSConfirmationModelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMSConfirmationModelManager.swift; sourceTree = "<group>"; };
 		51CD697C290F251C007F0FF8 /* ProfilePhotosViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePhotosViewModel.swift; sourceTree = "<group>"; };
 		51DD900D290739E70036B521 /* ProfileTitleSubInfoLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTitleSubInfoLabel.swift; sourceTree = "<group>"; };
@@ -433,6 +435,7 @@
 				51B947DA292D770B009CDA3C /* PostsLikesTableColumns.swift */,
 				51B947DC292D773E009CDA3C /* SubscriptionTableColumns.swift */,
 				51B947DE292D7780009CDA3C /* UsersPhoto.swift */,
+				51B947E0292D7A91009CDA3C /* FavouritesPostsTableColumns.swift */,
 			);
 			path = FirestoreStruct;
 			sourceTree = "<group>";
@@ -730,6 +733,7 @@
 				514664DA290086EE006B3EDE /* PostInfoView.swift in Sources */,
 				514A3A1B292448DC00980E27 /* LogInModelManager.swift in Sources */,
 				51E5919128EE0984001D4EC0 /* FeedViewController.swift in Sources */,
+				51B947E1292D7A91009CDA3C /* FavouritesPostsTableColumns.swift in Sources */,
 				51B947D7292D73CB009CDA3C /* UserTableColumns.swift in Sources */,
 				51FF36B928D3CB5500BFF814 /* ModuleFactory.swift in Sources */,
 				51B947D9292D7476009CDA3C /* PostTableColumns.swift in Sources */,

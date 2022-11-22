@@ -4,4 +4,5 @@ enum FirestoreTables: String {
     case postsLikes = "PostsLikes"
     case subscription = "Subscription"
     case usersPhotos = "UsersPhoto"
+    case favouritesPosts = "FavouritesPosts"
 }
