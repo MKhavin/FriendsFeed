@@ -22,9 +22,12 @@ class PhotosViewModel: PhotosViewModelProtocol {
     
     func loadUserPhotos() {
         let db = Firestore.firestore()
-        let userReference = db.document("User/\(user)")
+        let userReference = db.document("\(FirestoreTables.user.rawValue)/\(user)")
         
-        db.collection("UsersPhoto").whereField("user", isEqualTo: userReference).getDocuments { snapshot, error in
+        db.collection(FirestoreTables.usersPhotos.rawValue).whereField(
+            UsersPhoto.user.rawValue,
+            isEqualTo: userReference
+        ).getDocuments { snapshot, error in
             guard error == nil else {
                 // swiftlint:disable:next force_unwrapping
                 print(error!.localizedDescription)
@@ -34,7 +37,7 @@ class PhotosViewModel: PhotosViewModelProtocol {
             
             self.photos = snapshot?.documents.map { snapshot -> String in
                 let currentData = snapshot.data()
-                return currentData["image"] as? String ?? ""
+                return currentData[UsersPhoto.image.rawValue] as? String ?? ""
             } ?? []
             
             self.photosDidLoad?()
