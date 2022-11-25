@@ -37,8 +37,10 @@ class FeedViewModel: FeedViewModelProtocol {
         DispatchQueue.global(qos: .userInitiated).async(group: operationGroup) {
             let reference = db.document("\(FirestoreTables.user.rawValue)/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
             
-            db.collection(FirestoreTables.post.rawValue).whereField(PostTableColumns.user.rawValue,
-                                             isNotEqualTo: reference).getDocuments { (querySnapshot, error) in
+            db.collection(FirestoreTables.post.rawValue).whereField(
+                PostTableColumns.user.rawValue,
+                isNotEqualTo: reference
+            ).getDocuments { (querySnapshot, error) in
                 
                 guard error == nil else {
                     // swiftlint:disable:next force_unwrapping
