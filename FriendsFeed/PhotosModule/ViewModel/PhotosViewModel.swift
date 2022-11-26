@@ -1,7 +1,4 @@
-import Foundation
-import FirebaseFirestore
-import FirebaseStorage
-
+// MARK: - PhotosViewModel protocol
 protocol PhotosViewModelProtocol {
     var photosDidLoad: (() -> Void)? { get set }
     func loadUserPhotos()
@@ -9,46 +6,38 @@ protocol PhotosViewModelProtocol {
     func getPhoto(by photoNumber: Int) -> String
 }
 
+// MARK: - PhotosViewModel implementation
 class PhotosViewModel: PhotosViewModelProtocol {
+    // MARK: - Properties
     private let coordinator: NavigationCoordinatorProtocol?
-    private var photos = [String]()
     private let user: String
+    private var modelManager: PhotosModelManagerProtocol?
     var photosDidLoad: (() -> Void)?
     
-    init(coordinator: NavigationCoordinatorProtocol?, user: String) {
+    // MARK: - Life cycle
+    init(coordinator: NavigationCoordinatorProtocol?, modelManager: PhotosModelManagerProtocol?, user: String) {
+        self.modelManager = modelManager
         self.coordinator = coordinator
         self.user = user
     }
     
+    // MARK: - Methods
     func loadUserPhotos() {
-        let db = Firestore.firestore()
-        let userReference = db.document("\(FirestoreTables.user.rawValue)/\(user)")
-        
-        db.collection(FirestoreTables.usersPhotos.rawValue).whereField(
-            UsersPhoto.user.rawValue,
-            isEqualTo: userReference
-        ).getDocuments { snapshot, error in
-            guard error == nil else {
-                // swiftlint:disable:next force_unwrapping
-                print(error!.localizedDescription)
-                // swiftlint:disable:previous force_unwrapping
-                return
-            }
-            
-            self.photos = snapshot?.documents.map { snapshot -> String in
-                let currentData = snapshot.data()
-                return currentData[UsersPhoto.image.rawValue] as? String ?? ""
-            } ?? []
-            
-            self.photosDidLoad?()
-        }
+        modelManager?.loadUserPhotos(for: user)
     }
     
     func getPhotosCount() -> Int {
-        photos.count
+        modelManager?.photos.count ?? 0
     }
     
     func getPhoto(by photoNumber: Int) -> String {
-        photos[photoNumber]
+        modelManager?.photos[photoNumber] ?? ""
+    }
+}
+
+// MARK: - PhotosViewModelManager delegate implementation
+extension PhotosViewModel: PhotosModelManagerDelegate {
+    func userImagesDidLoad() {
+        photosDidLoad?()
     }
 }

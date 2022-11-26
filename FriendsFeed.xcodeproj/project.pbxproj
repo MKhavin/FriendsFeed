@@ -23,6 +23,7 @@
 		5123BE1929218EEC00CAE758 /* FavouritesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5123BE1829218EEC00CAE758 /* FavouritesCoordinator.swift */; };
 		5123BE1B29218FFC00CAE758 /* FavouritesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5123BE1A29218FFC00CAE758 /* FavouritesViewModel.swift */; };
 		5123BE1D292191DF00CAE758 /* FavouritesModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5123BE1C292191DF00CAE758 /* FavouritesModelManager.swift */; };
+		5126C07029322A740010902B /* PhotosModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5126C06F29322A740010902B /* PhotosModelManager.swift */; };
 		514664DA290086EE006B3EDE /* PostInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514664D9290086EE006B3EDE /* PostInfoView.swift */; };
 		514664DC29008702006B3EDE /* PostInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514664DB29008702006B3EDE /* PostInfoViewController.swift */; };
 		514664E029009CC7006B3EDE /* PostInfoTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514664DF29009CC7006B3EDE /* PostInfoTitleView.swift */; };
@@ -105,6 +106,7 @@
 		5123BE1829218EEC00CAE758 /* FavouritesCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesCoordinator.swift; sourceTree = "<group>"; };
 		5123BE1A29218FFC00CAE758 /* FavouritesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesViewModel.swift; sourceTree = "<group>"; };
 		5123BE1C292191DF00CAE758 /* FavouritesModelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesModelManager.swift; sourceTree = "<group>"; };
+		5126C06F29322A740010902B /* PhotosModelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosModelManager.swift; sourceTree = "<group>"; };
 		514664D9290086EE006B3EDE /* PostInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostInfoView.swift; sourceTree = "<group>"; };
 		514664DB29008702006B3EDE /* PostInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostInfoViewController.swift; sourceTree = "<group>"; };
 		514664DF29009CC7006B3EDE /* PostInfoTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostInfoTitleView.swift; sourceTree = "<group>"; };
@@ -370,6 +372,7 @@
 		519D580F2916FBD0005E3D4A /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				5126C06F29322A740010902B /* PhotosModelManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -731,6 +734,7 @@
 				5185D1E028F4AA09003595A6 /* LikeFavouritesBottomView.swift in Sources */,
 				514664DC29008702006B3EDE /* PostInfoViewController.swift in Sources */,
 				514664DA290086EE006B3EDE /* PostInfoView.swift in Sources */,
+				5126C07029322A740010902B /* PhotosModelManager.swift in Sources */,
 				514A3A1B292448DC00980E27 /* LogInModelManager.swift in Sources */,
 				51E5919128EE0984001D4EC0 /* FeedViewController.swift in Sources */,
 				51B947E1292D7A91009CDA3C /* FavouritesPostsTableColumns.swift in Sources */,

@@ -111,9 +111,11 @@ final class ModuleFactory: ModuleFactoryProtocol {
     }
     
     func buildPhotoModule(coordinator: NavigationCoordinatorProtocol?, user: String) -> UIViewController {
+        let modelManager = PhotosModelManager()
         let view = PhotosViewController()
-        let viewModel = PhotosViewModel(coordinator: coordinator, user: user)
+        let viewModel = PhotosViewModel(coordinator: coordinator, modelManager: modelManager, user: user)
         view.viewModel = viewModel
+        modelManager.delegate = viewModel
         
         return view
     }
