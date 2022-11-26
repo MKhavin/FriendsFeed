@@ -43,17 +43,17 @@ class PostInfoViewModel: PostInfoViewModelProtocol {
         post.isLiked = !post.isLiked
         
         let db = Firestore.firestore()
-        let reference = db.document("Post/\(post.id)")
-        let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
+        let reference = db.document("\(FirestoreTables.post.rawValue)/\(post.id)")
+        let currentUserReference = db.document("\(FirestoreTables.user.rawValue)/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
         
         if post.isLiked {
             post.likes += 1
             
-            db.collection("PostsLikes").whereField(
-                "post",
+            db.collection(FirestoreTables.postsLikes.rawValue).whereField(
+                PostsLikesTableColumns.post.rawValue,
                 isEqualTo: reference
             ).whereField(
-                "user",
+                PostsLikesTableColumns.user.rawValue,
                 isEqualTo: currentUserReference
             ).getDocuments {[ weak self ] snapshot, error in
                 guard error == nil else {
@@ -79,10 +79,10 @@ class PostInfoViewModel: PostInfoViewModelProtocol {
             post.likes -= 1
             
             let documentData = [
-                "post": reference,
-                "user": currentUserReference
+                PostsLikesTableColumns.post.rawValue: reference,
+                PostsLikesTableColumns.user.rawValue: currentUserReference
             ]
-            db.collection("PostsLikes").addDocument(data: documentData) {[ weak self ] error in
+            db.collection(FirestoreTables.postsLikes.rawValue).addDocument(data: documentData) {[ weak self ] error in
                 guard error == nil else {
                     // swiftlint:disable:next force_unwrapping
                     print(error!.localizedDescription)
@@ -101,15 +101,15 @@ class PostInfoViewModel: PostInfoViewModelProtocol {
     
     func setPostInFavourites() {
         let db = Firestore.firestore()
-        let reference = db.document("Post/\(post.id)")
-        let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
+        let reference = db.document("\(FirestoreTables.post.rawValue)/\(post.id)")
+        let currentUserReference = db.document("\(FirestoreTables.user.rawValue)/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
         
         if post.isFavourite {
-            db.collection("FavouritesPosts").whereField(
-                "post",
+            db.collection(FirestoreTables.favouritesPosts.rawValue).whereField(
+                FavouritesPostsTableColumns.post.rawValue,
                 isEqualTo: reference
             ).whereField(
-                "user",
+                FavouritesPostsTableColumns.user.rawValue,
                 isEqualTo: currentUserReference
             ).getDocuments { [ weak self ] snapshot, error in
                 guard error == nil else {
@@ -134,10 +134,10 @@ class PostInfoViewModel: PostInfoViewModelProtocol {
             }
         } else {
             let documentData = [
-                "post": reference,
-                "user": currentUserReference
+                FavouritesPostsTableColumns.post.rawValue: reference,
+                FavouritesPostsTableColumns.user.rawValue: currentUserReference
             ]
-            db.collection("FavouritesPosts").addDocument(data: documentData) {[ weak self ] error in
+            db.collection(FirestoreTables.favouritesPosts.rawValue).addDocument(data: documentData) {[ weak self ] error in
                 guard error == nil else {
                     // swiftlint:disable:next force_unwrapping
                     print(error!.localizedDescription)

@@ -24,10 +24,13 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
         posts = []
         
         let db = Firestore.firestore()
-        let userReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
+        let userReference = db.document("\(FirestoreTables.user.rawValue)/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
         
         asyncGroup.enter()
-        db.collection("FavouritesPosts").whereField("user", isEqualTo: userReference).getDocuments { snapshot, error in
+        db.collection(FirestoreTables.favouritesPosts.rawValue).whereField(
+            FavouritesPostsTableColumns.user.rawValue,
+            isEqualTo: userReference
+        ).getDocuments { snapshot, error in
             guard error == nil else {
                 // swiftlint:disable:next force_unwrapping
                 print(error!.localizedDescription)
@@ -38,7 +41,7 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
             
             snapshot?.documents.forEach { snapshot in
                 let documentData = snapshot.data()
-                let postReference = documentData["post"] as? DocumentReference
+                let postReference = documentData[FavouritesPostsTableColumns.post.rawValue] as? DocumentReference
                 
                 self.asyncGroup.enter()
                 postReference?.getDocument { snapshot, error in
@@ -56,16 +59,16 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
                     }
                     
                     let post = Post(id: documentSnapshot.documentID,
-                                    date: Date(timeIntervalSince1970: postData["Date"] as? Double ?? 0.0),
+                                    date: Date(timeIntervalSince1970: postData[PostTableColumns.date.rawValue] as? Double ?? 0.0),
                                     likes: 0,
-                                    text: postData["Text"] as? String,
+                                    text: postData[PostTableColumns.text.rawValue] as? String,
                                     author: nil,
-                                    image: postData["image"] as? String)
+                                    image: postData[PostTableColumns.image.rawValue] as? String)
                     self.posts.append(post)
                     
                     self.loadFavouritesInfo(for: post)
                     self.loadLikesInfo(for: post)
-                    self.loadUserInfo(for: post, user: documentData["user"] as? DocumentReference)
+                    self.loadUserInfo(for: post, user: documentData[FavouritesPostsTableColumns.user.rawValue] as? DocumentReference)
                     
                     self.asyncGroup.leave()
                 }
@@ -81,15 +84,15 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
     
     private func loadFavouritesInfo(for post: Post) {
         let db = Firestore.firestore()
-        let reference = db.document("Post/\(post.id)")
-        let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
+        let reference = db.document("\(FirestoreTables.post.rawValue)/\(post.id)")
+        let currentUserReference = db.document("\(FirestoreTables.user.rawValue)/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
         
         asyncGroup.enter()
-        db.collection("FavouritesPosts").whereField(
-            "post",
+        db.collection(FirestoreTables.favouritesPosts.rawValue).whereField(
+            FavouritesPostsTableColumns.post.rawValue,
             isEqualTo: reference
         ).whereField(
-            "user",
+            FavouritesPostsTableColumns.user.rawValue,
             isEqualTo: currentUserReference
         ).getDocuments { snapshot, error in
             guard error == nil else {
@@ -114,11 +117,14 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
     
     private func loadLikesInfo(for post: Post) {
         let db = Firestore.firestore()
-        let reference = db.document("Post/\(post.id)")
-        let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
+        let reference = db.document("\(FirestoreTables.post.rawValue)/\(post.id)")
+        let currentUserReference = db.document("\(FirestoreTables.user.rawValue)/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
         
         asyncGroup.enter()
-        db.collection("PostsLikes").whereField("post", isEqualTo: reference).getDocuments { snapshot, error in
+        db.collection(FirestoreTables.postsLikes.rawValue).whereField(
+            PostsLikesTableColumns.post.rawValue,
+            isEqualTo: reference
+        ).getDocuments { snapshot, error in
             guard error == nil else {
                 // swiftlint:disable:next force_unwrapping
                 print(error!.localizedDescription)
@@ -135,7 +141,7 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
             for document in documentsSnapshot.documents {
                 post.likes += 1
                 
-                if let user = document.data()["user"] as? DocumentReference, user == currentUserReference {
+                if let user = document.data()[PostsLikesTableColumns.user.rawValue] as? DocumentReference, user == currentUserReference {
                     post.isLiked = true
                 }
             }
@@ -164,12 +170,12 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
             }
             
             post.author = User(id: snapshot?.documentID ?? "",
-                               firstName: userData["firstName"] as? String,
-                               lastName: userData["lastName"] as? String,
-                               birthDate: Date(timeIntervalSince1970: userData["birthDate"] as? Double ?? 0.0),
-                               sex: .init(rawValue: userData["sex"] as? String ?? "") ?? .male,
-                               avatar: userData["avatar"] as? String,
-                               phoneNumber: userData["phoneNumber"] as? String)
+                               firstName: userData[UserTableColumns.firstName.rawValue] as? String,
+                               lastName: userData[UserTableColumns.lastName.rawValue] as? String,
+                               birthDate: Date(timeIntervalSince1970: userData[UserTableColumns.birthDate.rawValue] as? Double ?? 0.0),
+                               sex: .init(rawValue: userData[UserTableColumns.sex.rawValue] as? String ?? "") ?? .male,
+                               avatar: userData[UserTableColumns.avatar.rawValue] as? String,
+                               phoneNumber: userData[UserTableColumns.phoneNumber.rawValue] as? String)
         
             self.asyncGroup.leave()
         }
@@ -177,15 +183,15 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
     
     func likePost(cell: FeedTableViewCell, post: Post) {
         let db = Firestore.firestore()
-        let reference = db.document("Post/\(post.id)")
-        let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
+        let reference = db.document("\(FirestoreTables.post.rawValue)/\(post.id)")
+        let currentUserReference = db.document("\(FirestoreTables.user.rawValue)/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
         
         if post.isLiked {
-            db.collection("PostsLikes").whereField(
-                "post",
+            db.collection(FirestoreTables.postsLikes.rawValue).whereField(
+                PostsLikesTableColumns.post.rawValue,
                 isEqualTo: reference
             ).whereField(
-                "user",
+                PostsLikesTableColumns.user.rawValue,
                 isEqualTo: currentUserReference
             ).getDocuments {[ weak self ] snapshot, error in
                 guard error == nil else {
@@ -212,10 +218,10 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
             }
         } else {
             let documentData = [
-                "post": reference,
-                "user": currentUserReference
+                PostsLikesTableColumns.post.rawValue: reference,
+                PostsLikesTableColumns.user.rawValue: currentUserReference
             ]
-            db.collection("PostsLikes").addDocument(data: documentData) {[ weak self ] error in
+            db.collection(FirestoreTables.postsLikes.rawValue).addDocument(data: documentData) {[ weak self ] error in
                 guard error == nil else {
                     // swiftlint:disable:next force_unwrapping
                     print(error!.localizedDescription)
@@ -233,14 +239,14 @@ class FavouritesModelManager: FavouritesModelManagerProtocol {
     
     func setPostInFavourites(cellPath: IndexPath, post: Post) {
         let db = Firestore.firestore()
-        let reference = db.document("Post/\(post.id)")
-        let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
+        let reference = db.document("\(FirestoreTables.post.rawValue)/\(post.id)")
+        let currentUserReference = db.document("\(FirestoreTables.user.rawValue)/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
         
-        db.collection("FavouritesPosts").whereField(
-            "post",
+        db.collection(FirestoreTables.favouritesPosts.rawValue).whereField(
+            FavouritesPostsTableColumns.post.rawValue,
             isEqualTo: reference
         ).whereField(
-            "user",
+            FavouritesPostsTableColumns.user.rawValue,
             isEqualTo: currentUserReference
         ).getDocuments { [ weak self ] snapshot, error in
             guard error == nil else {

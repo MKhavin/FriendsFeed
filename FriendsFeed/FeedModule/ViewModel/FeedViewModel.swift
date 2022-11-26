@@ -35,10 +35,12 @@ class FeedViewModel: FeedViewModelProtocol {
         
         operationGroup.enter()
         DispatchQueue.global(qos: .userInitiated).async(group: operationGroup) {
-            let reference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
+            let reference = db.document("\(FirestoreTables.user.rawValue)/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
             
-            db.collection("Post").whereField("User",
-                                             isNotEqualTo: reference).getDocuments { (querySnapshot, error) in
+            db.collection(FirestoreTables.post.rawValue).whereField(
+                PostTableColumns.user.rawValue,
+                isNotEqualTo: reference
+            ).getDocuments { (querySnapshot, error) in
                 
                 guard error == nil else {
                     // swiftlint:disable:next force_unwrapping
@@ -72,7 +74,7 @@ class FeedViewModel: FeedViewModelProtocol {
     private func processPost(document: QueryDocumentSnapshot, on operationGroup: DispatchGroup?) {
         let data = document.data()
         
-        if let userData = data["User"] as? DocumentReference {
+        if let userData = data[PostTableColumns.user.rawValue] as? DocumentReference {
             operationGroup?.enter()
             userData.getDocument { querySnapshot, error in
                 guard error == nil else {
@@ -90,20 +92,20 @@ class FeedViewModel: FeedViewModelProtocol {
                 
                 let currentAuthor = User(
                     id: documentsSnapshot.documentID,
-                    firstName: snapshotData["firstName"] as? String,
-                    lastName: snapshotData["lastName"] as? String,
+                    firstName: snapshotData[UserTableColumns.firstName.rawValue] as? String,
+                    lastName: snapshotData[UserTableColumns.lastName.rawValue] as? String,
                     birthDate: nil,
-                    sex: .init(rawValue: (snapshotData["sex"] as? String) ?? "male") ?? .male,
-                    avatar: snapshotData["avatar"] as? String,
-                    phoneNumber: snapshotData["phoneNumber"] as? String
+                    sex: .init(rawValue: (snapshotData[UserTableColumns.sex.rawValue] as? String) ?? "male") ?? .male,
+                    avatar: snapshotData[UserTableColumns.avatar.rawValue] as? String,
+                    phoneNumber: snapshotData[UserTableColumns.phoneNumber.rawValue] as? String
                 )
                 
                 let currentPost = Post(id: document.documentID,
-                                       date: (data["Date"] as? Timestamp)?.dateValue(),
+                                       date: (data[PostTableColumns.date.rawValue] as? Timestamp)?.dateValue(),
                                        likes: 0,
-                                       text: data["Text"] as? String,
+                                       text: data[PostTableColumns.text.rawValue] as? String,
                                        author: currentAuthor,
-                                       image: data["image"] as? String)
+                                       image: data[PostTableColumns.image.rawValue] as? String)
                 
                 self.loadLikesInfo(for: currentPost, on: operationGroup)
                 self.loadFavouritesInfo(for: currentPost, on: operationGroup)
@@ -127,15 +129,15 @@ class FeedViewModel: FeedViewModelProtocol {
     
     private func loadFavouritesInfo(for post: Post, on group: DispatchGroup?) {
         let db = Firestore.firestore()
-        let reference = db.document("Post/\(post.id)")
-        let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
+        let reference = db.document("\(FirestoreTables.post.rawValue)/\(post.id)")
+        let currentUserReference = db.document("\(FirestoreTables.user.rawValue)/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
         
         group?.enter()
-        db.collection("FavouritesPosts").whereField(
-            "post",
+        db.collection(FirestoreTables.favouritesPosts.rawValue).whereField(
+            FavouritesPostsTableColumns.post.rawValue,
             isEqualTo: reference
         ).whereField(
-            "user",
+            FavouritesPostsTableColumns.user.rawValue,
             isEqualTo: currentUserReference
         ).getDocuments { snapshot, error in
             guard error == nil else {
@@ -160,11 +162,11 @@ class FeedViewModel: FeedViewModelProtocol {
     
     private func loadLikesInfo(for post: Post, on group: DispatchGroup?) {
         let db = Firestore.firestore()
-        let reference = db.document("Post/\(post.id)")
-        let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
+        let reference = db.document("\(FirestoreTables.post.rawValue)/\(post.id)")
+        let currentUserReference = db.document("\(FirestoreTables.user.rawValue)/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
         
         group?.enter()
-        db.collection("PostsLikes").whereField("post", isEqualTo: reference).getDocuments { snapshot, error in
+        db.collection(FirestoreTables.postsLikes.rawValue).whereField(PostsLikesTableColumns.post.rawValue, isEqualTo: reference).getDocuments { snapshot, error in
             guard error == nil else {
                 // swiftlint:disable:next force_unwrapping
                 print(error!.localizedDescription)
@@ -180,7 +182,7 @@ class FeedViewModel: FeedViewModelProtocol {
             
             for document in documentsSnapshot.documents {
                 post.likes += 1
-                if let user = document.data()["user"] as? DocumentReference, user == currentUserReference {
+                if let user = document.data()[PostsLikesTableColumns.user.rawValue] as? DocumentReference, user == currentUserReference {
                     post.isLiked = true
                 }
             }
@@ -205,15 +207,15 @@ class FeedViewModel: FeedViewModelProtocol {
     
     func likePost(in cell: FeedTableViewCell, post: Post) {
         let db = Firestore.firestore()
-        let reference = db.document("Post/\(post.id)")
-        let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
+        let reference = db.document("\(FirestoreTables.post.rawValue)/\(post.id)")
+        let currentUserReference = db.document("\(FirestoreTables.user.rawValue)/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
         
         if post.isLiked {
-            db.collection("PostsLikes").whereField(
-                "post",
+            db.collection(FirestoreTables.postsLikes.rawValue).whereField(
+                PostsLikesTableColumns.post.rawValue,
                 isEqualTo: reference
             ).whereField(
-                "user",
+                PostsLikesTableColumns.user.rawValue,
                 isEqualTo: currentUserReference
             ).getDocuments {[ weak self ] snapshot, error in
                 guard error == nil else {
@@ -240,10 +242,10 @@ class FeedViewModel: FeedViewModelProtocol {
             }
         } else {
             let documentData = [
-                "post": reference,
-                "user": currentUserReference
+                PostsLikesTableColumns.post.rawValue: reference,
+                PostsLikesTableColumns.user.rawValue: currentUserReference
             ]
-            db.collection("PostsLikes").addDocument(data: documentData) {[ weak self ] error in
+            db.collection(FirestoreTables.postsLikes.rawValue).addDocument(data: documentData) {[ weak self ] error in
                 guard error == nil else {
                     // swiftlint:disable:next force_unwrapping
                     print(error!.localizedDescription)
@@ -261,15 +263,15 @@ class FeedViewModel: FeedViewModelProtocol {
     
     func setPostInFavourites(in cell: FeedTableViewCell, post: Post) {
         let db = Firestore.firestore()
-        let reference = db.document("Post/\(post.id)")
-        let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
+        let reference = db.document("\(FirestoreTables.post.rawValue)/\(post.id)")
+        let currentUserReference = db.document("\(FirestoreTables.user.rawValue)/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
         
         if post.isFavourite {
-            db.collection("FavouritesPosts").whereField(
-                "post",
+            db.collection(FirestoreTables.favouritesPosts.rawValue).whereField(
+                FavouritesPostsTableColumns.post.rawValue,
                 isEqualTo: reference
             ).whereField(
-                "user",
+                FavouritesPostsTableColumns.user.rawValue,
                 isEqualTo: currentUserReference
             ).getDocuments {[ weak self ] snapshot, error in
                 guard error == nil else {
@@ -294,10 +296,10 @@ class FeedViewModel: FeedViewModelProtocol {
             }
         } else {
             let documentData = [
-                "post": reference,
-                "user": currentUserReference
+                FavouritesPostsTableColumns.post.rawValue: reference,
+                FavouritesPostsTableColumns.user.rawValue: currentUserReference
             ]
-            db.collection("FavouritesPosts").addDocument(data: documentData) {[ weak self ] error in
+            db.collection(FirestoreTables.favouritesPosts.rawValue).addDocument(data: documentData) {[ weak self ] error in
                 guard error == nil else {
                     // swiftlint:disable:next force_unwrapping
                     print(error!.localizedDescription)

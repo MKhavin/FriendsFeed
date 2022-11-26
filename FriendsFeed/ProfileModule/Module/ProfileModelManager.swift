@@ -27,9 +27,9 @@ class ProfileModelManager: ProfileModelManagerProtocol {
         func getCollectionName() -> String {
             switch self {
             case .postsCount:
-                return "Post"
+                return FirestoreTables.post.rawValue
             case .subscriptionsCount, .friendsCount:
-                return "Subscription"
+                return FirestoreTables.subscription.rawValue
             }
         }
     }
@@ -52,7 +52,7 @@ class ProfileModelManager: ProfileModelManagerProtocol {
             if let user = Auth.auth().currentUser, let phone = user.phoneNumber {
                 currentLogin = phone
             } else {
-              return
+                return
             }
         } else {
             currentLogin = profile?.phoneNumber
@@ -61,7 +61,10 @@ class ProfileModelManager: ProfileModelManagerProtocol {
         group.enter()
         let db = Firestore.firestore()
         
-        db.collection("User").whereField("phoneNumber", isEqualTo: currentLogin ?? "").getDocuments { [ weak self ] (querySnapshot, error) in
+        db.collection(FirestoreTables.user.rawValue).whereField(
+            UserTableColumns.phoneNumber.rawValue,
+            isEqualTo: currentLogin ?? ""
+        ).getDocuments { [ weak self ] (querySnapshot, error) in
             guard error == nil else {
                 self?.group.leave()
                 // swiftlint:disable:next force_unwrapping
@@ -77,17 +80,17 @@ class ProfileModelManager: ProfileModelManagerProtocol {
                 
                 self?.profile = User(
                     id: snapshot.documentID,
-                    firstName: userData["firstName"] as? String,
-                    lastName: userData["lastName"] as? String,
-                    birthDate: userData["birthDate"] as? Date,
-                    sex: .init(rawValue: userData["sex"] as? String ?? "male") ?? .male,
-                    avatar: userData["avatar"] as? String,
-                    phoneNumber: userData["phoneNumber"] as? String
+                    firstName: userData[UserTableColumns.firstName.rawValue] as? String,
+                    lastName: userData[UserTableColumns.lastName.rawValue] as? String,
+                    birthDate: userData[UserTableColumns.birthDate.rawValue] as? Date,
+                    sex: .init(rawValue: userData[UserTableColumns.sex.rawValue] as? String ?? "male") ?? .male,
+                    avatar: userData[UserTableColumns.avatar.rawValue] as? String,
+                    phoneNumber: userData[UserTableColumns.phoneNumber.rawValue] as? String
                 )
                 
-                self?.getSubInformation(.postsCount, for: documentId)
-                self?.getSubInformation(.subscriptionsCount, for: documentId, field: "user")
-                self?.getSubInformation(.friendsCount, for: documentId, field: "subscription")
+                self?.getSubInformation(.postsCount, for: documentId, field: PostTableColumns.user.rawValue)
+                self?.getSubInformation(.subscriptionsCount, for: documentId, field: SubscriptionTableColumns.user.rawValue)
+                self?.getSubInformation(.friendsCount, for: documentId, field: SubscriptionTableColumns.subscription.rawValue)
                 self?.group.leave()
             })
         }
@@ -98,9 +101,9 @@ class ProfileModelManager: ProfileModelManagerProtocol {
         }
     }
     
-    private func getSubInformation(_ type: SubInformationData, for userId: String, field: String = "User") {
+    private func getSubInformation(_ type: SubInformationData, for userId: String, field: String) {
         let db = Firestore.firestore()
-        let reference = db.document("User/\(userId)")
+        let reference = db.document("\(FirestoreTables.user.rawValue)/\(userId)")
         
         group.enter()
         db.collection(type.getCollectionName()).whereField(field, isEqualTo: reference).getDocuments { [ weak self ] snapshot, error in
@@ -121,17 +124,20 @@ class ProfileModelManager: ProfileModelManagerProtocol {
             case .friendsCount:
                 self?.profile?.friends = snapshot?.documents.count ?? 0
             }
-
+            
             self?.group.leave()
         }
     }
     
     private func loadPostsData() {
         let db = Firestore.firestore()
-        let userReference = db.document("User/\(profile?.id ?? "")")
+        let userReference = db.document("\(FirestoreTables.user.rawValue)/\(profile?.id ?? "")")
         
         group.enter()
-        db.collection("Post").whereField("User", isEqualTo: userReference).getDocuments { [ weak self ] snapshot, error in
+        db.collection(FirestoreTables.post.rawValue).whereField(
+            PostTableColumns.user.rawValue,
+            isEqualTo: userReference
+        ).getDocuments { [ weak self ] snapshot, error in
             guard error == nil else {
                 // swiftlint:disable:next force_unwrapping
                 print(error!.localizedDescription)
@@ -146,11 +152,11 @@ class ProfileModelManager: ProfileModelManagerProtocol {
                 
                 let post = Post(
                     id: document.documentID,
-                    date: Date(timeIntervalSince1970: postData["Date"] as? Double ?? 0),
-                    likes: postData["Likes"] as? UInt ?? 0,
-                    text: postData["Text"] as? String,
+                    date: Date(timeIntervalSince1970: postData[PostTableColumns.date.rawValue] as? Double ?? 0),
+                    likes: 0,
+                    text: postData[PostTableColumns.text.rawValue] as? String,
                     author: self?.profile,
-                    image: postData["image"] as? String
+                    image: postData[PostTableColumns.image.rawValue] as? String
                 )
                 
                 self?.loadFavouritesInfo(for: post)
@@ -169,15 +175,15 @@ class ProfileModelManager: ProfileModelManagerProtocol {
     
     private func loadFavouritesInfo(for post: Post) {
         let db = Firestore.firestore()
-        let reference = db.document("Post/\(post.id)")
-        let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
+        let reference = db.document("\(FirestoreTables.post.rawValue)/\(post.id)")
+        let currentUserReference = db.document("\(FirestoreTables.user.rawValue)/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
         
         group.enter()
-        db.collection("FavouritesPosts").whereField(
-            "post",
+        db.collection(FirestoreTables.favouritesPosts.rawValue).whereField(
+            FavouritesPostsTableColumns.post.rawValue,
             isEqualTo: reference
         ).whereField(
-            "user",
+            FavouritesPostsTableColumns.user.rawValue,
             isEqualTo: currentUserReference
         ).getDocuments { [ weak self ] snapshot, error in
             guard error == nil else {
@@ -202,11 +208,14 @@ class ProfileModelManager: ProfileModelManagerProtocol {
     
     private func loadLikesInfo(for post: Post) {
         let db = Firestore.firestore()
-        let reference = db.document("Post/\(post.id)")
-        let currentUserReference = db.document("User/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
+        let reference = db.document("\(FirestoreTables.post.rawValue)/\(post.id)")
+        let currentUserReference = db.document("\(FirestoreTables.user.rawValue)/\(FirebaseAuth.Auth.auth().currentUser?.uid ?? "")")
         
         group.enter()
-        db.collection("PostsLikes").whereField("post", isEqualTo: reference).getDocuments { snapshot, error in
+        db.collection(FirestoreTables.postsLikes.rawValue).whereField(
+            PostsLikesTableColumns.post.rawValue,
+            isEqualTo: reference
+        ).getDocuments { snapshot, error in
             guard error == nil else {
                 // swiftlint:disable:next force_unwrapping
                 print(error!.localizedDescription)
@@ -222,7 +231,7 @@ class ProfileModelManager: ProfileModelManagerProtocol {
             
             for document in documentsSnapshot.documents {
                 post.likes += 1
-                if let user = document.data()["user"] as? DocumentReference, user == currentUserReference {
+                if let user = document.data()[PostsLikesTableColumns.user.rawValue] as? DocumentReference, user == currentUserReference {
                     post.isLiked = true
                 }
             }
